@@ -7,6 +7,6 @@
         }
     ],
     "env": {
-        "DISCORD_TOKEN": "@discord_token"
+        "DISCORD_TOKEN": "DISCORD_TOKEN"
     }
 }
