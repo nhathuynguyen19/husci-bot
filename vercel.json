@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "app.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "env": {
+        "DISCORD_TOKEN": "@discord_token"
+    }
+}
