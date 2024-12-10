@@ -1,2 +1,5 @@
 discord.py
 python-dotenv
+aiohttp
+dotenv
+beautifulsoup4
