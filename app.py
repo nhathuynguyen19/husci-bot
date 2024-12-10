@@ -1,7 +1,16 @@
 import discord
 from discord.ext import commands
+from discord.ext import commands
+from dotenv import load_dotenv
+import os
 import requests
 from bs4 import BeautifulSoup
+
+load_dotenv()
+token = os.getenv("DISCORD_TOKEN")
+
+if token is None:
+    raise ValueError("Không tìm thấy token Discord! Vui lòng kiểm tra lại biến môi trường DISCORD_TOKEN.")
 
 # Tạo bot với prefix lệnh, ví dụ: "!"
 intents = discord.Intents.default()
@@ -72,4 +81,4 @@ async def fetch_notifications(ctx):
     await ctx.send(notifications)
 
 # Thay 'your_bot_token_here' bằng token bot của mày
-bot.run('MTMxNjA1NDk1NTc0ODIyOTIzMQ.Gdo-h7.9-jTWRzH6V4JnmGNuV9lbAjOyXsc8K_QovPg88')
+bot.run(token)
