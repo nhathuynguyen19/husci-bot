@@ -7,9 +7,11 @@ from bs4 import BeautifulSoup
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
+login_id = os.getenv("LOGIN_ID")  # Thêm biến môi trường cho mã sinh viên
+password = os.getenv("PASSWORD")  # Thêm biến môi trường cho mật khẩu
 
-if token is None:
-    raise ValueError("Không tìm thấy token Discord! Vui lòng kiểm tra lại biến môi trường DISCORD_TOKEN.")
+if token is None or login_id is None or password is None:
+    raise ValueError("Không tìm thấy các biến môi trường cần thiết! Vui lòng kiểm tra lại DISCORD_TOKEN, LOGIN_ID và PASSWORD.")
 
 # Tạo bot với prefix lệnh, ví dụ: "/"
 intents = discord.Intents.default()
@@ -29,13 +31,17 @@ async def get_notifications():
                 soup = BeautifulSoup(await login_page.text(), 'html.parser')
 
             # Lấy token __RequestVerificationToken từ trang đăng nhập
-            token = soup.find('input', {'name': '__RequestVerificationToken'})['value']
+            token = soup.find('input', {'name': '__RequestVerificationToken'})
+            if not token:
+                return "Không tìm thấy token xác thực!"
+
+            token_value = token['value']
 
             # Dữ liệu đăng nhập
             login_data = {
-                "loginID": "23T1080025",  # Thay bằng mã sinh viên của mày
-                "password": "16082005159487!Hh",  # Thay bằng mật khẩu
-                "__RequestVerificationToken": token  # Token xác thực
+                "loginID": login_id,  # Sử dụng biến môi trường
+                "password": password,  # Sử dụng biến môi trường
+                "__RequestVerificationToken": token_value
             }
 
             # Gửi yêu cầu đăng nhập
@@ -61,7 +67,7 @@ async def get_notifications():
                         else:
                             return f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}"
                 else:
-                    return "Đăng nhập không thành công."
+                    return f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
     except Exception as e:
         return f"Đã xảy ra lỗi: {e}"
 

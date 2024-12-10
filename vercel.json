@@ -5,8 +5,5 @@
             "src": "app.py",
             "use": "@vercel/python"
         }
-    ],
-    "env": {
-        "DISCORD_TOKEN": "DISCORD_TOKEN"
-    }
+    ]
 }
