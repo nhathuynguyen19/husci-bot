@@ -1,19 +1,21 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 import os
 import aiohttp
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
+# Tải biến môi trường từ file .env
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
-login_id = os.getenv("LOGIN_ID")  # Thêm biến môi trường cho mã sinh viên
-password = os.getenv("PASSWORD")  # Thêm biến môi trường cho mật khẩu
+login_id = os.getenv("LOGIN_ID")
+password = os.getenv("PASSWORD")
 
 if token is None or login_id is None or password is None:
     raise ValueError("Không tìm thấy các biến môi trường cần thiết! Vui lòng kiểm tra lại DISCORD_TOKEN, LOGIN_ID và PASSWORD.")
 
-# Tạo bot với prefix lệnh, ví dụ: "/"
+# Cấu hình bot với prefix là "/"
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
@@ -22,7 +24,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/Message/Inbox"
 
-# Tạo session bất đồng bộ với aiohttp
+# Hàm lấy thông báo từ trang web
 async def get_notifications():
     try:
         async with aiohttp.ClientSession() as session:
@@ -74,14 +76,24 @@ async def get_notifications():
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
 async def on_ready():
-    print(f'Đã đăng nhập thành công với bot: {bot.user}')
+    print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
+    await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
 
-# Lệnh "/notifications" để lấy thông báo
-@bot.command(name="notifications")
-async def fetch_notifications(ctx):
-    await ctx.send("Đang lấy thông báo từ HUSC...")
-    notifications = await get_notifications()  # Đảm bảo gọi async function
-    await ctx.send(notifications)
+@bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
+async def notifications(ctx: discord.Interaction):
+    # Báo cho người dùng biết rằng bot đang xử lý
+    await ctx.response.defer(ephemeral=True)  # defer cho phép bot gửi phản hồi sau
+    
+    notifications = await get_notifications()  # Gọi hàm lấy thông báo
+    
+    # Kiểm tra nếu có thông báo và trả lại chúng
+    if notifications == "Không có thông báo mới.":
+        await ctx.followup.send(f"**Không có thông báo mới.**")  # Sử dụng followup để trả lời sau defer
+    else:
+        # Nếu có thông báo, hiển thị chúng dưới dạng danh sách
+        formatted_notifications = "\n".join([f"- **{notification}**" for notification in notifications.splitlines()])
+        await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
+
 
 # Chạy bot với token
 bot.run(token)
