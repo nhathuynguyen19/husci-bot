@@ -88,7 +88,7 @@ async def notifications(ctx: discord.Interaction):
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
 
 # Lệnh lấy thông báo đầu tiên
-@bot.tree.command(name="first", description="Lấy thông báo đầu tiên từ HUSC")
+@bot.tree.command(name="first", description="Lấy thông báo mới nhất từ HUSC")
 async def first(ctx: discord.Interaction):
     await ctx.response.defer(ephemeral=False)  # defer cho phép bot gửi phản hồi sau
     
@@ -99,7 +99,7 @@ async def first(ctx: discord.Interaction):
     elif isinstance(notifications, list) and notifications:
         first_notification = notifications[0]
         formatted_notification = f"- {first_notification}"
-        await ctx.followup.send(f"**Thông báo đầu tiên từ HUSC**:\n{formatted_notification}")
+        await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
     else:
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
 
