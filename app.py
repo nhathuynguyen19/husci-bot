@@ -132,28 +132,25 @@ async def send_notifications():
     notifications = await get_notifications()
 
     if isinstance(notifications, list) and notifications:
-        new_notifications = [n for n in notifications if n not in previous_notifications]
+        new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
 
-        if new_notifications != previous_notifications:
-            # Lấy 1 thông báo đầu tiên
-            new_notifications = notifications[:1]
-            
-            # định dạng
-            formatted_notifications = "\n".join([f"- {notification}" for notification in new_notifications])
+        if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
+            # Định dạng thông báo
+            formatted_notification = f"- {new_notification}"
 
             # Lấy kênh Discord đầu tiên trong danh sách
             guild = bot.guilds[0] if bot.guilds else None
             channel = guild.text_channels[0] if guild and guild.text_channels else None
-            
+
             if channel:
-                await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
-                
-            # Ghi đè file notifications.txt
+                await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
+
+            # Ghi đè file notifications.txt với thông báo mới
             with open("notifications.txt", "w", encoding="utf-8") as f:
-                f.write("\n".join(new_notifications))
+                f.write(formatted_notification)
 
             # Cập nhật thông báo trước đó
-            previous_notifications = new_notifications
+            previous_notifications = new_notification
         else:
             print("Không có thông báo mới.")
     else:
