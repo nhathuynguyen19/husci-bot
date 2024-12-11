@@ -124,8 +124,13 @@ async def send_notifications():
             with open('notifications.txt', 'w', encoding='utf-8') as f:
                 f.write(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
 
-            # Gửi thông báo vào Discord
-            channel = bot.get_channel(int(channel_id))
+            # Tìm kênh văn bản đầu tiên trong server mà bot có quyền truy cập
+            channel = None
+            for ch in bot.get_all_channels():
+                if isinstance(ch, discord.TextChannel) and ch.permissions_for(ch.guild.me).send_messages:
+                    channel = ch
+                    break
+                
             if channel:
                 await channel.send(f"**Thông báo mới từ HUSC**:\n- {first_notification}")
 
