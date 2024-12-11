@@ -103,7 +103,11 @@ async def send_notifications():
     notifications = await get_notifications()  # gọi hàm lấy thông báo
 
     # Nếu thông báo là một danh sách, thì xử lý
-    if isinstance(notifications, list):
+    if isinstance(notifications, list) and notifications:
+        
+        # Chỉ lấy thông báo đầu tiên
+        first_notification = notifications[0]
+        
         formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
 
         # So sánh với thông báo trước đó
@@ -115,7 +119,7 @@ async def send_notifications():
             # Gửi thông báo vào Discord
             channel = bot.get_channel(int(channel_id))  # Lấy channel từ ID
             if channel:
-                await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
+                await channel.send(f"**Thông báo mới từ HUSC**:\n- {first_notification}")
 
             # Cập nhật thông báo trước đó
             previous_notifications = notifications
