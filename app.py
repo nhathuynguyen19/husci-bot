@@ -124,7 +124,7 @@ async def first(ctx: discord.Interaction):
 # Biến lưu trữ thông báo trước đó
 previous_notifications = []
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=2)
 async def send_notifications():
     global previous_notifications
 
@@ -136,13 +136,15 @@ async def send_notifications():
 
         if new_notifications != previous_notifications:
             # Lấy 5 thông báo đầu tiên
-            new_notifications = notifications[:5]
+            new_notifications = notifications[:1]
             
             # định dạng
             formatted_notifications = "\n".join([f"- {notification}" for notification in new_notifications])
 
-            # Tìm kênh Discord
-            channel = bot.get_channel(int(channel_id))
+            # Lấy kênh Discord đầu tiên trong danh sách
+            guild = bot.guilds[0] if bot.guilds else None
+            channel = guild.text_channels[0] if guild and guild.text_channels else None
+            
             if channel:
                 await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
                 
