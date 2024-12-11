@@ -5,8 +5,6 @@ import os
 import aiohttp
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
-import asyncio
-from datetime import datetime, timedelta
 
 # Tải biến môi trường từ file .env
 load_dotenv()
@@ -67,30 +65,43 @@ async def get_notifications():
     except Exception as e:
         return f"Đã xảy ra lỗi: {e}"
 
-      
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
 async def on_ready():
     print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
     await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
     send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
-    
+    print("Bot is ready and commands are synchronized.")
+
+# Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     # Báo cho người dùng biết rằng bot đang xử lý
-    await ctx.response.defer(ephemeral=False)  # defer cho phép bot gửi phản hồi sau
+    await ctx.response.defer(ephemeral=False)
     
     notifications = await get_notifications()  # Gọi hàm lấy thông báo
     
-    # Kiểm tra nếu có thông báo và trả lại chúng
     if notifications == "Không có thông báo mới.":
-        await ctx.followup.send(f"**Không có thông báo mới.**")  # Sử dụng followup để trả lời sau defer
+        await ctx.followup.send(f"**Không có thông báo mới.**")
     else:
-        # Nếu có thông báo, hiển thị chúng dưới dạng danh sách với link
         formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
-        
-from discord.ext import tasks
+
+# Lệnh lấy thông báo đầu tiên
+@bot.tree.command(name="first", description="Lấy thông báo đầu tiên từ HUSC")
+async def first(ctx: discord.Interaction):
+    await ctx.response.defer(ephemeral=False)  # defer cho phép bot gửi phản hồi sau
+    
+    notifications = await get_notifications()
+
+    if notifications == "Không có thông báo mới.":
+        await ctx.followup.send(f"**Không có thông báo mới.**")
+    elif isinstance(notifications, list) and notifications:
+        first_notification = notifications[0]
+        formatted_notification = f"- {first_notification}"
+        await ctx.followup.send(f"**Thông báo đầu tiên từ HUSC**:\n{formatted_notification}")
+    else:
+        await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
 
 # Biến lưu trữ thông báo trước đó
 previous_notifications = []
@@ -100,24 +111,21 @@ async def send_notifications():
     global previous_notifications
 
     # Lấy thông báo mới
-    notifications = await get_notifications()  # gọi hàm lấy thông báo
+    notifications = await get_notifications()
 
-    # Nếu thông báo là một danh sách, thì xử lý
     if isinstance(notifications, list) and notifications:
-        
-        # Chỉ lấy thông báo đầu tiên
         first_notification = notifications[0]
         
-        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
-
         # So sánh với thông báo trước đó
         if notifications != previous_notifications:
+            formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
+
             # Lưu thông báo vào file .txt
             with open('notifications.txt', 'w', encoding='utf-8') as f:
                 f.write(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
 
             # Gửi thông báo vào Discord
-            channel = bot.get_channel(int(channel_id))  # Lấy channel từ ID
+            channel = bot.get_channel(int(channel_id))
             if channel:
                 await channel.send(f"**Thông báo mới từ HUSC**:\n- {first_notification}")
 
@@ -126,17 +134,9 @@ async def send_notifications():
         else:
             print("Không có thông báo mới hoặc thông báo không thay đổi.")
     else:
-        # Nếu không có thông báo mới
-        channel = bot.get_channel(int(channel_id))  # Lấy channel từ ID
+        channel = bot.get_channel(int(channel_id))
         if channel:
             await channel.send(f"**Không có thông báo mới.**")
-
-# Đảm bảo bắt đầu vòng lặp khi bot sẵn sàng
-@bot.event
-async def on_ready():
-    print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
-    send_notifications.start()  # Bắt đầu vòng lặp gửi thông báo tự động
-    
 
 # Chạy bot với token
 bot.run(token)
