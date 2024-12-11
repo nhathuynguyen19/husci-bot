@@ -1,10 +1,11 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord import app_commands
 import os
 import aiohttp
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+import time
 
 # Tải biến môi trường từ file .env
 load_dotenv()
@@ -23,6 +24,9 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 # URL đăng nhập và URL dữ liệu cần lấy
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/Message/Inbox"
+
+# Biến toàn cục để lưu trữ thông báo trước đó
+previous_notifications = []
 
 # Hàm lấy thông báo từ trang web
 async def get_notifications():
@@ -69,7 +73,7 @@ async def get_notifications():
                             
                             if not notifications:
                                 return "Không có thông báo mới."
-                            return "\n".join(notifications)
+                            return notifications  # Trả về danh sách thông báo dưới dạng list
                         else:
                             return f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}"
                 else:
@@ -77,11 +81,36 @@ async def get_notifications():
     except Exception as e:
         return f"Đã xảy ra lỗi: {e}"
 
+# Hàm so sánh và gửi thông báo mới lên Discord
+async def check_for_new_notifications():
+    global previous_notifications
+
+    notifications = await get_notifications()
+    if isinstance(notifications, list):
+        if notifications != previous_notifications:
+            previous_notifications = notifications  # Cập nhật danh sách thông báo trước đó
+            # Nếu có thông báo mới, gửi lên Discord
+            channel = bot.get_channel(866123551995461672)  # Thay CHANNEL_ID bằng ID kênh Discord của bạn
+            channel2 = bot.get_channel(1227228180130037830)  # Thay CHANNEL_ID bằng ID kênh Discord của bạn
+            formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
+            await channel.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
+            await channel2.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
+        else:
+            print("Không có thông báo mới.")
+    else:
+        print(notifications)  # Nếu có lỗi, in ra thông báo lỗi
+
+# Tạo task chạy mỗi 5 phút
+@tasks.loop(minutes=5)
+async def periodic_check():
+    await check_for_new_notifications()
+
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
 async def on_ready():
     print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
     await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
+    periodic_check.start()  # Bắt đầu kiểm tra định kỳ
 
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
