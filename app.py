@@ -5,6 +5,7 @@ import os
 import aiohttp
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+import asyncio
 
 # Tải biến môi trường từ file .env
 load_dotenv()
@@ -23,7 +24,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 # URL đăng nhập và URL dữ liệu cần lấy
 login_url = "https://student.husc.edu.vn/Account/Login"
-data_url = "https://student.husc.edu.vn/Message/Inbox"
+data_url = "https://student.husc.edu.vn/News"
 
 # Biến lưu trữ thông báo trước đó
 previous_notifications = []
@@ -32,38 +33,49 @@ previous_notifications = []
 async def get_notifications():
     try:
         async with aiohttp.ClientSession() as session:
-            # Lấy token xác thực từ trang đăng nhập
+            # Lấy token xác thực
+            print("Đang truy cập trang đăng nhập...")
             login_page = await session.get(login_url)
             soup = BeautifulSoup(await login_page.text(), 'html.parser')
             token = soup.find('input', {'name': '__RequestVerificationToken'})
             if not token:
+                print("Không tìm thấy token xác thực!")
                 return "Không tìm thấy token xác thực!"
-            
-            # Đăng nhập và lấy dữ liệu thông báo
+
+            # Đăng nhập
+            print("Đang đăng nhập...")
             login_data = {
                 "loginID": login_id, "password": password, "__RequestVerificationToken": token['value']
             }
             login_response = await session.post(login_url, data=login_data)
             if login_response.status != 200:
+                print(f"Đăng nhập không thành công. Mã lỗi: {login_response.status}")
                 return f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
-            
-            # Lấy dữ liệu thông báo sau khi đăng nhập
+
+            # Lấy thông báo
+            print("Đang lấy thông báo...")
             data_response = await session.get(data_url)
             if data_response.status != 200:
+                print(f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}")
                 return f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}"
-            
-            # Phân tích và lấy thông báo
+
+            # Phân tích thông báo
             soup = BeautifulSoup(await data_response.text(), 'html.parser')
-            links = soup.find_all('a', href=True)
+            news_list = soup.find('div', id='newsList')
+            if not news_list:
+                print("Không tìm thấy danh sách thông báo!")
+                return "Không tìm thấy danh sách thông báo!"
+
             notifications = [
                 f"[{link.text.strip()}](https://student.husc.edu.vn{link['href']})"
-                for link in links if '/News/Content/' in link['href']
+                for link in news_list.find_all('a', href=True) if '/News/Content' in link['href']
             ]
-            
+            print(f"Đã lấy {len(notifications)} thông báo.")
             return notifications if notifications else "Không có thông báo mới."
-    
     except Exception as e:
+        print(f"Đã xảy ra lỗi: {e}")
         return f"Đã xảy ra lỗi: {e}"
+
 
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
@@ -84,7 +96,13 @@ async def notifications(ctx: discord.Interaction):
     if notifications == "Không có thông báo mới.":
         await ctx.followup.send(f"**Không có thông báo mới.**")
     else:
-        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
+        # Lấy 5 thông báo đầu tiên
+        top_notifications = notifications[:5]
+        
+        # Định dạng danh sách thông báo
+        formatted_notifications = "\n".join([f"- {notification}" for notification in top_notifications])
+        
+        # Gửi tin nhắn
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
 
 # Lệnh lấy thông báo đầu tiên
@@ -114,34 +132,31 @@ async def send_notifications():
     notifications = await get_notifications()
 
     if isinstance(notifications, list) and notifications:
-        first_notification = notifications[0]
-        
-        # So sánh với thông báo trước đó
-        if notifications != previous_notifications:
-            formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
+        new_notifications = [n for n in notifications if n not in previous_notifications]
 
-            # Lưu thông báo vào file .txt
-            with open('notifications.txt', 'w', encoding='utf-8') as f:
-                f.write(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
+        if new_notifications != previous_notifications:
+            # Lấy 5 thông báo đầu tiên
+            new_notifications = notifications[:5]
+            
+            # định dạng
+            formatted_notifications = "\n".join([f"- {notification}" for notification in new_notifications])
 
-            # Tìm kênh văn bản đầu tiên trong server mà bot có quyền truy cập
-            channel = None
-            for ch in bot.get_all_channels():
-                if isinstance(ch, discord.TextChannel) and ch.permissions_for(ch.guild.me).send_messages:
-                    channel = ch
-                    break
-                
+            # Tìm kênh Discord
+            channel = bot.get_channel(int(channel_id))
             if channel:
-                await channel.send(f"**Thông báo mới từ HUSC**:\n- {first_notification}")
+                await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notifications}")
+                
+            # Ghi đè file notifications.txt
+            with open("notifications.txt", "w", encoding="utf-8") as f:
+                f.write("\n".join(new_notifications))
 
             # Cập nhật thông báo trước đó
             previous_notifications = notifications
         else:
-            print("Không có thông báo mới hoặc thông báo không thay đổi.")
+            print("Không có thông báo mới.")
     else:
-        channel = bot.get_channel(int(channel_id))
-        if channel:
-            await channel.send(f"**Không có thông báo mới.**")
+        print("Không thể lấy thông báo hoặc không có thông báo mới.")
+
 
 # Chạy bot với token
 bot.run(token)
