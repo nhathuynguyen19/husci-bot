@@ -51,6 +51,8 @@ async def get_notifications():
             if data_response.status != 200:
                 return f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}"
 
+            print("Lấy thông báo thành công.")
+            
             soup = BeautifulSoup(await data_response.text(), 'html.parser')
             news_list = soup.find('div', id='newsList')
             if not news_list:
