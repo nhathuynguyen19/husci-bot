@@ -64,7 +64,8 @@ async def get_notifications():
                                 if '/News/Content/' in link['href']:
                                     notification_link = base_url + link['href']
                                     notification_text = link.text.strip()
-                                    notifications.append(f"{notification_text} - {notification_link}")
+                                    # Thêm link tiêu đề vào danh sách thông báo
+                                    notifications.append(f"[{notification_text}]({notification_link})")
                             
                             if not notifications:
                                 return "Không có thông báo mới."
@@ -94,7 +95,7 @@ async def notifications(ctx: discord.Interaction):
         await ctx.followup.send(f"**Không có thông báo mới.**")  # Sử dụng followup để trả lời sau defer
     else:
         # Nếu có thông báo, hiển thị chúng dưới dạng danh sách với link
-        formatted_notifications = "\n".join([f"- **{notification}**" for notification in notifications.splitlines()])
+        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications.splitlines()])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
 
 # Chạy bot với token
