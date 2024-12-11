@@ -87,7 +87,7 @@ async def notifications(ctx: discord.Interaction):
         await ctx.followup.send(f"**Không có thông báo mới.**")  # Sử dụng followup để trả lời sau defer
     else:
         # Nếu có thông báo, hiển thị chúng dưới dạng danh sách với link
-        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications.splitlines()])
+        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
         
 from discord.ext import tasks
