@@ -12,7 +12,6 @@ load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
 login_id = os.getenv("LOGIN_ID")
 password = os.getenv("PASSWORD")
-channel_id = os.getenv("DISCORD_CHANNEL_ID")  # Thêm biến môi trường cho Channel ID
 
 if token is None or login_id is None or password is None or channel_id is None:
     raise ValueError("Không tìm thấy các biến môi trường cần thiết! Vui lòng kiểm tra lại DISCORD_TOKEN, LOGIN_ID, PASSWORD và DISCORD_CHANNEL_ID.")
