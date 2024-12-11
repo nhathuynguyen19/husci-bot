@@ -10,12 +10,14 @@ load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
 login_id = os.getenv("LOGIN_ID")
 password = os.getenv("PASSWORD")
-login_url = os.getenv("LOGIN_URL")
-data_url = os.getenv("DATA_URL")
 
 # Kiểm tra xem có đầy đủ biến môi trường cần thiết không
-if not all([token, login_id, password, login_url, data_url]):
+if not all([token, login_id, password]):
     raise ValueError("Thiếu một hoặc nhiều biến môi trường cần thiết! Kiểm tra lại DISCORD_TOKEN, LOGIN_ID, PASSWORD.")
+
+# trang web
+login_url = "https://student.husc.edu.vn/Account/Login"
+data_url = "https://student.husc.edu.vn/News"
 
 # Cấu hình bot với prefix là "/"
 intents = discord.Intents.default()
@@ -74,7 +76,8 @@ async def on_ready():
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
-    await ctx.response.defer(ephemeral=False)
+    if not ctx.response.is_done():
+        await ctx.response.defer(ephemeral=False)
     
     notifications = await get_notifications()  # Gọi hàm lấy thông báo
     
