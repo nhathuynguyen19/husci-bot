@@ -13,7 +13,7 @@ token = os.getenv("DISCORD_TOKEN")
 login_id = os.getenv("LOGIN_ID")
 password = os.getenv("PASSWORD")
 
-if token is None or login_id is None or password is None or channel_id is None:
+if token is None or login_id is None or password is None:
     raise ValueError("Không tìm thấy các biến môi trường cần thiết! Vui lòng kiểm tra lại DISCORD_TOKEN, LOGIN_ID, PASSWORD và DISCORD_CHANNEL_ID.")
 
 # Cấu hình bot với prefix là "/"
@@ -134,22 +134,33 @@ async def send_notifications():
         new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
 
         if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
-            # Định dạng thông báo
-            formatted_notification = f"- {new_notification}"
+            if previous_notifications:
+                # Định dạng thông báo
+                formatted_notification = f"- {new_notification}"
 
-            # Lấy kênh Discord đầu tiên trong danh sách
-            guild = bot.guilds[0] if bot.guilds else None
-            channel = guild.text_channels[0] if guild and guild.text_channels else None
+                # Lấy kênh Discord đầu tiên trong danh sách
+                guild = bot.guilds[0] if bot.guilds else None
+                channel = guild.text_channels[0] if guild and guild.text_channels else None
 
-            if channel:
-                await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
+                if channel:
+                    await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
 
-            # Ghi đè file notifications.txt với thông báo mới
-            with open("notifications.txt", "w", encoding="utf-8") as f:
-                f.write(formatted_notification)
+                # Ghi đè file notifications.txt với thông báo mới
+                with open("notifications.txt", "w", encoding="utf-8") as f:
+                    f.write(formatted_notification)
 
-            # Cập nhật thông báo trước đó
-            previous_notifications = new_notification
+                # Cập nhật thông báo trước đó
+                previous_notifications = new_notification
+            else:
+                # Định dạng thông báo
+                formatted_notification = f"- {new_notification}"
+
+                # Ghi đè file notifications.txt với thông báo mới
+                with open("notifications.txt", "w", encoding="utf-8") as f:
+                    f.write(formatted_notification)
+
+                # Cập nhật thông báo trước đó
+                previous_notifications = new_notification
         else:
             print("Không có thông báo mới.")
     else:
