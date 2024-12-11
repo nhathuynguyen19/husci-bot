@@ -78,7 +78,7 @@ async def on_ready():
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     # Báo cho người dùng biết rằng bot đang xử lý
-    await ctx.response.defer(ephemeral=True)  # defer cho phép bot gửi phản hồi sau
+    await ctx.response.defer(ephemeral=False)  # defer cho phép bot gửi phản hồi sau
     
     notifications = await get_notifications()  # Gọi hàm lấy thông báo
     
