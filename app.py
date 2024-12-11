@@ -135,7 +135,7 @@ async def send_notifications():
         new_notifications = [n for n in notifications if n not in previous_notifications]
 
         if new_notifications != previous_notifications:
-            # Lấy 5 thông báo đầu tiên
+            # Lấy 1 thông báo đầu tiên
             new_notifications = notifications[:1]
             
             # định dạng
@@ -153,7 +153,7 @@ async def send_notifications():
                 f.write("\n".join(new_notifications))
 
             # Cập nhật thông báo trước đó
-            previous_notifications = notifications
+            previous_notifications = new_notifications
         else:
             print("Không có thông báo mới.")
     else:
