@@ -120,7 +120,7 @@ async def send_notifications():
         new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
 
         if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
-            if previous_notifications:
+            if previous_notifications: # nếu là lần đầu
                 formatted_notification = f"- {new_notification}"
 
                 guild = bot.guilds[0] if bot.guilds else None
@@ -133,7 +133,7 @@ async def send_notifications():
                     f.write(formatted_notification)
 
                 previous_notifications = new_notification
-            else:
+            else: # nếu là lần > 1
                 formatted_notification = f"- {new_notification}"
 
                 with open("notifications.txt", "w", encoding="utf-8") as f:
