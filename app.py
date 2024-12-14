@@ -61,7 +61,8 @@ async def get_notifications():
             notifications = [
                 f"[{link.text.strip()}](https://student.husc.edu.vn{link['href']})"
                 for link in news_list.find_all('a', href=True) if '/News/Content' in link['href']
-            ]
+            ][:5]
+            
             if notifications:
                 print(f"Đã lấy {len(notifications)} thông báo.");
             return notifications if notifications else "Không có thông báo mới."
