@@ -112,7 +112,7 @@ async def first(ctx: discord.Interaction):
 # Biến lưu trữ thông báo trước đó
 previous_notifications = []
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=30)
 async def send_notifications():
     global previous_notifications
 
