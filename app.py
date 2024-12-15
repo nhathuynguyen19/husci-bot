@@ -24,6 +24,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 
+# Hàm lưu thông tin người dùng vào file txt
+def save_user_to_file(user):
+    with open("users.txt", "a", encoding="utf-8") as file:
+        file.write(f"{user.name}#{user.discriminator} ({user.id}) đã gọi lệnh vào lúc {discord.utils.utcnow()}\n")
+    print(f"Lưu thông tin người dùng {user.name} vào file.")
+
 # Hàm lấy thông báo từ trang web
 async def get_notifications():
     try:
@@ -80,6 +86,8 @@ async def on_ready():
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
+    # Lưu thông tin người dùng vào file khi họ gọi lệnh
+    save_user_to_file(ctx.user)
     
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
@@ -96,6 +104,9 @@ async def notifications(ctx: discord.Interaction):
 # Lệnh lấy thông báo mới nhất
 @bot.tree.command(name="first", description="Lấy thông báo mới nhất từ HUSC")
 async def first(ctx: discord.Interaction):
+    # Lưu thông tin người dùng vào file khi họ gọi lệnh
+    save_user_to_file(ctx.user)
+    
     await ctx.response.defer(ephemeral=False)  # defer cho phép bot gửi phản hồi sau
     
     notifications = await get_notifications()
@@ -116,37 +127,39 @@ previous_notifications = []
 @tasks.loop(minutes=30)
 async def send_notifications():
     global previous_notifications
+    try:
+        notifications = await get_notifications()
 
-    notifications = await get_notifications()
+        if isinstance(notifications, list) and notifications:
+            new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
 
-    if isinstance(notifications, list) and notifications:
-        new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
+            if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
+                if previous_notifications: # nếu là lần đầu
+                    formatted_notification = f"- {new_notification}"
 
-        if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
-            if previous_notifications: # nếu là lần đầu
-                formatted_notification = f"- {new_notification}"
+                    guild = bot.guilds[0] if bot.guilds else None
+                    channel = guild.text_channels[0] if guild and guild.text_channels else None
 
-                guild = bot.guilds[0] if bot.guilds else None
-                channel = guild.text_channels[0] if guild and guild.text_channels else None
+                    if channel:
+                        await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
 
-                if channel:
-                    await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
+                    with open("notifications.txt", "w", encoding="utf-8") as f:
+                        f.write(formatted_notification)
 
-                with open("notifications.txt", "w", encoding="utf-8") as f:
-                    f.write(formatted_notification)
+                    previous_notifications = new_notification
+                else: # nếu là lần > 1
+                    formatted_notification = f"- {new_notification}"
 
-                previous_notifications = new_notification
-            else: # nếu là lần > 1
-                formatted_notification = f"- {new_notification}"
+                    with open("notifications.txt", "w", encoding="utf-8") as f:
+                        f.write(formatted_notification)
 
-                with open("notifications.txt", "w", encoding="utf-8") as f:
-                    f.write(formatted_notification)
-
-                previous_notifications = new_notification
+                    previous_notifications = new_notification
+            else:
+                print("Không có thông báo mới.")
         else:
-            print("Không có thông báo mới.")
-    else:
-        print("Không thể lấy thông báo hoặc không có thông báo mới.")
+            print("Không thể lấy thông báo hoặc không có thông báo mới.")
+    except Exception as e:
+        print(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
 # Chạy bot với token
 bot.run(token)
