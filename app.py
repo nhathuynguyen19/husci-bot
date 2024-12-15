@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 from cryptography.fernet import Fernet
 from config import fixed_key
+import asyncio
 
 # Tải biến môi trường từ environment
 load_dotenv()
@@ -23,6 +24,19 @@ data_url = "https://student.husc.edu.vn/News"
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
+
+# Hàm kiểm tra thông tin login_id trong file user.json
+async def check_login_id(user_id):
+    
+    while True:
+        if get_user_credentials(user_id):
+            print("Đã có thông tin trong file user.json.")
+            return
+        else:
+            print("Không có thông tin trong file user.json.")
+        
+        # Nếu chưa có login_id, đợi và kiểm tra lại sau 10 giây
+        await asyncio.sleep(10)
 
 # Mã hóa mật khẩu
 def encrypt_password(password, discord_id, key):
@@ -149,7 +163,7 @@ async def login(ctx, username: str, password: str):
         login_response = await session.post(login_url, data=login_data)
         
         if not await is_login_successful(login_response):
-            await ctx.followup.send("Tài khoản mật khẩu không chính xác! Hoặc bạn đã đăng nhập")
+            await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
             return
         
         # mã hóa mật khẩu để lưu
@@ -160,7 +174,7 @@ async def login(ctx, username: str, password: str):
         if success:
             await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
         else:
-            await ctx.followup.send("Tài khoản đã tồn tại. Bạn đã đăng nhập rồi.")
+            await ctx.followup.send("Tài khoản đã tồn tại.")
         
 # Hàm lấy thông báo từ trang web
 async def get_notifications(user_id):
@@ -226,14 +240,8 @@ async def get_notifications(user_id):
 async def on_ready():
     print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
     await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
-    # send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
+    send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
     print("Bot is ready and commands are synchronized.")
-
-
-
-
-
-
 
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
@@ -248,7 +256,7 @@ async def notifications(ctx: discord.Interaction):
     notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
-        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh /login để đăng nhập.")
+        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
     
     if notifications == "Không có thông báo mới.":
@@ -271,7 +279,7 @@ async def first(ctx: discord.Interaction):
     notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
-        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh /login để đăng nhập.")
+        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
 
 
@@ -291,9 +299,15 @@ previous_notifications = []
 @tasks.loop(minutes=30)
 async def send_notifications():
     global previous_notifications
-    try:
-        notifications = await get_notifications()
 
+    user_id = 767394443820662784
+    
+    # Chờ cho đến khi có login_id trong user.json
+    await check_login_id(user_id)
+    
+    try:
+        notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
+        
         if isinstance(notifications, list) and notifications:
             new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
 
@@ -305,7 +319,7 @@ async def send_notifications():
                     channel = guild.text_channels[0] if guild and guild.text_channels else None
 
                     if channel:
-                        await channel.send(f"**Thông báo mới từ HUSC**:\n{formatted_notification}")
+                        await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
 
                     with open("notifications.txt", "w", encoding="utf-8") as f:
                         f.write(formatted_notification)
