@@ -64,7 +64,7 @@ async def get_notifications():
             ][:5]
             
             if notifications:
-                print(f"Đã lấy {len(notifications)} thông báo.");
+                print(f"Đã lấy {len(notifications)} thông báo.")
             return notifications if notifications else "Không có thông báo mới."
     except Exception as e:
         return f"Đã xảy ra lỗi: {e}"
@@ -80,6 +80,7 @@ async def on_ready():
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
+    
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
     
