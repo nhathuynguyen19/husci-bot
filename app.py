@@ -1,139 +1,36 @@
-import discord, os, aiohttp, json, html, base64
-from discord.ext import commands, tasks
-from dotenv import load_dotenv
+import discord, aiohttp
+from discord.ext import tasks
 from bs4 import BeautifulSoup
-from cryptography.fernet import Fernet
 from config import fixed_key
-import asyncio
-
-# Tải biến môi trường từ environment
-load_dotenv()
-
-# Lấy các giá trị từ môi trường
-token = os.getenv("DISCORD_TOKEN")
-
-# Kiểm tra xem có đầy đủ biến môi trường cần thiết không
-if not token:
-    raise ValueError("Thiếu một hoặc nhiều biến môi trường cần thiết! Kiểm tra lại DISCORD_TOKEN, FIXED_KEY.")
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications
 
 # trang web
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
 
-# Cấu hình bot với prefix là "/"
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix="/", intents=intents)
-
-# Hàm kiểm tra thông tin login_id trong file user.json
-async def check_login_id(user_id):
-    
-    while True:
-        if get_user_credentials(user_id):
-            print("Đã có thông tin trong file user.json.")
-            return
-        else:
-            print("Không có thông tin trong file user.json.")
+# Biến lưu trữ thông báo trước đó
+previous_notifications = []
         
-        # Nếu chưa có login_id, đợi và kiểm tra lại sau 10 giây
-        await asyncio.sleep(10)
+# objects
+bot_config = BotConfig() 
+bot = bot_config.create_bot()
+auth_manager = AuthManager(fixed_key)
+user_manager = UserManager()
+husc_notification = HUSCNotifications(login_url, data_url, fixed_key)
 
-# Mã hóa mật khẩu
-def encrypt_password(password, discord_id, key):
-    f = Fernet(key)
-    # Kết hợp mật khẩu và ID Discord
-    combined = f"{password}:{discord_id}"
-    encrypted = f.encrypt(combined.encode())
-    # Mã hóa mật khẩu thành base64 để lưu vào JSON
-    encrypted_password_base64 = base64.b64encode(encrypted).decode('utf-8')
-    return encrypted_password_base64
-
-# Giải mã mật khẩu
-def decrypt_password(encrypted_password, discord_id, key):
-     # Giải mã base64 trước
-    encrypted_password_base64 = base64.b64decode(encrypted_password)
-    
-    # Tiến hành giải mã bằng Fernet
-    f = Fernet(key)
-    decrypted_combined = f.decrypt(encrypted_password_base64).decode()
-    
-    # Tách chuỗi thành mật khẩu và ID Discord
-    password, original_discord_id = decrypted_combined.split(":")
-    if int(original_discord_id) == discord_id:
-        return password
-    else:
-        print("ID không khớp!")
-
-# Định nghĩa hàm kiểm tra đăng nhập thành công
-async def is_login_successful(login_response):
-    # Lấy nội dung trang phản hồi
-    page_content = await login_response.text()
-    
-    # Giải mã các ký tự HTML
-    decoded_content = html.unescape(page_content)
-
-    # Phân tích HTML bằng BeautifulSoup
-    soup = BeautifulSoup(decoded_content, 'html.parser')
-
-    # Kiểm tra nếu có span với class="text-danger" và chứa thông báo lỗi
-    error_message = soup.find('span', class_='text-danger', string='Thông tin đăng nhập không đúng!')
-
-    if error_message:
-        print("Đăng nhập thất bại: Thông tin đăng nhập không đúng!")
-        return False
-
-    # Nếu không có thông báo lỗi, coi như đăng nhập thành công
-    print("Đăng nhập thành công!")
-    return True
-
-# Hàm kiểm tra và lưu thông tin người dùng vào file JSON
-def save_user_to_file(user, username=None, password=None):
-    
-    user_data = {
-        "name": user.name,
-        "id": user.id,
-        "login_id": username,
-        "password": password
-    }
-
-    try:
-        # Đọc dữ liệu từ file JSON, hoặc khởi tạo mảng nếu file không tồn tại
-        if os.path.exists("users.json"):
-            with open("users.json", "r", encoding="utf-8") as file:
-                content = file.read().strip()
-                data = json.loads(content) if content else []
-        else:
-            data = []
-    except Exception as e:
-        print(f"Đã xảy ra lỗi khi đọc file: {e}")
-        data = []  # Nếu có lỗi, khởi tạo data là danh sách rỗng
-
-    # Kiểm tra người dùng đã có trong danh sách chưa
-    if any(existing_user["id"] == user.id for existing_user in data):
-        return False  # Nếu người dùng đã có trong file, không cần lưu lại
-
-    data.append(user_data)
-
-    # Lưu thông tin vào file
-    with open("users.json", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
-
-    return True
-
-# Đọc user_id và lấy thông tin đăng nhập từ file user.json
-def get_user_credentials(user_id):
-    try:
-        with open("users.json", "r", encoding="utf-8") as file:
-            users = json.load(file)
-            for user in users:
-                if user["id"] == user_id:
-                    return user  # Trả về tài khoản và mật khẩu
-            return None  # Không tìm thấy user_id
-    except FileNotFoundError:
-        return None  # File không tồn tại
+# Sự kiện khi bot đã sẵn sàng
+@bot.event
+async def on_ready():
+    print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
+    print("Đang đồng bộ lệnh...")
+    await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
+    print("Đồng bộ lệnh thành công.")
+    print("Đang tự động lấy thông báo định kỳ...")
+    send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
+    print("Bot đã sẵn sàng nhận lệnh!")
 
 # Lệnh đăng nhập
-@bot.tree.command(name="login", description="Lấy tài khoản đăng nhập HUSC")
+@bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
     # Lấy ID người viết lệnh
     user_id = ctx.user.id
@@ -162,89 +59,22 @@ async def login(ctx, username: str, password: str):
         # Gửi yêu cầu đăng nhập
         login_response = await session.post(login_url, data=login_data)
         
-        if not await is_login_successful(login_response):
+        if not await husc_notification.is_login_successful(login_response):
             await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
             return
         
         # mã hóa mật khẩu để lưu
-        password = encrypt_password(password, user_id, fixed_key)
+        password = auth_manager.encrypt_password(password, user_id, fixed_key)
         
          # Lưu thông tin người dùng vào file
-        success = save_user_to_file(ctx.user, username, password)
+        success = user_manager.save_user_to_file(ctx.user, username, password)
         if success:
             await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
         else:
             await ctx.followup.send("Tài khoản đã tồn tại.")
-        
-# Hàm lấy thông báo từ trang web
-async def get_notifications(user_id):
-    
-    # Lấy thông tin đăng nhập từ file
-    credentials = get_user_credentials(user_id)
-    
-    # kiểm tra có thông tin dăng nhập chưa
-    if credentials is None:
-        return "Không có thông tin đăng nhập"  # Không tìm thấy thông tin đăng nhập
-
-    # lấy thông tin đăng nhập người dùng gọi lệnh
-    login_id, password = credentials['login_id'], credentials['password']
-    
-    # giải mã mật khẩu
-    password = decrypt_password(password, user_id, fixed_key)
-    
-    try:
-        async with aiohttp.ClientSession() as session:
-            print("Đang truy cập trang đăng nhập...")
-            login_page = await session.get(login_url)
-            soup = BeautifulSoup(await login_page.text(), 'html.parser')
-            
-            token = soup.find('input', {'name': '__RequestVerificationToken'})
-            if not token:
-                return "Không tìm thấy token xác thực!"
-
-            print("Đang đăng nhập...")
-            login_data = {
-                "loginID": login_id, 
-                "password": password, 
-                "__RequestVerificationToken": token['value']
-            }
-            login_response = await session.post(login_url, data=login_data)
-            if login_response.status != 200:
-                return f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
-
-            print("Đang lấy thông báo...")
-            data_response = await session.get(data_url)
-            if data_response.status != 200:
-                return f"Không thể lấy dữ liệu từ {data_url}. Mã lỗi: {data_response.status}"
-            else:
-                print("Lấy thông báo thành công.")
-            
-            soup = BeautifulSoup(await data_response.text(), 'html.parser')
-            news_list = soup.find('div', id='newsList')
-            if not news_list:
-                return "Không tìm thấy danh sách thông báo!"
-
-            notifications = [
-                f"[{link.text.strip()}](https://student.husc.edu.vn{link['href']})"
-                for link in news_list.find_all('a', href=True) if '/News/Content' in link['href']
-            ][:5]
-            
-            if notifications:
-                print(f"Đã lấy {len(notifications)} thông báo.")
-            return notifications if notifications else "Không có thông báo mới."
-    except Exception as e:
-        return f"Đã xảy ra lỗi: {e}"
-
-# Sự kiện khi bot đã sẵn sàng
-@bot.event
-async def on_ready():
-    print(f'Bot đã đăng nhập thành công với tên: {bot.user}')
-    await bot.tree.sync()  # Đồng bộ lệnh app_commands sau khi bot đã sẵn sàng
-    send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
-    print("Bot is ready and commands are synchronized.")
 
 # Lệnh lấy 5 thông báo đầu
-@bot.tree.command(name="notifications", description="Lấy thông báo mới từ HUSC")
+@bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     # Lấy ID người viết lệnh
     user_id = ctx.user.id
@@ -252,8 +82,10 @@ async def notifications(ctx: discord.Interaction):
     # Đảm bảo defer để bot không bị timeout khi chờ phản hồi lâu
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
+        
+    user_manager.remember_request(user_id, ctx.user.name, "/notifications")
     
-    notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
+    notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -276,7 +108,9 @@ async def first(ctx: discord.Interaction):
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
         
-    notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
+    user_manager.remember_request(user_id, ctx.user.name, "/first")
+        
+    notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -292,9 +126,6 @@ async def first(ctx: discord.Interaction):
     else:
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
 
-# Biến lưu trữ thông báo trước đó
-previous_notifications = []
-
 # lệnh tự động thông báo mỗi khi có thông báo mới
 @tasks.loop(minutes=30)
 async def send_notifications():
@@ -302,11 +133,12 @@ async def send_notifications():
 
     user_id = 767394443820662784
     
+    print("Đang tiến hành kiểm tra đăng nhập...")
     # Chờ cho đến khi có login_id trong user.json
-    await check_login_id(user_id)
+    await husc_notification.check_login_id(user_id, user_manager)
     
     try:
-        notifications = await get_notifications(user_id)  # Gọi hàm lấy thông báo
+        notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
         
         if isinstance(notifications, list) and notifications:
             new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
@@ -340,4 +172,4 @@ async def send_notifications():
         print(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
 # Chạy bot với token
-bot.run(token)
+bot.run(bot_config.token)
