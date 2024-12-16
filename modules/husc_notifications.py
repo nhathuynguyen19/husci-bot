@@ -52,7 +52,6 @@ class HUSCNotifications:
         # giải mã mật khẩu
         print("Đang tiến hành giải mã...")
         password = auth_manager.decrypt_password(encrypted_password, user_id)
-        print("Giải mã thành công.")
             
         try:
             async with aiohttp.ClientSession() as session:
