@@ -134,7 +134,7 @@ async def first(ctx: discord.Interaction):
 
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=5)
 async def send_notifications():
     global previous_notifications
 
