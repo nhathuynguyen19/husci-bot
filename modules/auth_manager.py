@@ -1,5 +1,5 @@
-from cryptography.fernet import Fernet
 import base64
+from cryptography.fernet import Fernet
 
 class AuthManager:
     def __init__(self, key):

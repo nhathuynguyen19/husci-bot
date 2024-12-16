@@ -1,8 +1,10 @@
-import discord, aiohttp
-from discord.ext import tasks
+import discord, aiohttp, os, json, datetime, html, asyncio, base64
+from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
-from config import fixed_key
+from config import fixed_key, id_admin
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv
 
 # trang web
 login_url = "https://student.husc.edu.vn/Account/Login"
@@ -67,11 +69,14 @@ async def login(ctx, username: str, password: str):
         password = auth_manager.encrypt_password(password, user_id, fixed_key)
         
          # Lưu thông tin người dùng vào file
-        success = user_manager.save_user_to_file(ctx.user, username, password)
+        success = await user_manager.save_user_to_file(ctx.user, username, password)
         if success:
             await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
         else:
             await ctx.followup.send("Tài khoản đã tồn tại.")
+        
+    await user_manager.remember_request(user_id, ctx.user.name, "/login")
+
 
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
@@ -82,9 +87,7 @@ async def notifications(ctx: discord.Interaction):
     # Đảm bảo defer để bot không bị timeout khi chờ phản hồi lâu
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
-        
-    user_manager.remember_request(user_id, ctx.user.name, "/notifications")
-    
+            
     notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
@@ -97,6 +100,9 @@ async def notifications(ctx: discord.Interaction):
         top_notifications = notifications[:5]
         formatted_notifications = "\n".join([f"- {notification}" for notification in top_notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
+    
+    await user_manager.remember_request(user_id, ctx.user.name, "/notifications")
+
 
 # Lệnh lấy thông báo mới nhất
 @bot.tree.command(name="first", description="Lấy thông báo mới nhất từ HUSC")
@@ -107,9 +113,7 @@ async def first(ctx: discord.Interaction):
     # Đảm bảo defer để bot không bị timeout khi chờ phản hồi lâu
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
-        
-    user_manager.remember_request(user_id, ctx.user.name, "/first")
-        
+                
     notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
     
     if notifications == "Không có thông tin đăng nhập":
@@ -125,13 +129,16 @@ async def first(ctx: discord.Interaction):
         await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
     else:
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
+        
+    await user_manager.remember_request(user_id, ctx.user.name, "/first")
+
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
 @tasks.loop(minutes=30)
 async def send_notifications():
     global previous_notifications
 
-    user_id = 767394443820662784
+    user_id = id_admin
     
     print("Đang tiến hành kiểm tra đăng nhập...")
     # Chờ cho đến khi có login_id trong user.json

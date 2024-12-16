@@ -1,4 +1,4 @@
-import aiohttp, html, asyncio
+import asyncio, aiohttp, html
 from bs4 import BeautifulSoup
 
 class HUSCNotifications:
@@ -22,7 +22,7 @@ class HUSCNotifications:
     async def check_login_id(self, user_id, user_manager):
         print("__________")
         while True:
-            if user_manager.get_user_credentials(user_id):
+            if await user_manager.get_user_credentials(user_id):
                 print("Đã có thông tin trong file user.json.")
                 return
             else:
@@ -34,7 +34,7 @@ class HUSCNotifications:
     async def get_notifications(self, user_id, user_manager, auth_manager):
         print("__________")
         # Lấy thông tin đăng nhập từ file
-        credentials = user_manager.get_user_credentials(user_id)
+        credentials = await user_manager.get_user_credentials(user_id)
         
         # kiểm tra có thông tin dăng nhập chưa
         if credentials is None:

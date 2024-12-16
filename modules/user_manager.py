@@ -4,7 +4,7 @@ class UserManager:
     def __init__(self, user_file="users.json"):
         self.user_file = user_file
 
-    def get_user_credentials(self, user_id):
+    async def get_user_credentials(self, user_id):
         try:
             with open(self.user_file, "r", encoding="utf-8") as file:
                 users = json.load(file)
@@ -15,7 +15,7 @@ class UserManager:
         except FileNotFoundError:
             return None  # File không tồn tại
 
-    def save_user_to_file(self, user, username=None, password=None):
+    async def save_user_to_file(self, user, username=None, password=None):
         user_data = {
             "name": user.name,
             "id": user.id,
@@ -44,6 +44,13 @@ class UserManager:
 
         return True
 
-    async def remember_request(user_id, user_name, command):
+    async def remember_request(self, user_id, user_name, command):
+        # Kiểm tra xem file có tồn tại không, nếu không thì tạo mới
+        if not os.path.exists("request.txt"):
+            with open("request.txt", "w", encoding="utf-8") as file:
+                # Tạo file trống (hoặc có thể thêm tiêu đề vào nếu cần)
+                file.write("Dữ liệu request:\n")
+        
+        # Mở file để ghi thêm dữ liệu
         with open("request.txt", "a", encoding="utf-8") as file:
             file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {datetime.datetime.now()}\n")

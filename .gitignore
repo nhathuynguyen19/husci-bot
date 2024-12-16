@@ -2,5 +2,5 @@
 *.json
 *.txt
 !requirements.txt
-__pycache__/
 config.py
+__pycache__/

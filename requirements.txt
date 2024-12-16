@@ -1,6 +1,5 @@
 discord.py
 aiohttp
-python-dotenv
 beautifulsoup4
 cryptography
-configparser
+python-dotenv
