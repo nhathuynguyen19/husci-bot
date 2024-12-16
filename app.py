@@ -1,10 +1,11 @@
-import discord, aiohttp, os, json, datetime, html, asyncio, base64
+import discord, aiohttp, os, json, html, asyncio, base64
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
 from config import fixed_key, id_admin
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
+from datetime import datetime
 
 # trang web
 login_url = "https://student.husc.edu.vn/Account/Login"
@@ -132,6 +133,40 @@ async def first(ctx: discord.Interaction):
         
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
+# Lệnh hẹn giờ với ngày giờ cụ thể
+@bot.tree.command(name='remind', description="Đặt lịch")
+async def remind(interaction: discord.Interaction, hour: int, minute: int, day: int, month: int, year: int, *, reminder: str):
+    """
+    Lệnh hẹn giờ nhắc nhở vào một ngày, giờ, tháng cụ thể.
+    Tham số:
+    - year: Năm
+    - month: Tháng
+    - day: Ngày
+    - hour: Giờ
+    - minute: Phút
+    - reminder: Nội dung nhắc nhở
+    """
+    # Lấy thời gian hiện tại
+    now = datetime.now()
+
+    # Tạo datetime của thời điểm hẹn giờ
+    target_time = datetime(year, month, day, hour, minute)
+
+    # Nếu thời gian hẹn giờ đã qua, thông báo người dùng và hẹn lại vào năm sau
+    if target_time < now:
+        target_time = target_time.replace(year=now.year + 1)
+    
+    # Tính thời gian chờ giữa hiện tại và thời điểm hẹn giờ
+    wait_time = (target_time - now).total_seconds()
+
+    # Gửi thông báo đã hẹn giờ thành công
+    await interaction.response.send_message(f"Hẹn giờ nhắc nhở thành công! Tôi sẽ nhắc bạn vào {target_time.strftime('%d/%m/%Y %H:%M')}.")
+
+    # Chờ đến thời gian hẹn giờ
+    await asyncio.sleep(wait_time)
+
+    # Sau khi đến giờ, gửi nhắc nhở
+    await interaction.followup.send(f"Nhắc nhở của {interaction.user.mention}: {reminder}")
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
 @tasks.loop(minutes=5)
