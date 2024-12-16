@@ -11,6 +11,95 @@ from datetime import datetime
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
 
+# Biến toàn cục lưu đường dẫn file
+remind_file = 'remind.txt'
+
+# Hàm ghi lệnh nhắc nhở vào file
+def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
+    """
+    Ghi lệnh nhắc nhở vào file remind.txt.
+    """
+    try:
+        with open(remind_file, 'a') as file:
+            reminder_time = f"{year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}"
+            file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
+            print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
+    except Exception as e:
+        print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
+
+# Hàm đọc lệnh nhắc nhở từ file
+def read_remind_from_file():
+    try:
+        with open(remind_file, 'r') as file:
+            return file.readlines()
+    except FileNotFoundError:
+        return []  # Trả về danh sách rỗng nếu file không tồn tại
+
+        
+# Hàm kiểm tra và gửi nhắc nhở
+async def check_reminders():
+    now = datetime.now()
+    reminders = read_remind_from_file()  # Đọc tất cả các nhắc nhở từ file
+    remaining_reminders = []  # Danh sách nhắc nhở chưa đến hạn
+
+    for reminder in reminders:
+        try:
+            # Tách thông tin nhắc nhở từ dòng
+            reminder_parts = reminder.strip().split(' - ', 4)
+            if len(reminder_parts) < 5:
+                print(f"Lỗi: Nhắc nhở không hợp lệ: {reminder}")
+                continue  # Bỏ qua dòng không hợp lệ
+
+            reminder_time_str = reminder_parts[0]
+            reminder_msg = reminder_parts[1]
+            user_id = int(reminder_parts[2])
+            channel_id = int(reminder_parts[4])
+
+            # Chuyển đổi thời gian nhắc nhở
+            reminder_time = datetime.strptime(reminder_time_str, '%Y-%m-%d %H:%M')
+
+            if reminder_time <= now:  # Nếu thời gian nhắc nhở đã đến
+                # Lấy kênh từ ID
+                channel = bot.get_channel(channel_id)
+                if channel:
+                    # Gửi nhắc nhở vào kênh
+                    await channel.send(f"<@{user_id}> Nhắc nhở: {reminder_msg}")
+                    print(f"Nhắc nhở gửi đến kênh {channel_id}: {reminder_msg}")
+                else:
+                    print(f"Không tìm thấy kênh với ID: {channel_id}")
+                
+                # Gửi nhắc nhở qua DM cho người dùng
+                user = bot.get_user(user_id)
+                if user:
+                    await user.send(f"Nhắc nhở: {reminder_msg}")
+                    print(f"Nhắc nhở gửi đến người dùng {user_id}: {reminder_msg}")
+            else:
+                # Lưu lại nhắc nhở chưa đến hạn
+                remaining_reminders.append(reminder)
+        except Exception as e:
+            print(f"Lỗi khi xử lý nhắc nhở: {e}")
+
+    # Cập nhật lại file với nhắc nhở chưa đến hạn
+    try:
+        with open(remind_file, 'w') as file:
+            file.writelines(remaining_reminders)
+    except Exception as e:
+        print(f"Lỗi khi ghi lại nhắc nhở chưa đến hạn: {e}")
+
+
+# Hàm ghi lệnh vào file
+def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
+    """
+    Ghi lệnh nhắc nhở vào file remind.txt.
+    """
+    try:
+        with open(remind_file, 'a') as file:
+            reminder_time = f"{year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}"
+            file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
+            print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
+    except Exception as e:
+        print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
+
 # Biến lưu trữ thông báo trước đó
 previous_notifications = []
         
@@ -30,6 +119,7 @@ async def on_ready():
     print("Đồng bộ lệnh thành công.")
     print("Đang tự động lấy thông báo định kỳ...")
     send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
+    reminder_loop.start()
     print("Bot đã sẵn sàng nhận lệnh!")
 
 # Lệnh đăng nhập
@@ -77,7 +167,6 @@ async def login(ctx, username: str, password: str):
             await ctx.followup.send("Tài khoản đã tồn tại.")
         
     await user_manager.remember_request(user_id, ctx.user.name, "/login")
-
 
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
@@ -134,7 +223,7 @@ async def first(ctx: discord.Interaction):
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
 # Lệnh hẹn giờ với ngày giờ cụ thể
-@bot.tree.command(name='remind', description="Đặt lịch")
+@bot.tree.command(name='remind', description="Đặt lịch nhắc nhở")
 async def remind(interaction: discord.Interaction, hour: int, minute: int, day: int, month: int, year: int, *, reminder: str):
     """
     Lệnh hẹn giờ nhắc nhở vào một ngày, giờ, tháng cụ thể.
@@ -146,6 +235,16 @@ async def remind(interaction: discord.Interaction, hour: int, minute: int, day: 
     - minute: Phút
     - reminder: Nội dung nhắc nhở
     """
+    guild_id = interaction.guild.id if interaction.guild else "DM"
+    if guild_id != "DM":
+        guild = bot.get_guild(int(guild_id))
+        if guild:
+            print(f"Nhắc nhở được tạo trong server: {guild.name} (ID: {guild_id})")
+        else:
+            print(f"Không tìm thấy server với ID: {guild_id}")
+
+    write_remind_to_file(hour, minute, day, month, year, reminder, interaction.user.id, guild_id, interaction.channel.id)
+
     # Lấy thời gian hiện tại
     now = datetime.now()
 
@@ -156,17 +255,16 @@ async def remind(interaction: discord.Interaction, hour: int, minute: int, day: 
     if target_time < now:
         target_time = target_time.replace(year=now.year + 1)
     
-    # Tính thời gian chờ giữa hiện tại và thời điểm hẹn giờ
-    wait_time = (target_time - now).total_seconds()
-
-    # Gửi thông báo đã hẹn giờ thành công
+    # Thông báo người dùng
+    print(f"Hẹn giờ nhắc nhở thành công! Tôi sẽ nhắc bạn vào {target_time.strftime('%d/%m/%Y %H:%M')}.")
     await interaction.response.send_message(f"Hẹn giờ nhắc nhở thành công! Tôi sẽ nhắc bạn vào {target_time.strftime('%d/%m/%Y %H:%M')}.")
 
-    # Chờ đến thời gian hẹn giờ
-    await asyncio.sleep(wait_time)
-
-    # Sau khi đến giờ, gửi nhắc nhở
-    await interaction.followup.send(f"Nhắc nhở của {interaction.user.mention}: {reminder}")
+    
+# Hàm chạy lặp lại mỗi 1 phút để kiểm tra nhắc nhở
+@tasks.loop(seconds=5)
+async def reminder_loop():
+    print("check reminder")
+    await check_reminders()
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
 @tasks.loop(minutes=5)
