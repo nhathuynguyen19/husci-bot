@@ -1,4 +1,4 @@
-import discord, aiohttp, os, json, html, asyncio, base64
+import discord, aiohttp, os, json, html, asyncio, base64, pytz
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
 from config import fixed_key, id_admin
@@ -10,6 +10,9 @@ from datetime import datetime
 # trang web
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
+
+# Chọn múi giờ, ví dụ GMT+7 (UTC+7)
+timezone = pytz.timezone('Asia/Ho_Chi_Minh')
 
 # Biến toàn cục lưu đường dẫn file
 remind_file = 'remind.txt'
@@ -38,7 +41,7 @@ def read_remind_from_file():
         
 # Hàm kiểm tra và gửi nhắc nhở
 async def check_reminders():
-    now = datetime.now()
+    now = datetime.now(timezone)
     reminders = read_remind_from_file()  # Đọc tất cả các nhắc nhở từ file
     remaining_reminders = []  # Danh sách nhắc nhở chưa đến hạn
 
@@ -57,7 +60,8 @@ async def check_reminders():
 
             # Chuyển đổi thời gian nhắc nhở
             reminder_time = datetime.strptime(reminder_time_str, '%Y-%m-%d %H:%M')
-
+            reminder_time = timezone.localize(reminder_time)
+            
             if reminder_time <= now:  # Nếu thời gian nhắc nhở đã đến
                 # Lấy kênh từ ID
                 channel = bot.get_channel(channel_id)
@@ -246,10 +250,11 @@ async def remind(interaction: discord.Interaction, hour: int, minute: int, day: 
     write_remind_to_file(hour, minute, day, month, year, reminder, interaction.user.id, guild_id, interaction.channel.id)
 
     # Lấy thời gian hiện tại
-    now = datetime.now()
+    now = datetime.now(timezone)
 
     # Tạo datetime của thời điểm hẹn giờ
     target_time = datetime(year, month, day, hour, minute)
+    target_time = timezone.localize(target_time)  # Thêm múi giờ vào target_time
 
     # Nếu thời gian hẹn giờ đã qua, thông báo người dùng và hẹn lại vào năm sau
     if target_time < now:
@@ -261,9 +266,10 @@ async def remind(interaction: discord.Interaction, hour: int, minute: int, day: 
 
     
 # Hàm chạy lặp lại mỗi 1 phút để kiểm tra nhắc nhở
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=60)
 async def reminder_loop():
-    print("check reminder")
+    now = datetime.now(timezone)
+    print(f"check reminder: {now}")
     await check_reminders()
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
