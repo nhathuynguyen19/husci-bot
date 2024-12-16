@@ -13,5 +13,6 @@ class BotConfig:
 
     def create_bot(self, prefix="/"):
         intents = discord.Intents.default()
+        intents.members = True  # Đảm bảo bot có thể thấy thành viên
         intents.message_content = True
         return commands.Bot(command_prefix=prefix, intents=intents)

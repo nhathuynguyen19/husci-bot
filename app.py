@@ -24,14 +24,16 @@ remind_file = 'remind.txt'
 # Đọc các nhắc nhở đã gửi từ tệp
 def load_sent_reminders():
     try:
-        if os.path.exists(sent_reminders_file):
-            with open(sent_reminders_file, 'r', encoding='utf-8') as f:
-                # Đọc các nhắc nhở đã gửi, tách chúng thành từng dòng
-                return set(f.read().splitlines())
+        # Kiểm tra nếu file đã tồn tại và đọc
+        with open(sent_reminders_file, 'r', encoding='utf-8') as f:
+            reminders = {line.strip() for line in f}  # Dùng set để loại bỏ nhắc nhở trùng lặp
+        return reminders
+    except FileNotFoundError:
+        # Nếu file không tồn tại, trả về set rỗng
         return set()
     except Exception as e:
         print(f"Lỗi khi đọc tệp {sent_reminders_file}: {e}")
-        return set()  # Trả về tập hợp rỗng nếu có lỗi
+        return set()
 
 # Ghi các nhắc nhở đã gửi vào tệp
 def save_sent_reminders(sent_reminders):
@@ -87,6 +89,8 @@ async def check_reminders():
         now = timezone.localize(now)  # Áp dụng múi giờ nếu cần
         
     reminders = read_remind_from_file()  # Đọc tất cả các nhắc nhở từ file
+    
+    sent_reminders = load_sent_reminders()  # Đọc các nhắc nhở đã gửi
 
     for reminder in reminders:
         try:
@@ -105,18 +109,18 @@ async def check_reminders():
             reminder_time = datetime.strptime(reminder_time_str, '%Y-%m-%d %H:%M')
             reminder_time = timezone.localize(reminder_time)
             
+            time_diff = 0
             time_diff = abs((reminder_time - now).total_seconds())  # Chênh lệch tính bằng giây
-            if time_diff <= 60:  # Nếu thời gian nhắc nhở đã đến
+            if time_diff < 1:  # Nếu thời gian nhắc nhở đã đến
                 # Kiểm tra xem nhắc nhở này đã được gửi chưa
                 reminder_key = f"{reminder_time} - {reminder_msg} - {user_id} - {channel_id}"
-                
                 if reminder_key in sent_reminders:
-                    print(f"Nhắc nhở đã được gửi trước đó: {reminder_key}")
+                    print(f"Nhắc nhở đã được gửi trước đó.")
                     continue  # Bỏ qua nhắc nhở đã gửi
                 
                 # Lấy kênh từ ID
                 channel = bot.get_channel(channel_id)
-                if channel and not reminder_key in sent_reminders:
+                if channel:
                     # Gửi nhắc nhở vào kênh
                     await channel.send(f"<@{user_id}> Nhắc nhở: {reminder_msg}")
                     print(f"Nhắc nhở gửi đến kênh {channel_id}: {reminder_msg}")
@@ -125,7 +129,7 @@ async def check_reminders():
                 
                 # Gửi nhắc nhở qua DM cho người dùng
                 user = await bot.fetch_user(user_id)  # Dùng fetch_user thay vì get_user
-                if user and not reminder_key in sent_reminders:
+                if user:
                     await user.send(f"Nhắc nhở: {reminder_msg}")
                     print(f"Nhắc nhở gửi đến người dùng {user_id}: {reminder_msg}")
                 
@@ -134,7 +138,6 @@ async def check_reminders():
             
         except Exception as e:
             print(f"Lỗi khi xử lý nhắc nhở: {e}")
-
 
 # Hàm ghi lệnh vào file
 def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
@@ -300,12 +303,12 @@ async def remind_all(interaction: discord.Interaction, hour: int, minute: int, d
     await interaction.response.defer()
     
     # Thông báo người dùng
-    mesage = f"Hẹn giờ nhắc nhở thành công! Tôi sẽ nhắc bạn vào {target_time.strftime('%d/%m/%Y %H:%M')}."
+    mesage = f"Đặt lời nhắc thành công vào {target_time.strftime('%d/%m/%Y %H:%M')}."
     print(mesage)
     await interaction.followup.send(mesage)
     
 # Hàm chạy lặp lại mỗi 1 phút để kiểm tra nhắc nhở
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=1)
 async def reminder_loop():
     await check_reminders()
 
