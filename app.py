@@ -151,7 +151,7 @@ def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guil
         print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
 
 # Biến lưu trữ thông báo trước đó
-previous_notifications = []
+previous_notifications = None
         
 # objects
 bot_config = BotConfig() 
@@ -172,6 +172,7 @@ async def on_ready():
     print("Đồng bộ lệnh thành công.")
     print("Đang tự động lấy thông báo định kỳ...")
     send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
+    reminder_loop.start()
     print("Bot đã sẵn sàng nhận lệnh!")
 
 # Lệnh đăng nhập
@@ -275,9 +276,8 @@ async def first(ctx: discord.Interaction):
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
 # Lệnh hẹn giờ với ngày giờ cụ thể
-@bot.tree.command(name='remind_all', description="Đặt lịch nhắc nhở")
-async def remind_all(interaction: discord.Interaction, hour: int, minute: int, day: int, month: int, year: int, *, reminder: str):
-    
+@bot.tree.command(name='remindall', description="Đặt lịch nhắc nhở")
+async def remindall(interaction: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
     guild_id = interaction.guild.id if interaction.guild else "DM"
     if guild_id != "DM":
         guild = bot.get_guild(int(guild_id))
@@ -308,49 +308,60 @@ async def remind_all(interaction: discord.Interaction, hour: int, minute: int, d
     await interaction.followup.send(mesage)
     
 # Hàm chạy lặp lại mỗi 1 phút để kiểm tra nhắc nhở
+@tasks.loop(seconds=1)
 async def reminder_loop():
-    while True:
-        await check_reminders()
-        await asyncio.sleep(1) 
+    await check_reminders()
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=1)
 async def send_notifications():
     global previous_notifications
 
     user_id = id_admin
+    
+    # Đọc giá trị của previous_notifications từ file nếu có
+    if os.path.exists("notifications.txt"):
+        with open("notifications.txt", "r", encoding="utf-8") as f:
+            previous_notifications = f.read().strip()  # Đọc thông báo trước đó từ file
+            previous_notifications = previous_notifications.lstrip('- ').strip()  # Loại bỏ dấu gạch ngang và khoảng trắng đầu
+    else:
+        previous_notifications = None  # Nếu không có file, khởi tạo là None
     
     print("Đang tiến hành kiểm tra đăng nhập...")
     # Chờ cho đến khi có login_id trong user.json
     await husc_notification.check_login_id(user_id, user_manager)
     
     try:
+        print("Đang lấy thông báo...")
         notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
         
         if isinstance(notifications, list) and notifications:
             new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
-
-            if previous_notifications != new_notification:  # So sánh thông báo mới với thông báo trước đó
-                if previous_notifications: # nếu là lần đầu
-                    formatted_notification = f"- {new_notification}"
-
-                    guild = bot.guilds[0] if bot.guilds else None
-                    channel = guild.text_channels[0] if guild and guild.text_channels else None
+            if previous_notifications != new_notification and previous_notifications is not None:  # So sánh thông báo mới với thông báo trước đó
+                formatted_notification = f"- {new_notification}"
+                
+                # Lặp qua tất cả các guild mà bot đang tham gia
+                for guild in bot.guilds:
+                    # Lấy kênh văn bản đầu tiên (lọc kênh là dạng TextChannel)
+                    text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
+                    channel = text_channels[0] if text_channels else None
 
                     if channel:
-                        await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
-
-                    with open("notifications.txt", "w", encoding="utf-8") as f:
-                        f.write(formatted_notification)
-
-                    previous_notifications = new_notification
-                else: # nếu là lần > 1
-                    formatted_notification = f"- {new_notification}"
-
-                    with open("notifications.txt", "w", encoding="utf-8") as f:
-                        f.write(formatted_notification)
-
-                    previous_notifications = new_notification
+                        try:
+                            # Gửi thông báo đến kênh văn bản đầu tiên
+                            await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
+                            print(f"Đã gửi thông báo đến kênh: {channel.name} trong server: {guild.name}")
+                        except discord.Forbidden:
+                            print(f"Bot không có quyền gửi tin nhắn trong kênh: {channel.name} của server: {guild.name}")
+                        except discord.HTTPException as e:
+                            print(f"Lỗi HTTP khi gửi tin nhắn đến kênh: {channel.name} của server: {guild.name}, chi tiết: {e}")
+                            
+                # Lưu thông báo vào file
+                with open("notifications.txt", "w", encoding="utf-8") as f:
+                    f.write(formatted_notification)
+                    
+                # cập nhật thông báo trước đó
+                previous_notifications = new_notification
             else:
                 print("Không có thông báo mới.")
         else:
@@ -360,4 +371,3 @@ async def send_notifications():
 
 
 bot.run(bot_config.token)
-asyncio.run(reminder_loop())

@@ -1,4 +1,4 @@
-import asyncio, aiohttp, lxml
+import asyncio, aiohttp, lxml, time
 from bs4 import BeautifulSoup
 
 class HUSCNotifications:
@@ -51,7 +51,9 @@ class HUSCNotifications:
         try:
             async with aiohttp.ClientSession() as session:
                 print("Đang truy cập trang đăng nhập...")
-                login_page = await session.get(self.login_url, timeout=10) # Đang truy cập trang đăng nhập
+                start = time.time()
+                login_page = await session.get(self.login_url, timeout=20) # Đang truy cập trang đăng nhập
+                print(f"Thời gian truy cập: {time.time() - start:.2f} giây")
                 
                 print("Đang ấy nội dung trang web...")
                 page_content = await login_page.text() # Đang ấy nội dung trang web
@@ -73,14 +75,14 @@ class HUSCNotifications:
                     "password": password, 
                     "__RequestVerificationToken": token['value']
                 }
-                login_response = await session.post(self.login_url, data=login_data, timeout=10)
+                login_response = await session.post(self.login_url, data=login_data, timeout=20)
                 if login_response.status != 200:
                     message = f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
                     print(message)
                     return message
 
                 print("Đang lấy thông báo...")
-                data_response = await session.get(self.data_url, timeout=10)
+                data_response = await session.get(self.data_url, timeout=20)
                 if data_response.status != 200:
                     message = f"Không thể lấy dữ liệu từ {self.data_url}. Mã lỗi: {data_response.status}"
                     print(message)
