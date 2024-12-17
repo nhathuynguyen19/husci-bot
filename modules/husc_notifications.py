@@ -70,7 +70,6 @@ class HUSCNotifications:
                 soup = BeautifulSoup(page_content, 'lxml')
                 print(f"Đã phân tích xong nội dung: {time.time() - start_time:.2f} giây")
                 
-                print("Đang lấy token xác thực...")
                 token = soup.find('input', {'name': '__RequestVerificationToken'})
                 print(f"Đã lấy token xác thực trang: {time.time() - start_time:.2f} giây")
                 
