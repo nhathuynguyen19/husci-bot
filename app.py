@@ -231,8 +231,10 @@ async def notifications(ctx: discord.Interaction):
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
             
-    notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
-    
+    # Tạo một task bất đồng bộ để lấy thông báo
+    task = asyncio.create_task(husc_notification.get_notifications(user_id, user_manager, auth_manager))
+    notifications = await task  # Chờ kết quả từ task   
+     
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
@@ -257,7 +259,9 @@ async def first(ctx: discord.Interaction):
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
                 
-    notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
+    # Tạo một task bất đồng bộ để lấy thông báo
+    task = asyncio.create_task(husc_notification.get_notifications(user_id, user_manager, auth_manager))
+    notifications = await task  # Chờ kết quả từ task       
     
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -333,8 +337,10 @@ async def send_notifications():
     
     try:
         print("Đang lấy thông báo...")
-        notifications = await husc_notification.get_notifications(user_id, user_manager, auth_manager)  # Gọi hàm lấy thông báo
-        
+        # Tạo một task bất đồng bộ để lấy thông báo
+        task = asyncio.create_task(husc_notification.get_notifications(user_id, user_manager, auth_manager))
+        notifications = await task  # Chờ kết quả từ task   
+                
         if isinstance(notifications, list) and notifications:
             new_notification = notifications[0]  # Lấy thông báo đầu tiên mới
             if previous_notifications != new_notification and previous_notifications is not None:  # So sánh thông báo mới với thông báo trước đó

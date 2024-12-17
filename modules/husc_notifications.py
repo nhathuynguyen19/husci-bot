@@ -48,21 +48,22 @@ class HUSCNotifications:
         await self.check_login_infomation(login_id, encrypted_password) # Kiểm tra tính hợp lệ của thông tin đăng nhập
         password = auth_manager.decrypt_password(encrypted_password, user_id) # Tiến hành giải mã mật khẩu
             
-        try:
-            async with aiohttp.ClientSession() as session:
+            # Tạo task cho các công việc trong hàm này
+        async def fetch_data(session):
+            try:
                 print("Đang truy cập trang đăng nhập...")
                 start = time.time()
-                login_page = await session.get(self.login_url, timeout=20) # Đang truy cập trang đăng nhập
+                login_page = await session.get(self.login_url, timeout=20)
                 print(f"Thời gian truy cập: {time.time() - start:.2f} giây")
                 
                 print("Đang ấy nội dung trang web...")
-                page_content = await login_page.text() # Đang ấy nội dung trang web
+                page_content = await login_page.text()
                 
                 print("Đang phân tích nội dung trang web")
-                soup = BeautifulSoup(page_content, 'lxml') # Đang phân tích nội dung trang web
+                soup = BeautifulSoup(page_content, 'lxml')
                 
                 print("Đang lấy token xác thực...")
-                token = soup.find('input', {'name': '__RequestVerificationToken'}) # Đang lấy token xác thực
+                token = soup.find('input', {'name': '__RequestVerificationToken'})
                 
                 if not token:
                     message = "Không tìm thấy token xác thực!"
@@ -103,5 +104,10 @@ class HUSCNotifications:
                 if notifications:
                     print(f"Đã lấy {len(notifications)} thông báo.")
                 return notifications if notifications else "Không có thông báo mới."
-        except Exception as e:
-            return f"Đã xảy ra lỗi: {e}"
+            except Exception as e:
+                return f"Đã xảy ra lỗi: {e}"
+
+        # Tạo task bất đồng bộ cho việc lấy dữ liệu
+        async with aiohttp.ClientSession() as session:
+            task = asyncio.create_task(fetch_data(session))
+            return await task
