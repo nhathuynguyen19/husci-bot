@@ -12,6 +12,7 @@ class AuthManager:
 
     def decrypt_password(self, encrypted_password, discord_id):
         # Giải mã base64 trước
+        print("Đang tiến hành giải mã...")
         encrypted_password_base64 = base64.b64decode(encrypted_password)
         print("Giải mã thành công.")
         

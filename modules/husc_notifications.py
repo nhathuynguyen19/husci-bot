@@ -20,48 +20,46 @@ class HUSCNotifications:
     
     # Hàm kiểm tra thông tin login_id trong file user.json
     async def check_login_id(self, user_id, user_manager):
-        print("__________")
         while True:
             if await user_manager.get_user_credentials(user_id):
                 print("Đã có thông tin trong file user.json.")
                 return
             else:
                 print("Không có thông tin trong file user.json.")
-            
-            # Nếu chưa có login_id, đợi và kiểm tra lại sau 10 giây
             await asyncio.sleep(10)
-            
-    async def get_notifications(self, user_id, user_manager, auth_manager):
-        print("__________")
-        # Lấy thông tin đăng nhập từ file
-        credentials = await user_manager.get_user_credentials(user_id)
-        
-        # kiểm tra có thông tin dăng nhập chưa
+    
+    # Hàm kiểm tra có thông tin dăng nhập chưa
+    async def check_credentials(self, credentials):
         if credentials is None:
             print("Không có thông tin đăng nhập.")
             return "Không có thông tin đăng nhập"  # Không tìm thấy thông tin đăng nhập
         print("Lấy thông tin đăng nhập thành công.")
-
-        # Lấy thông tin đăng nhập
-        login_id, encrypted_password = credentials.get("login_id"), credentials.get("password")
+    
+    # Hàm kiểm tra tính hợp lệ của thông tin đăng nhập
+    async def check_login_infomation(self, login_id, encrypted_password):
         if not login_id or not encrypted_password:
             print("Thông tin đăng nhập không hợp lệ.")
             return "Thông tin đăng nhập không hợp lệ."
         print("Thông tin đăng nhập hợp lệ")
-        
-        # giải mã mật khẩu
-        print("Đang tiến hành giải mã...")
-        password = auth_manager.decrypt_password(encrypted_password, user_id)
+    
+    async def get_notifications(self, user_id, user_manager, auth_manager):
+        credentials = await user_manager.get_user_credentials(user_id) # Lấy thông tin đăng nhập từ file
+        await self.check_credentials(credentials) # Kiểm tra có thông tin dăng nhập chưa
+        login_id, encrypted_password = credentials.get("login_id"), credentials.get("password") # Lấy thông tin đăng nhập
+        await self.check_login_infomation(login_id, encrypted_password) # Kiểm tra tính hợp lệ của thông tin đăng nhập
+        password = auth_manager.decrypt_password(encrypted_password, user_id) # Tiến hành giải mã mật khẩu
             
         try:
             async with aiohttp.ClientSession() as session:
                 print("Đang truy cập trang đăng nhập...")
-                login_page = await session.get(self.login_url)
+                login_page = await session.get(self.login_url, timeout=10)
                 soup = BeautifulSoup(await login_page.text(), 'html.parser')
-                
                 token = soup.find('input', {'name': '__RequestVerificationToken'})
+                
                 if not token:
-                    return "Không tìm thấy token xác thực!"
+                    message = "Không tìm thấy token xác thực!"
+                    print(message)
+                    return message
 
                 print("Đang đăng nhập...")
                 login_data = {
@@ -69,16 +67,20 @@ class HUSCNotifications:
                     "password": password, 
                     "__RequestVerificationToken": token['value']
                 }
-                login_response = await session.post(self.login_url, data=login_data)
+                login_response = await session.post(self.login_url, data=login_data, timeout=10)
                 if login_response.status != 200:
-                    return f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
+                    message = f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
+                    print(message)
+                    return message
 
                 print("Đang lấy thông báo...")
-                data_response = await session.get(self.data_url)
+                data_response = await session.get(self.data_url, timeout=10)
                 if data_response.status != 200:
-                    return f"Không thể lấy dữ liệu từ {self.data_url}. Mã lỗi: {data_response.status}"
+                    message = f"Không thể lấy dữ liệu từ {self.data_url}. Mã lỗi: {data_response.status}"
+                    print(message)
+                    return message
                 else:
-                    print("Lấy thông báo thành công.")
+                    print("Lấy dữ liệu thành công.")
                 
                 soup = BeautifulSoup(await data_response.text(), 'html.parser')
                 news_list = soup.find('div', id='newsList')

@@ -78,13 +78,11 @@ def read_remind_from_file():
             return file.readlines()
     except FileNotFoundError:
         return []  # Trả về danh sách rỗng nếu file không tồn tại
-
-sent_reminders = load_sent_reminders()  # Đọc từ tệp khi chương trình khởi động
         
 # Hàm kiểm tra và gửi nhắc nhở
 async def check_reminders():
     now = datetime.now(timezone)
-    print(f"check reminder at {now}")
+    # print(f"check reminder at {now}")
     if now.tzinfo is None:  # Nếu `now` chưa có thông tin múi giờ
         now = timezone.localize(now)  # Áp dụng múi giờ nếu cần
         
@@ -162,6 +160,9 @@ auth_manager = AuthManager(fixed_key)
 user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url, fixed_key)
 
+# đọc nhắc nhở từ file sent_reminder.txt
+sent_reminders = load_sent_reminders()  # Đọc từ tệp khi chương trình khởi động
+
 # Sự kiện khi bot đã sẵn sàng
 @bot.event
 async def on_ready():
@@ -171,7 +172,6 @@ async def on_ready():
     print("Đồng bộ lệnh thành công.")
     print("Đang tự động lấy thông báo định kỳ...")
     send_notifications.start() # Bắt đầu vòng lặp gửi thông báo tự động
-    reminder_loop.start()
     print("Bot đã sẵn sàng nhận lệnh!")
 
 # Lệnh đăng nhập
@@ -308,9 +308,10 @@ async def remind_all(interaction: discord.Interaction, hour: int, minute: int, d
     await interaction.followup.send(mesage)
     
 # Hàm chạy lặp lại mỗi 1 phút để kiểm tra nhắc nhở
-@tasks.loop(seconds=1)
 async def reminder_loop():
-    await check_reminders()
+    while True:
+        await check_reminders()
+        await asyncio.sleep(1) 
 
 # lệnh tự động thông báo mỗi khi có thông báo mới
 @tasks.loop(minutes=5)
@@ -357,5 +358,6 @@ async def send_notifications():
     except Exception as e:
         print(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
-# Chạy bot với token
+
 bot.run(bot_config.token)
+asyncio.run(reminder_loop())
