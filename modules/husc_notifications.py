@@ -28,49 +28,58 @@ class HUSCNotifications:
             await asyncio.sleep(10)
     
     # Hàm kiểm tra có thông tin dăng nhập chưa
-    async def check_credentials(self, credentials):
+    async def check_credentials(self, credentials, start_time):
         if credentials is None:
             print("Không có thông tin đăng nhập.")
             return "Không có thông tin đăng nhập"  # Không tìm thấy thông tin đăng nhập
-        print("Lấy thông tin đăng nhập thành công.")
+        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
     
     # Hàm kiểm tra tính hợp lệ của thông tin đăng nhập
-    async def check_login_infomation(self, login_id, encrypted_password):
+    async def check_login_infomation(self, login_id, encrypted_password, start_time):
         if not login_id or not encrypted_password:
             print("Thông tin đăng nhập không hợp lệ.")
             return "Thông tin đăng nhập không hợp lệ."
-        print("Thông tin đăng nhập hợp lệ")
+        print(f"Thông tin đăng nhập hợp lệ: {time.time() - start_time:.2f} giây")
     
     async def get_notifications(self, user_id, user_manager, auth_manager):
+        print("=== Start get notifications ===")
+        
+        start_time = time.time()
         credentials = await user_manager.get_user_credentials(user_id) # Lấy thông tin đăng nhập từ file
-        await self.check_credentials(credentials) # Kiểm tra có thông tin dăng nhập chưa
+        await self.check_credentials(credentials, start_time) # Kiểm tra có thông tin dăng nhập chưa
+        
+        start_time = time.time()
         login_id, encrypted_password = credentials.get("login_id"), credentials.get("password") # Lấy thông tin đăng nhập
-        await self.check_login_infomation(login_id, encrypted_password) # Kiểm tra tính hợp lệ của thông tin đăng nhập
-        password = auth_manager.decrypt_password(encrypted_password, user_id) # Tiến hành giải mã mật khẩu
+        await self.check_login_infomation(login_id, encrypted_password, start_time) # Kiểm tra tính hợp lệ của thông tin đăng nhập
+        
+        start_time = time.time()
+        password = auth_manager.decrypt_password(encrypted_password, user_id, start_time) # Tiến hành giải mã mật khẩu
             
             # Tạo task cho các công việc trong hàm này
         async def fetch_data(session):
             try:
-                print("Đang truy cập trang đăng nhập...")
-                start = time.time()
+                start_time = time.time()
                 login_page = await session.get(self.login_url, timeout=20)
-                print(f"Thời gian truy cập: {time.time() - start:.2f} giây")
+                print(f"Thời gian truy cập trang đăng nhập: {time.time() - start_time:.2f} giây")
                 
-                print("Đang ấy nội dung trang web...")
+                start_time = time.time()
                 page_content = await login_page.text()
+                print(f"Đã lấy nội dung trang web: {time.time() - start_time:.2f} giây")
                 
-                print("Đang phân tích nội dung trang web")
+                start_time = time.time()
                 soup = BeautifulSoup(page_content, 'lxml')
+                print(f"Đã phân tích xong nội dung: {time.time() - start_time:.2f} giây")
                 
                 print("Đang lấy token xác thực...")
                 token = soup.find('input', {'name': '__RequestVerificationToken'})
+                print(f"Đã lấy token xác thực trang: {time.time() - start_time:.2f} giây")
                 
                 if not token:
                     message = "Không tìm thấy token xác thực!"
                     print(message)
                     return message
 
-                print("Đang đăng nhập...")
+                start_time = time.time()
                 login_data = {
                     "loginID": login_id, 
                     "password": password, 
@@ -81,16 +90,19 @@ class HUSCNotifications:
                     message = f"Đăng nhập không thành công. Mã lỗi: {login_response.status}"
                     print(message)
                     return message
+                else:
+                    print(f"Đã đăng nhập: {time.time() - start_time:.2f} giây")
 
-                print("Đang lấy thông báo...")
+                start_time = time.time()
                 data_response = await session.get(self.data_url, timeout=20)
                 if data_response.status != 200:
                     message = f"Không thể lấy dữ liệu từ {self.data_url}. Mã lỗi: {data_response.status}"
                     print(message)
                     return message
                 else:
-                    print("Lấy dữ liệu thành công.")
+                    print(f"Đã lấy dữ liệu thành công: {time.time() - start_time:.2f} giây")
                 
+                start_time = time.time()
                 soup = BeautifulSoup(await data_response.text(), 'lxml')
                 news_list = soup.find('div', id='newsList')
                 if not news_list:
@@ -102,7 +114,7 @@ class HUSCNotifications:
                 ][:5]
                 
                 if notifications:
-                    print(f"Đã lấy {len(notifications)} thông báo.")
+                    print(f"Đã lấy {len(notifications)} thông báo: {time.time() - start_time:.2f} giây")
                 return notifications if notifications else "Không có thông báo mới."
             except Exception as e:
                 return f"Đã xảy ra lỗi: {e}"

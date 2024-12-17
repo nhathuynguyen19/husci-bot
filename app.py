@@ -320,6 +320,8 @@ async def reminder_loop():
 @tasks.loop(minutes=1)
 async def send_notifications():
     global previous_notifications
+    
+    print("=== Start loop get notifications ===")
 
     user_id = id_admin
     
