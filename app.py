@@ -1,4 +1,4 @@
-import discord, aiohttp, os, json, html, asyncio, base64, pytz
+import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
 from config import fixed_key, id_admin

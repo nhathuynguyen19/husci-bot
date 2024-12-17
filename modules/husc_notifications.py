@@ -1,4 +1,4 @@
-import asyncio, aiohttp, html
+import asyncio, aiohttp, lxml
 from bs4 import BeautifulSoup
 
 class HUSCNotifications:
@@ -9,8 +9,7 @@ class HUSCNotifications:
 
     async def is_login_successful(self, response):
         content = await response.text()
-        decoded_content = html.unescape(content)
-        soup = BeautifulSoup(decoded_content, 'html.parser')
+        soup = BeautifulSoup(content, 'lxml')
         error = soup.find('span', class_='text-danger', string='Thông tin đăng nhập không đúng!')
         if error:
             print("Đăng nhập thất bại: Thông tin đăng nhập không đúng!")
@@ -52,9 +51,16 @@ class HUSCNotifications:
         try:
             async with aiohttp.ClientSession() as session:
                 print("Đang truy cập trang đăng nhập...")
-                login_page = await session.get(self.login_url, timeout=10)
-                soup = BeautifulSoup(await login_page.text(), 'html.parser')
-                token = soup.find('input', {'name': '__RequestVerificationToken'})
+                login_page = await session.get(self.login_url, timeout=10) # Đang truy cập trang đăng nhập
+                
+                print("Đang ấy nội dung trang web...")
+                page_content = await login_page.text() # Đang ấy nội dung trang web
+                
+                print("Đang phân tích nội dung trang web")
+                soup = BeautifulSoup(page_content, 'lxml') # Đang phân tích nội dung trang web
+                
+                print("Đang lấy token xác thực...")
+                token = soup.find('input', {'name': '__RequestVerificationToken'}) # Đang lấy token xác thực
                 
                 if not token:
                     message = "Không tìm thấy token xác thực!"
@@ -82,7 +88,7 @@ class HUSCNotifications:
                 else:
                     print("Lấy dữ liệu thành công.")
                 
-                soup = BeautifulSoup(await data_response.text(), 'html.parser')
+                soup = BeautifulSoup(await data_response.text(), 'lxml')
                 news_list = soup.find('div', id='newsList')
                 if not news_list:
                     return "Không tìm thấy danh sách thông báo!"
