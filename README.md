@@ -2,5 +2,5 @@
 
 ## Web Reference
 
-[Hue University of Science](https://student.husc.edu.vn/News)
+[Hue University of Sciences](https://student.husc.edu.vn)
 
