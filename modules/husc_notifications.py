@@ -27,13 +27,6 @@ class HUSCNotifications:
                 print("Không có thông tin trong file user.json.")
             await asyncio.sleep(10)
     
-    # Hàm kiểm tra có thông tin dăng nhập chưa
-    async def check_credentials(self, credentials, start_time):
-        if credentials is None:
-            print("Không có thông tin đăng nhập.")
-            return "Không có thông tin đăng nhập"  # Không tìm thấy thông tin đăng nhập
-        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
-    
     # Hàm kiểm tra tính hợp lệ của thông tin đăng nhập
     async def check_login_infomation(self, login_id, encrypted_password, start_time):
         if not login_id or not encrypted_password:
@@ -46,7 +39,11 @@ class HUSCNotifications:
         
         start_time = time.time()
         credentials = await user_manager.get_user_credentials(user_id) # Lấy thông tin đăng nhập từ file
-        await self.check_credentials(credentials, start_time) # Kiểm tra có thông tin dăng nhập chưa
+        # Kiểm tra có thông tin dăng nhập chưa
+        if credentials is None:
+            print("Không có thông tin đăng nhập.")
+            return "Không có thông tin đăng nhập"  # Không tìm thấy thông tin đăng nhập
+        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
         
         start_time = time.time()
         login_id, encrypted_password = credentials.get("login_id"), credentials.get("password") # Lấy thông tin đăng nhập
