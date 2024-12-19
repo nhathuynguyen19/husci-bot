@@ -2,7 +2,7 @@ import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
 from config import fixed_key, id_admin
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from datetime import datetime
@@ -159,6 +159,7 @@ bot = bot_config.create_bot()
 auth_manager = AuthManager(fixed_key)
 user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url, fixed_key)
+commands = Commands(husc_notification)
 
 # đọc nhắc nhở từ file sent_reminder.txt
 sent_reminders = load_sent_reminders()  # Đọc từ tệp khi chương trình khởi động
@@ -178,48 +179,7 @@ async def on_ready():
 # Lệnh đăng nhập
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
-    # Lấy ID người viết lệnh
-    user_id = ctx.user.id
-    
-    # Đảm bảo defer để bot không bị timeout khi chờ phản hồi lâu
-    if not ctx.response.is_done():
-        await ctx.response.defer(ephemeral=True)
-    
-    async with aiohttp.ClientSession() as session:
-        # Truy cập trang đăng nhập
-        login_page = await session.get(login_url)
-        soup = BeautifulSoup(await login_page.text(), 'html.parser')
-        
-        # Lấy token xác thực từ trang
-        token = soup.find('input', {'name': '__RequestVerificationToken'})
-        if not token:
-            await ctx.followup.send("Không tìm thấy token xác thực!")
-            return
-        
-        login_data = {
-            "loginID": username,
-            "password": password,
-            "__RequestVerificationToken": token['value']
-        }
-        
-        # Gửi yêu cầu đăng nhập
-        login_response = await session.post(login_url, data=login_data)
-        
-        if not await husc_notification.is_login_successful(login_response):
-            await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
-            return
-        
-        # mã hóa mật khẩu để lưu
-        password = auth_manager.encrypt_password(password, user_id, fixed_key)
-        
-         # Lưu thông tin người dùng vào file
-        success = await user_manager.save_user_to_file(ctx.user, username, password)
-        if success:
-            await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
-        else:
-            await ctx.followup.send("Tài khoản đã tồn tại.")
-        
-    await user_manager.remember_request(user_id, ctx.user.name, "/login")
+    await commands.handle_login(ctx, username, password, auth_manager, user_manager)
 
 # Lệnh lấy 5 thông báo đầu
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
