@@ -12,7 +12,7 @@
 
 ## Web Push
 
-Tự động thông báo thông báo mới vào kênh Discord.
+Tự động thông báo vào kênh Discord mỗi khi có thông tin mới ở https://student.husc.edu.vn/News.
 
 ## Trang web lấy dữ liệu
 
