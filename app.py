@@ -41,16 +41,6 @@ def add_sent_reminder(reminder):
         save_sent_reminders(sent_reminders)
 
 
-def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
-    try:
-        with open(remind_file, 'a') as file:
-            reminder_time = f"{year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}"
-            file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
-            print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
-    except Exception as e:
-        print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
-
-
 def read_remind_from_file():
     try:
         with open(remind_file, 'r') as file:
@@ -204,6 +194,11 @@ async def remindall(interaction: discord.Interaction, reminder: str, day: int, m
     print(mesage)
     await interaction.followup.send(mesage)
     
+
+@bot.tree.command(name="check", description="Kiểm tra trạng thái của bot")
+async def check(ctx: discord.Interaction):
+    await ctx.response.send_message("Bot đang hoạt động tốt!")
+
 
 @tasks.loop(seconds=1)
 async def reminder_loop():
