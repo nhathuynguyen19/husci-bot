@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from pytz import timezone
 
+
 def load_sent_reminders():
     try:
         with open(sent_reminders_file, 'r', encoding='utf-8') as f:
@@ -20,6 +21,7 @@ def load_sent_reminders():
         print(f"Lỗi khi đọc tệp {sent_reminders_file}: {e}")
         return set()
 
+
 def save_sent_reminders(sent_reminders):
     try:
         with open(sent_reminders_file, 'w', encoding='utf-8') as f:
@@ -29,6 +31,7 @@ def save_sent_reminders(sent_reminders):
     except Exception as e:
         print(f"Lỗi khi ghi vào tệp {sent_reminders_file}: {e}")
 
+
 def add_sent_reminder(reminder):
     sent_reminders = load_sent_reminders()
     if not isinstance(sent_reminders, set):
@@ -36,6 +39,7 @@ def add_sent_reminder(reminder):
     if reminder not in sent_reminders:
         sent_reminders.add(reminder) 
         save_sent_reminders(sent_reminders)
+
 
 def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
     try:
@@ -46,13 +50,15 @@ def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guil
     except Exception as e:
         print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
 
+
 def read_remind_from_file():
     try:
         with open(remind_file, 'r') as file:
             return file.readlines()
     except FileNotFoundError:
         return []
-        
+
+
 async def check_reminders():
     now = datetime.now(timezone)
     if now.tzinfo is None: 
@@ -92,6 +98,7 @@ async def check_reminders():
         except Exception as e:
             print(f"Lỗi khi xử lý nhắc nhở: {e}")
 
+
 def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
     try:
         with open(remind_file, 'a', encoding='utf-8') as file:
@@ -100,7 +107,8 @@ def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guil
             print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
     except Exception as e:
         print(f"Lỗi khi ghi nhắc nhở vào file: {e}")
-        
+
+
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
 sent_reminders_file = "sent_reminders.txt"
@@ -109,6 +117,7 @@ remind_file = 'remind.txt'
 previous_notifications = None
 sent_reminders = load_sent_reminders()
 
+
 # objects
 bot_config = BotConfig() 
 bot = bot_config.create_bot()
@@ -116,6 +125,7 @@ auth_manager = AuthManager(fixed_key)
 user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url, fixed_key)
 commands = Commands(husc_notification)
+
 
 @bot.event
 async def on_ready():
@@ -128,9 +138,11 @@ async def on_ready():
     reminder_loop.start()
     print("Bot đã sẵn sàng nhận lệnh!")
 
+
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
     await commands.handle_login(ctx, username, password, auth_manager, user_manager)
+
 
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
@@ -149,6 +161,7 @@ async def notifications(ctx: discord.Interaction):
         formatted_notifications = "\n".join([f"- {notification}" for notification in top_notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
     await user_manager.remember_request(user_id, ctx.user.name, "/notifications")
+
 
 @bot.tree.command(name="first", description="Lấy thông báo mới nhất từ HUSC")
 async def first(ctx: discord.Interaction):
@@ -170,6 +183,7 @@ async def first(ctx: discord.Interaction):
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
+
 @bot.tree.command(name='remindall', description="Đặt lịch nhắc nhở")
 async def remindall(interaction: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
     guild_id = interaction.guild.id if interaction.guild else "DM"
@@ -190,9 +204,11 @@ async def remindall(interaction: discord.Interaction, reminder: str, day: int, m
     print(mesage)
     await interaction.followup.send(mesage)
     
+
 @tasks.loop(seconds=1)
 async def reminder_loop():
     await check_reminders()
+
 
 @tasks.loop(minutes=1)
 async def send_notifications():
@@ -235,5 +251,6 @@ async def send_notifications():
             print("Không thể lấy thông báo hoặc không có thông báo mới.")
     except Exception as e:
         print(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
+
 
 bot.run(bot_config.token)
