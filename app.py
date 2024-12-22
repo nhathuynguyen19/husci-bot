@@ -1,7 +1,6 @@
 import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
-from config import fixed_key, id_admin
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
@@ -108,9 +107,9 @@ sent_reminders = load_sent_reminders()
 # objects
 bot_config = BotConfig() 
 bot = bot_config.create_bot()
-auth_manager = AuthManager(fixed_key)
+auth_manager = AuthManager(bot_config.fixed_key)
 user_manager = UserManager()
-husc_notification = HUSCNotifications(login_url, data_url, fixed_key)
+husc_notification = HUSCNotifications(login_url, data_url, bot_config.fixed_key)
 commands = Commands(husc_notification)
 
 @bot.event
@@ -198,7 +197,7 @@ async def reminder_loop():
 async def send_notifications():
     global previous_notifications
     logger.info("=== Start loop get notifications ===")
-    user_id = id_admin
+    user_id = bot_config.admin_id
     if os.path.exists("notifications.txt"):
         with open("notifications.txt", "r", encoding="utf-8") as f:
             previous_notifications = f.read().strip() 

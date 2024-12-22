@@ -1,4 +1,4 @@
-import os, discord
+import os, discord, base64
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -7,6 +7,9 @@ class BotConfig:
         # Load biến môi trường
         load_dotenv()
         self.token = os.getenv("DISCORD_TOKEN")
+        self.fixed_key = os.getenv("FIXED_KEY")
+        self.fixed_key = base64.b64decode(self.fixed_key)
+        self.admin_id = os.getenv("ADMIN_ID")
 
         if not self.token:
             raise ValueError("Thiếu biến DISCORD_TOKEN, FIXED_KEY trong môi trường!")
