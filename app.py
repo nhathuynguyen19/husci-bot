@@ -161,7 +161,7 @@ async def notifications(ctx: discord.Interaction):
         print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
         notifications = read_notifications("notifications.txt")
 
-    if notifications == "Không có thông tin đăng nhập":
+    if notifications == "Không có thông tin đăng nhập.":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
     if notifications == "Không có thông báo mới.":
