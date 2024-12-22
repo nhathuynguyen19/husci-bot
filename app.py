@@ -102,6 +102,17 @@ def get_notification_first_line():
         first_line = file.readline().strip()  # Chỉ lấy dòng đầu tiên và loại bỏ ký tự dư thừa
     return first_line
 
+
+def read_notifications(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            notifications = [line.strip() for line in lines if line.strip()]
+            return notifications
+    else:
+        logging.warning(f"File {file_path} không tồn tại.")
+        return []
+
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
 sent_reminders_file = "sent_reminders.txt"
@@ -139,16 +150,24 @@ async def notifications(ctx: discord.Interaction):
     user_id = ctx.user.id
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
-    task = asyncio.create_task(husc_notification.get_notifications(user_id, user_manager, auth_manager))
-    notifications = await task 
+    
+    notifications = None
+    start_time = time.time()
+    credentials = await user_manager.get_user_credentials(user_id)
+    if credentials is None:
+        print("Không có thông tin đăng nhập.")
+        notifications = "Không có thông tin đăng nhập."
+    else:
+        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
+        notifications = read_notifications("notifications.txt")
+
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
     if notifications == "Không có thông báo mới.":
         await ctx.followup.send(f"**Không có thông báo mới.**")
     else:
-        top_notifications = notifications[:5]
-        formatted_notifications = "\n".join([f"- {notification}" for notification in top_notifications])
+        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
     await user_manager.remember_request(user_id, ctx.user.name, "/notifications")
 
@@ -158,17 +177,17 @@ async def first(ctx: discord.Interaction):
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
 
+    notifications = None
     start_time = time.time()
-    credentials = await user_manager.get_user_credentials(user_id) # Lấy thông tin đăng nhập từ file
-    # Kiểm tra có thông tin dăng nhập chưa
+    credentials = await user_manager.get_user_credentials(user_id)
     if credentials is None:
         print("Không có thông tin đăng nhập.")
         notifications = "Không có thông tin đăng nhập."
-        return
-    print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
+    else:
+        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
+        notifications = get_notification_first_line()
     
-    notifications = get_notification_first_line()
-    if notifications == "Không có thông tin đăng nhập":
+    if notifications == "Không có thông tin đăng nhập.":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
     if notifications == "Không có thông báo mới.":
@@ -225,12 +244,16 @@ async def send_notifications():
         logging.warning("Danh sách rỗng hoặc không có dữ liệu.")
 
     user_id = random_id
+
     if os.path.exists("notifications.txt"):
-        with open("notifications.txt", "r", encoding="utf-8") as f:
-            previous_notifications = f.read().strip() 
-            previous_notifications = previous_notifications.lstrip('- ').strip()
+        notifications = read_notifications("notifications.txt")
+        if notifications:
+            previous_notifications = notifications[0].lstrip('- ').strip()
+        else:
+            previous_notifications = "Empty" 
     else:
-        previous_notifications = None 
+        previous_notifications = None
+
     logger.info("Đang tiến hành kiểm tra đăng nhập...")
     await husc_notification.check_login_id(user_id, user_manager)
     try:
@@ -239,7 +262,7 @@ async def send_notifications():
         notifications = await task 
         if isinstance(notifications, list) and notifications:
             new_notification = notifications[0] 
-            if previous_notifications != new_notification and previous_notifications is not None:  
+            if previous_notifications != new_notification and previous_notifications is not None or previous_notifications == "Empty":
                 formatted_notification = f"- {new_notification}"
                 for guild in bot.guilds:
                     text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
@@ -262,7 +285,7 @@ async def send_notifications():
                 with open("guilds_info.json", "w", encoding="utf-8") as f:
                     json.dump(guilds_info, f, ensure_ascii=False, indent=4)
                 with open("notifications.txt", "w", encoding="utf-8") as f:
-                    f.write(formatted_notification)
+                    f.writelines([f"- {notification}\n" for notification in notifications])
                 previous_notifications = new_notification
             else:
                 logger.info("Không có thông báo mới.")
