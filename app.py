@@ -167,7 +167,7 @@ async def notifications(ctx: discord.Interaction):
     if notifications == "Không có thông báo mới.":
         await ctx.followup.send(f"**Không có thông báo mới.**")
     else:
-        formatted_notifications = "\n".join([f"- {notification}" for notification in notifications])
+        formatted_notifications = "\n".join([f"{notification}" for notification in notifications])
         await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
     await user_manager.remember_request(user_id, ctx.user.name, "/notifications")
 
