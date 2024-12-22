@@ -5,4 +5,4 @@ cryptography
 python-dotenv
 pyzt
 lxml
-pyaudio
+audioop

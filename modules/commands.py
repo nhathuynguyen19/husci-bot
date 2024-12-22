@@ -1,6 +1,5 @@
 import aiohttp
 from bs4 import BeautifulSoup
-from config import fixed_key
 
 class Commands():
     def __init__(self, husc_notification):
