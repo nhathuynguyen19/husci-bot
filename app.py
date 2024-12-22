@@ -1,6 +1,7 @@
 import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
+from config import admin_id
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
@@ -197,7 +198,7 @@ async def reminder_loop():
 async def send_notifications():
     global previous_notifications
     logger.info("=== Start loop get notifications ===")
-    user_id = bot_config.admin_id
+    user_id = admin_id
     if os.path.exists("notifications.txt"):
         with open("notifications.txt", "r", encoding="utf-8") as f:
             previous_notifications = f.read().strip() 

@@ -9,7 +9,6 @@ class BotConfig:
         self.token = os.getenv("DISCORD_TOKEN")
         self.fixed_key = os.getenv("FIXED_KEY")
         self.fixed_key = base64.b64decode(self.fixed_key)
-        self.admin_id = os.getenv("ADMIN_ID")
 
         if not self.token:
             raise ValueError("Thiếu biến DISCORD_TOKEN, FIXED_KEY trong môi trường!")
