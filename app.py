@@ -97,6 +97,11 @@ def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guil
     except Exception as e:
         logger.error(f"Lỗi khi ghi nhắc nhở vào file: {e}")
 
+def get_notification_first_line():
+    with open('notifications.txt', 'r', encoding='utf-8') as file:
+        first_line = file.readline().strip()  # Chỉ lấy dòng đầu tiên và loại bỏ ký tự dư thừa
+    return first_line
+
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
 sent_reminders_file = "sent_reminders.txt"
@@ -152,17 +157,14 @@ async def first(ctx: discord.Interaction):
     user_id = ctx.user.id
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
-    task = asyncio.create_task(husc_notification.get_notifications(user_id, user_manager, auth_manager))
-    notifications = await task
+    notifications = get_notification_first_line()
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         return
     if notifications == "Không có thông báo mới.":
         await ctx.followup.send(f"**Không có thông báo mới.**")
-    elif isinstance(notifications, list) and notifications:
-        first_notification = notifications[0]
-        formatted_notification = f"- {first_notification}"
-        await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
+    elif notifications:
+        await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{notifications}")
     else:
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
