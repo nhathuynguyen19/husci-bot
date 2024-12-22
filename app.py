@@ -1,4 +1,4 @@
-import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml
+import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml, time, random
 from discord.ext import tasks, commands
 from bs4 import BeautifulSoup
 from config import admin_id
@@ -157,6 +157,16 @@ async def first(ctx: discord.Interaction):
     user_id = ctx.user.id
     if not ctx.response.is_done():
         await ctx.response.defer(ephemeral=False)
+
+    start_time = time.time()
+    credentials = await user_manager.get_user_credentials(user_id) # Lấy thông tin đăng nhập từ file
+    # Kiểm tra có thông tin dăng nhập chưa
+    if credentials is None:
+        print("Không có thông tin đăng nhập.")
+        notifications = "Không có thông tin đăng nhập."
+        return
+    print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
+    
     notifications = get_notification_first_line()
     if notifications == "Không có thông tin đăng nhập":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -201,7 +211,20 @@ async def reminder_loop():
 async def send_notifications():
     global previous_notifications
     logger.info("=== Start loop get notifications ===")
-    user_id = admin_id
+    
+    if os.path.exists('users.json'):
+        with open('users.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+    else:
+        data = []
+    if data:
+        random_item = random.choice(data)
+        random_id = random_item["id"]
+        logging.info(f"ID ngẫu nhiên: {random_id}")
+    else:
+        logging.warning("Danh sách rỗng hoặc không có dữ liệu.")
+
+    user_id = random_id
     if os.path.exists("notifications.txt"):
         with open("notifications.txt", "r", encoding="utf-8") as f:
             previous_notifications = f.read().strip() 
