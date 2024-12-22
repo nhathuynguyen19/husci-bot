@@ -120,7 +120,6 @@ timezone = pytz.timezone('Asia/Ho_Chi_Minh')
 remind_file = 'remind.txt'
 previous_notifications = None
 sent_reminders = load_sent_reminders()
-guilds_info = []
 
 # objects
 bot_config = BotConfig() 
@@ -139,6 +138,7 @@ async def on_ready():
     logger.info("Đang tự động lấy thông báo định kỳ...")
     send_notifications.start()
     reminder_loop.start()
+    update_guilds_info.start()
     logger.info("Bot đã sẵn sàng nhận lệnh!")
 
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
@@ -267,13 +267,6 @@ async def send_notifications():
                 for guild in bot.guilds:
                     text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
                     channel = text_channels[0] if text_channels else None
-                    guild_info = {
-                                'guild_name': guild.name,
-                                'guild_id': str(guild.id),
-                                'channel_name': channel.name,
-                                'channel_id': str(channel.id),
-                            }
-                    guilds_info.append(guild_info)
                     if channel:
                         try:
                             await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
@@ -282,8 +275,6 @@ async def send_notifications():
                             logger.warning(f"Bot không có quyền gửi tin nhắn trong kênh: {channel.name} của server: {guild.name}")
                         except discord.HTTPException as e:
                             logger.error(f"Lỗi HTTP khi gửi tin nhắn đến kênh: {channel.name} của server: {guild.name}, chi tiết: {e}")
-                with open("guilds_info.json", "w", encoding="utf-8") as f:
-                    json.dump(guilds_info, f, ensure_ascii=False, indent=4)
                 with open("notifications.txt", "w", encoding="utf-8") as f:
                     f.writelines([f"- {notification}\n" for notification in notifications])
                 previous_notifications = new_notification
@@ -293,5 +284,23 @@ async def send_notifications():
             logger.info("Không thể lấy thông báo hoặc không có thông báo mới.")
     except Exception as e:
         logger.error(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
+
+@tasks.loop(minutes=10)
+async def update_guilds_info():
+    global guilds_info
+    guilds_info = []
+    for guild in bot.guilds:
+        text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
+        channel = text_channels[0] if text_channels else None
+        guild_info = {
+            'guild_name': guild.name,
+            'guild_id': str(guild.id),
+            'channel_name': channel.name,
+            'channel_id': str(channel.id),
+            'member_count': guild.member_count
+        }
+        guilds_info.append(guild_info)
+    with open("guilds_info.json", "w", encoding="utf-8") as f:
+        json.dump(guilds_info, f, ensure_ascii=False, indent=4)
 
 bot.run(bot_config.token)
