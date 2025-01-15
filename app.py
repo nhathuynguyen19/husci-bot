@@ -1,4 +1,4 @@
-# Librarys
+# Libraries
 import os, json, time, random, logging, asyncio, html, base64, discord, aiohttp, pytz, lxml
 from cryptography.fernet import Fernet
 from discord.ext         import tasks, commands
