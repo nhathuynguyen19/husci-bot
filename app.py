@@ -98,7 +98,7 @@ def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guil
         logger.error(f"Lỗi khi ghi nhắc nhở vào file: {e}")
 
 def get_notification_first_line():
-    with open('notifications.txt', 'r', encoding='utf-8') as file:
+    with open('data/notifications.txt', 'r', encoding='utf-8') as file:
         first_line = file.readline().strip()  # Chỉ lấy dòng đầu tiên và loại bỏ ký tự dư thừa
     return first_line
 
@@ -115,9 +115,9 @@ def read_notifications(file_path):
 
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = "https://student.husc.edu.vn/News"
-sent_reminders_file = "sent_reminders.txt"
+sent_reminders_file = "data/sent_reminders.txt"
 timezone = pytz.timezone('Asia/Ho_Chi_Minh')
-remind_file = 'remind.txt'
+remind_file = 'data/remind.txt'
 previous_notifications = None
 sent_reminders = load_sent_reminders()
 
@@ -159,7 +159,7 @@ async def notifications(ctx: discord.Interaction):
         notifications = "Không có thông tin đăng nhập."
     else:
         print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
-        notifications = read_notifications("notifications.txt")
+        notifications = read_notifications("data/notifications.txt")
 
     if notifications == "Không có thông tin đăng nhập.":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -231,8 +231,8 @@ async def send_notifications():
     global previous_notifications
     logger.info("=== Start loop get notifications ===")
     
-    if os.path.exists('users.json'):
-        with open('users.json', 'r', encoding='utf-8') as file:
+    if os.path.exists('data/users.json'):
+        with open('data/users.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
     else:
         data = []
@@ -245,8 +245,8 @@ async def send_notifications():
 
     user_id = random_id
 
-    if os.path.exists("notifications.txt"):
-        notifications = read_notifications("notifications.txt")
+    if os.path.exists("data/notifications.txt"):
+        notifications = read_notifications("data/notifications.txt")
         if notifications:
             previous_notifications = notifications[0].lstrip('- ').strip()
         else:
@@ -275,7 +275,7 @@ async def send_notifications():
                             logger.warning(f"Bot không có quyền gửi tin nhắn trong kênh: {channel.name} của server: {guild.name}")
                         except discord.HTTPException as e:
                             logger.error(f"Lỗi HTTP khi gửi tin nhắn đến kênh: {channel.name} của server: {guild.name}, chi tiết: {e}")
-                with open("notifications.txt", "w", encoding="utf-8") as f:
+                with open("data/notifications.txt", "w", encoding="utf-8") as f:
                     f.writelines([f"- {notification}\n" for notification in notifications])
                 previous_notifications = new_notification
             else:
@@ -300,7 +300,7 @@ async def update_guilds_info():
             'member_count': guild.member_count
         }
         guilds_info.append(guild_info)
-    with open("guilds_info.json", "w", encoding="utf-8") as f:
+    with open("data/guilds_info.json", "w", encoding="utf-8") as f:
         json.dump(guilds_info, f, ensure_ascii=False, indent=4)
 
 bot.run(bot_config.token)

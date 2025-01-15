@@ -1,7 +1,7 @@
 import json, os, datetime, time
 
 class UserManager:
-    def __init__(self, user_file="users.json"):
+    def __init__(self, user_file="data/users.json"):
         self.user_file = user_file
         if not os.path.exists(self.user_file):
             with open(self.user_file, "w", encoding="utf-8") as file:
@@ -40,8 +40,8 @@ class UserManager:
         return True
 
     async def remember_request(self, user_id, user_name, command):
-        if not os.path.exists("request.txt"):
-            with open("request.txt", "w", encoding="utf-8") as file:
+        if not os.path.exists("data/request.txt"):
+            with open("data/request.txt", "w", encoding="utf-8") as file:
                 file.write("Dữ liệu request:\n")
-        with open("request.txt", "a", encoding="utf-8") as file:
+        with open("data/request.txt", "a", encoding="utf-8") as file:
             file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {datetime.datetime.now()}\n")
