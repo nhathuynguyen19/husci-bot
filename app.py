@@ -1,136 +1,31 @@
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder
+from paths import sent_reminders_path, reminders_path, notifications_path, login_url, data_url
 import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml, time, random
 from discord.ext import tasks, commands
-from bs4 import BeautifulSoup
-from config import admin_id, logger
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands
 from cryptography.fernet import Fernet
+from config import admin_id, logger
+from colorama import init, Fore
 from dotenv import load_dotenv
 from datetime import datetime
+from bs4 import BeautifulSoup
 from pytz import timezone
-from colorama import init, Fore
 import logging
 
 # Initialize colorama
 init(autoreset=True)
-
-def load_sent_reminders():
-    try:
-        with open(sent_reminders_file, 'r', encoding='utf-8') as f:
-            reminders = {line.strip() for line in f}
-        return reminders
-    except FileNotFoundError:
-        logger.warning(f"Tệp {sent_reminders_file} không tồn tại. Trả về tập hợp rỗng.")
-        return set()
-    except Exception as e:
-        logger.error(f"Lỗi khi đọc tệp {sent_reminders_file}: {e}")
-        return set()
-
-def save_sent_reminders(sent_reminders):
-    try:
-        with open(sent_reminders_file, 'w', encoding='utf-8') as f:
-            for reminder in sent_reminders:
-                f.write(f"{reminder}\n")
-        print(f"Nhắc nhở đã được lưu vào tệp {sent_reminders_file}")
-    except Exception as e:
-        logger.error(f"Lỗi khi ghi vào tệp {sent_reminders_file}: {e}")
-
-def add_sent_reminder(reminder):
-    sent_reminders = load_sent_reminders()
-    if not isinstance(sent_reminders, set):
-        sent_reminders = set(sent_reminders)
-    if reminder not in sent_reminders:
-        sent_reminders.add(reminder) 
-        save_sent_reminders(sent_reminders)
-
-def read_remind_from_file():
-    try:
-        with open(remind_file, 'r') as file:
-            return file.readlines()
-    except FileNotFoundError:
-        return []
-
-async def check_reminders():
-    now = datetime.now(timezone)
-    if now.tzinfo is None: 
-        now = timezone.localize(now) 
-    reminders = read_remind_from_file() 
-    sent_reminders = load_sent_reminders()
-    for reminder in reminders:
-        try:
-            reminder_parts = reminder.strip().split(' - ', 4)
-            if len(reminder_parts) < 5:
-                logger.error(f"Lỗi: Nhắc nhở không hợp lệ: {reminder}")
-                continue
-            reminder_time_str = reminder_parts[0]
-            reminder_msg = reminder_parts[1]
-            user_id = int(reminder_parts[2])
-            channel_id = int(reminder_parts[4])
-            reminder_time = datetime.strptime(reminder_time_str, '%Y-%m-%d %H:%M')
-            reminder_time = timezone.localize(reminder_time)
-            time_diff = 0
-            time_diff = abs((reminder_time - now).total_seconds())
-            if time_diff < 1: 
-                reminder_key = f"{reminder_time} - {reminder_msg} - {user_id} - {channel_id}"
-                if reminder_key in sent_reminders:
-                    print(f"Nhắc nhở đã được gửi trước đó.")
-                    continue 
-                channel = bot.get_channel(channel_id)
-                if channel:
-                    await channel.send(f"<@{user_id}> Nhắc nhở: {reminder_msg}")
-                    print(f"Nhắc nhở gửi đến kênh {channel_id}: {reminder_msg}")
-                else:
-                    logger.warning(f"Không tìm thấy kênh với ID: {channel_id}")
-                user = await bot.fetch_user(user_id)  
-                if user:
-                    await user.send(f"Nhắc nhở: {reminder_msg}")
-                    print(f"Nhắc nhở gửi đến người dùng {user_id}: {reminder_msg}")
-                add_sent_reminder(reminder_key) 
-        except Exception as e:
-            logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
-
-def write_remind_to_file(hour, minute, day, month, year, reminder, user_id, guild_id, channel_id):
-    try:
-        with open(remind_file, 'a', encoding='utf-8') as file:
-            reminder_time = f"{year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}"
-            file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
-            print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
-    except Exception as e:
-        logger.error(f"Lỗi khi ghi nhắc nhở vào file: {e}")
-
-def get_notification_first_line():
-    with open('data/notifications.txt', 'r', encoding='utf-8') as file:
-        first_line = file.readline().strip()  # Chỉ lấy dòng đầu tiên và loại bỏ ký tự dư thừa
-    return first_line
-
-
-def read_notifications(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, 'r', encoding='utf-8') as file:
-            lines = file.readlines()
-            notifications = [line.strip() for line in lines if line.strip()]
-            return notifications
-    else:
-        logging.warning(f"File {file_path} không tồn tại.")
-        return []
-
-login_url = "https://student.husc.edu.vn/Account/Login"
-data_url = [
-    "https://student.husc.edu.vn/News",
-    "https://student.husc.edu.vn/Message/Inbox"
-]
-sent_reminders_file = "data/sent_reminders.txt"
 timezone = pytz.timezone('Asia/Ho_Chi_Minh')
-remind_file = 'data/remind.txt'
 previous_notifications = None
-sent_reminders = load_sent_reminders()
 
 # objects
 bot_config = BotConfig() 
 bot = bot_config.create_bot()
 auth_manager = AuthManager(bot_config.fixed_key)
 user_manager = UserManager()
-husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key)
+husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
 commands = Commands(husc_notification)
+reminders = Reminder(reminders_path, sent_reminders_path, bot)
+
+sent_reminders_set = reminders.load_sent_reminders()
 
 @bot.event
 async def on_ready():
@@ -160,8 +55,8 @@ async def notifications(ctx: discord.Interaction):
         print("Không có thông tin đăng nhập.")
         notifications = "Không có thông tin đăng nhập."
     else:
-        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
-        notifications = read_notifications("data/notifications.txt")
+        print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
+        notifications = await husc_notification.read_notifications()
 
     if notifications == "Không có thông tin đăng nhập.":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -187,7 +82,7 @@ async def first(ctx: discord.Interaction):
         notifications = "Không có thông tin đăng nhập."
     else:
         print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
-        notifications = get_notification_first_line()
+        notifications = await husc_notification.get_notification_first_line()
     
     if notifications == "Không có thông tin đăng nhập.":
         await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
@@ -200,33 +95,26 @@ async def first(ctx: discord.Interaction):
         await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
-@bot.tree.command(name='remindall', description="Đặt lịch nhắc nhở")
-async def remindall(interaction: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
-    guild_id = interaction.guild.id if interaction.guild else "DM"
-    if guild_id != "DM":
-        guild = bot.get_guild(int(guild_id))
-        if guild:
-            print(f"Nhắc nhở được tạo trong server: {guild.name} (ID: {guild_id})")
-        else:
-            logger.warning(f"Không tìm thấy server với ID: {guild_id}")
-    write_remind_to_file(hour, minute, day, month, year, reminder, interaction.user.id, guild_id, interaction.channel.id)
-    now = datetime.now(timezone)
-    target_time = datetime(year, month, day, hour, minute)
-    target_time = timezone.localize(target_time)
-    if target_time < now:
-        target_time = target_time.replace(year=now.year + 1)
-    await interaction.response.defer()
-    mesage = f"Đặt lời nhắc thành công vào {target_time.strftime('%d/%m/%Y %H:%M')}."
-    print(mesage)
-    await interaction.followup.send(mesage)
-
-@bot.tree.command(name="check", description="Kiểm tra trạng thái của bot")
-async def check(ctx: discord.Interaction):
-    await ctx.response.send_message("Bot đang hoạt động tốt!")
-
+@bot.tree.command(name='remind', description="Đặt lịch nhắc nhở")
+async def remind(interaction: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
+    try:
+        guild_id = interaction.guild.id if interaction.guild else "DM"
+        if guild_id != "DM":
+            guild = bot.get_guild(int(guild_id))
+            if guild:
+                print(f"Nhắc nhở được tạo trong server: {guild.name} (ID: {guild_id})")
+            else:
+                logger.warning(f"Không tìm thấy server với ID: {guild_id}")
+        
+        await interaction.response.defer()  # Đảm bảo không bị timeout
+        await reminders.write_remind_to_file(hour, minute, day, month, year, reminder, interaction.user.id, interaction.channel.id, guild_id)
+        print(f"Nhắc nhở {reminder} đã được ghi vào file.")
+    except Exception as e:
+        logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
+    
 @tasks.loop(seconds=1)
 async def reminder_loop():
-    await check_reminders()
+    await reminders.check_reminders()
 
 @tasks.loop(minutes=1)
 async def send_notifications():
@@ -247,8 +135,8 @@ async def send_notifications():
 
     user_id = random_id
 
-    if os.path.exists("data/notifications.txt"):
-        notifications = read_notifications("data/notifications.txt")
+    if os.path.exists(notifications_path):
+        notifications = await husc_notification.read_notifications()
         if notifications:
             previous_notifications = notifications[0].lstrip('- ').strip()
         else:

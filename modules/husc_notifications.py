@@ -1,4 +1,4 @@
-import asyncio, aiohttp, lxml, time, json
+import asyncio, aiohttp, lxml, time, json, os
 from bs4 import BeautifulSoup
 from colorama import init, Fore
 from config import logger
@@ -7,10 +7,40 @@ from config import logger
 init(autoreset=True)
 
 class HUSCNotifications:
-    def __init__(self, login_url, data_url, fixed_key):
+    def __init__(self, login_url, data_url, fixed_key, notifications_path):
         self.login_url = login_url
         self.data_url = data_url
         self.key = fixed_key
+        self.notifications_path = notifications_path
+
+    async def get_notification_first_line(self):
+        try:
+            with open(self.notifications_path, 'r', encoding='utf-8') as file:
+                first_line = file.readline().strip()  # Chỉ lấy dòng đầu tiên và loại bỏ ký tự dư thừa
+            return first_line
+        except FileNotFoundError:
+            logger.warning(f"Tệp {self.notifications_path} không tồn tại. Trả về tập hợp rỗng.")
+            return set()
+        except Exception as e:
+            logger.error(f"Lỗi khi đọc tệp {self.sent_reminders_path}: {e}")
+            return set()
+
+    async def read_notifications(self):
+        if os.path.exists(self.notifications_path):
+            try:
+                with open(self.notifications_path, 'r', encoding='utf-8') as file:
+                    lines = file.readlines()
+                    notifications = [line.strip() for line in lines if line.strip()]
+                    return notifications
+            except FileNotFoundError:
+                logger.warning(f"Tệp {self.notifications_path} không tồn tại. Trả về tập hợp rỗng.")
+                return set()
+            except Exception as e:
+                logger.error(f"Lỗi khi đọc tệp {self.sent_reminders_path}: {e}")
+                return set()
+        else:
+            logger.warning(f"File {self.notifications_path} không tồn tại.")
+            return set()
 
     async def fetch_page(self, session, url, timeout=20):
         start_time = time.time()
