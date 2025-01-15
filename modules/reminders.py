@@ -44,7 +44,7 @@ class Reminder:
             sent_reminders_set.add(reminder_line)
             await self.save_sent_reminders(sent_reminders_set)
 
-    async def read_remind_from_file(self):
+    async def load_reminders(self):
         try:
             if not os.path.exists(self.reminders_path):
                 logger.warning(f"Tệp {self.reminders_path} không tồn tại. Tạo tệp mới.")
@@ -116,7 +116,7 @@ class Reminder:
     async def check_reminders(self):
         now = datetime.now(timezone)
         now = now.replace(microsecond=0, tzinfo=None)
-        reminders_set = await self.read_remind_from_file()
+        reminders_set = await self.load_reminders()
 
         for reminder_line in reminders_set:
             try:
