@@ -71,7 +71,7 @@ class Reminder:
 
     async def remove_reminder(self, reminder_element):
         try:
-            reminders_set = await self.read_remind_from_file()
+            reminders_set = await self.load_reminders()
             modified = False
 
             # Xóa nhắc nhở cụ thể

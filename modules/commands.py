@@ -77,7 +77,7 @@ class Commands():
             print("Không có thông tin đăng nhập.")
             notifications = "Không có thông tin đăng nhập."
         else:
-            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
+            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
             notifications = await self.husc_notification.get_notification_first_line()
         
         if notifications == "Không có thông tin đăng nhập.":
