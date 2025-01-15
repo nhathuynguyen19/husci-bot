@@ -1,5 +1,6 @@
 import aiohttp
 from bs4 import BeautifulSoup
+from config import logger
 
 class Commands():
     def __init__(self, husc_notification):
@@ -15,6 +16,7 @@ class Commands():
             soup = BeautifulSoup(await login_page.text(), 'html.parser')
             token = soup.find('input', {'name': '__RequestVerificationToken'})
             if not token:
+                logger.error("Không tìm thấy token xác thực!")
                 await ctx.followup.send("Không tìm thấy token xác thực!")
                 return
             login_data = {
@@ -24,6 +26,7 @@ class Commands():
             }
             login_response = await session.post(self.login_url, data=login_data)
             if not await self.husc_notification.is_login_successful(login_response):
+                logger.error("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 return
             password = auth_manager.encrypt_password(password, user_id)
@@ -31,5 +34,6 @@ class Commands():
             if success:
                 await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
             else:
+                logger.error("Tài khoản đã tồn tại.")
                 await ctx.followup.send("Tài khoản đã tồn tại.")
         await user_manager.remember_request(user_id, ctx.user.name, "/login")

@@ -1,4 +1,5 @@
 import json, os, datetime, time
+from config import logger
 
 class UserManager:
     def __init__(self, user_file="data/users.json"):
@@ -30,7 +31,7 @@ class UserManager:
                 content = file.read().strip()
                 data = json.loads(content) if content else []
         except Exception as e:
-            print(f"Lỗi khi đọc file: {e}")
+            logger.error(f"Lỗi khi đọc file: {e}")
             data = []
         if any(existing_user["id"] == user.id for existing_user in data):
             return False

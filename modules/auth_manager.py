@@ -1,5 +1,6 @@
 import base64, time
 from cryptography.fernet import Fernet
+from config import logger
 
 class AuthManager:
     def __init__(self, key):
@@ -22,4 +23,4 @@ class AuthManager:
             print(f"Đã giải mã: {time.time() - start_time:.2f} giây")
             return password
         else:
-            print("ID không khớp!")
+            logger.error("ID không khớp!")
