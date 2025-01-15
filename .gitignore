@@ -2,4 +2,5 @@
 !requirements.txt
 config.py
 __pycache__/
-data/
+*.txt
+*.json
