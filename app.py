@@ -1,3 +1,4 @@
+# Librarys
 import os, json, time, random, logging, asyncio, html, base64, discord, aiohttp, pytz, lxml
 from cryptography.fernet import Fernet
 from discord.ext         import tasks, commands
@@ -26,37 +27,35 @@ timezone               = pytz.timezone('Asia/Ho_Chi_Minh')
 previous_notifications = None
 guilds_info            = []
 
+# Commands
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
     await commands.handle_login(ctx, username, password)
-
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     await commands.handle_notifications(ctx)
-
 @bot.tree.command(name="first", description="Lấy thông báo mới nhất từ HUSC")
 async def first(ctx: discord.Interaction):
     await commands.handle_first(ctx)
-
 @bot.tree.command(name='remind', description="Đặt lịch nhắc nhở")
 async def remind(ctx: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):   
     date_time = datetime(int(year), int(month), int(day), int(hour), int(minute))
-    await commands.handle_remind(ctx, bot, reminder, reminders, date_time)
-    
+    await commands.handle_remind(ctx, bot, reminder, reminders, date_time) 
+
+# Loops
 @tasks.loop(seconds=1)
 async def reminder_loop():
     await reminders.check_reminders()
-
 @tasks.loop(minutes=1)
 async def auto_notifications():
     global previous_notifications
     await loops.handle_auto_notifications(previous_notifications)
-
 @tasks.loop(minutes=10)
 async def update_guilds_info():
     global guilds_info
     await loops.handle_update_guilds_info(guilds_info)
 
+# Events
 @bot.event
 async def on_ready():
     print(f'Truy cập bot thành công với tên: {bot.user}')
@@ -67,4 +66,5 @@ async def on_ready():
     update_guilds_info.start()
     print("Ready")
 
+# Run
 bot.run(bot_config.token)
