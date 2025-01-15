@@ -19,7 +19,7 @@ class AuthManager:
         # Tách chuỗi thành mật khẩu và ID Discord
         password, original_discord_id = decrypted_combined.split(":")
         if int(original_discord_id) == discord_id:
-            print(f"Giải mã thành công: {time.time() - start_time:.2f} giây")
+            print(f"Đã giải mã: {time.time() - start_time:.2f} giây")
             return password
         else:
             print("ID không khớp!")

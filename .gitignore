@@ -1,6 +1,5 @@
 .env
 !requirements.txt
-config.py
 __pycache__/
 *.txt
 *.json
