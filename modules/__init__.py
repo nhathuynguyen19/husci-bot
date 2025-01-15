@@ -3,4 +3,5 @@ from .bot_config import BotConfig
 from .auth_manager import AuthManager
 from .husc_notifications import HUSCNotifications
 from .commands import Commands
-from .reminder import Reminder
+from .reminders import Reminder
+from .loops import Loops

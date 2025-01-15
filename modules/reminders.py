@@ -155,10 +155,10 @@ class Reminder:
             except Exception as e:
                 logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
 
-    async def write_remind_to_file(self, hour, minute, day, month, year, reminder, user_id, channel_id, guild_id):
+    async def write_remind_to_file(self, date_time, reminder, user_id, channel_id, guild_id):
         try:
             with open(self.reminders_path, 'a', encoding='utf-8') as file:
-                reminder_time = datetime(year, month, day, hour, minute)
+                reminder_time = datetime(date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute)
                 file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
                 print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
         except Exception as e:
