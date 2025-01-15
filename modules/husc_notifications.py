@@ -87,7 +87,7 @@ class HUSCNotifications:
     async def check_login_id(self, user_id, user_manager):
         while True:
             if await user_manager.get_user_credentials(user_id):
-                print("Đã có thông tin trong file user.json.")
+                print("Đã có thông tin trong file user.json")
                 return
             else:
                 logger.error("Không có thông tin trong file user.json.")
