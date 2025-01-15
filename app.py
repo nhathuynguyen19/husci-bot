@@ -1,46 +1,30 @@
-# Standard
-import os, json, time, random, logging, asyncio, html, base64
-from datetime import datetime
-
-# Third-party
-import discord, aiohttp, pytz, lxml
-from discord.ext import tasks, commands
+import os, json, time, random, logging, asyncio, html, base64, discord, aiohttp, pytz, lxml
 from cryptography.fernet import Fernet
-from colorama import init, Fore
-from dotenv import load_dotenv
-from pytz import timezone
-from bs4 import BeautifulSoup
-
-# Local
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops
-from paths import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
-from config import admin_id, logger
+from discord.ext         import tasks, commands
+from datetime            import datetime
+from colorama            import init, Fore
+from modules             import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops
+from config              import admin_id, logger
+from dotenv              import load_dotenv
+from paths               import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
+from pytz                import timezone
+from bs4                 import BeautifulSoup
 
 # Objects
-bot_config = BotConfig() 
-bot = bot_config.create_bot()
-auth_manager = AuthManager(bot_config.fixed_key)
-user_manager = UserManager()
+bot_config        = BotConfig() 
+bot               = bot_config.create_bot()
+auth_manager      = AuthManager(bot_config.fixed_key)
+user_manager      = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
-commands = Commands(husc_notification, user_manager, auth_manager)
-reminders = Reminder(reminders_path, sent_reminders_path, bot)
-loops = Loops(husc_notification, user_manager, auth_manager, bot)
+commands          = Commands(husc_notification, user_manager, auth_manager)
+reminders         = Reminder(reminders_path, sent_reminders_path, bot)
+loops             = Loops(husc_notification, user_manager, auth_manager, bot)
 
 # Initialize 
-init(autoreset=True)
-timezone = pytz.timezone('Asia/Ho_Chi_Minh')
+init(autoreset = True)
+timezone               = pytz.timezone('Asia/Ho_Chi_Minh')
 previous_notifications = None
-sent_reminders_set = reminders.load_sent_reminders()
-
-@bot.event
-async def on_ready():
-    print(f'Truy cập bot thành công với tên: {bot.user}')
-    await bot.tree.sync()
-    print("Đã đồng bộ lệnh")
-    auto_notifications.start()
-    reminder_loop.start()
-    update_guilds_info.start()
-    print("Ready")
+guilds_info            = []
 
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
@@ -71,7 +55,16 @@ async def auto_notifications():
 @tasks.loop(minutes=10)
 async def update_guilds_info():
     global guilds_info
-    guilds_info = []
     await loops.handle_update_guilds_info(guilds_info)
+
+@bot.event
+async def on_ready():
+    print(f'Truy cập bot thành công với tên: {bot.user}')
+    await bot.tree.sync()
+    print("Đã đồng bộ lệnh")
+    auto_notifications.start()
+    reminder_loop.start()
+    update_guilds_info.start()
+    print("Ready")
 
 bot.run(bot_config.token)
