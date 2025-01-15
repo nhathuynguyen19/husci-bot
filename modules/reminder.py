@@ -71,62 +71,86 @@ class Reminder:
 
     async def remove_reminder(self, reminder_element):
         try:
-            # Đọc danh sách nhắc nhở đã lưu từ file
             reminders_set = await self.read_remind_from_file()
+            modified = False
 
-            # Nếu nhắc nhở cần xóa có trong danh sách, xóa nó
+            # Xóa nhắc nhở cụ thể
             if reminder_element in reminders_set:
                 reminders_set.remove(reminder_element)
-                # Cập nhật lại file với danh sách nhắc nhở mới
-                await self.save_reminders(reminders_set)
+                modified = True
                 print(f"Nhắc nhở {reminder_element} đã được xóa.")
             else:
                 print(f"Không tìm thấy nhắc nhở {reminder_element} trong danh sách.")
+
+            # Kiểm tra từng nhắc nhở còn lại
+            for reminder in reminders_set.copy():  # Duyệt bản sao để tránh lỗi khi xóa
+                try:
+                    parts = reminder.split(" - ")
+                    date_time = parts[0]
+                    date, time = date_time.split(" ")
+                    day, month, year = map(int, date.split("-"))
+                    hour, minute = map(int, time.split(":"))
+
+                    # Kiểm tra ngày giờ hợp lệ
+                    reminder_date = datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+
+                    # Kiểm tra nếu nhắc nhở đã quá hạn
+                    if reminder_date < datetime.datetime.now():
+                        logger.info(f"Nhắc nhở đã quá hạn: {reminder}")
+                        reminders_set.remove(reminder)
+                        modified = True
+
+                except ValueError as e:  # Lỗi ngày tháng không hợp lệ
+                    logger.error(f"Nhắc nhở không hợp lệ: {reminder}. Lỗi: {e}")
+                    reminders_set.remove(reminder)
+                    modified = True
+                except Exception as e:
+                    logger.error(f"Đã có lỗi xảy ra với nhắc nhở: {reminder}. Lỗi: {e}")
+
+            # Chỉ lưu lại nếu danh sách đã thay đổi
+            if modified:
+                await self.save_reminders(reminders_set)
         except Exception as e:
             logger.error(f"Lỗi khi xóa nhắc nhở: {e}")
 
     async def check_reminders(self):
         now = datetime.now(timezone)
-        if now.tzinfo is None: 
-            now = timezone.localize(now) 
-        reminders_set = await self.read_remind_from_file() 
-        sent_reminders_set = await self.load_sent_reminders()
+        now = now.replace(microsecond=0, tzinfo=None)
+        reminders_set = await self.read_remind_from_file()
+
         for reminder_line in reminders_set:
             try:
                 reminder_parts = reminder_line.strip().split(' - ', 4)
                 if len(reminder_parts) < 5:
                     logger.error(f"Lỗi: Nhắc nhở không hợp lệ: {reminder_line}")
                     continue
-                reminder_time_str = reminder_parts[0]
-                reminder_msg = reminder_parts[1]
-                user_id = int(reminder_parts[2])
-                channel_id = int(reminder_parts[4])
-                # Xử lý thời gian nhắc nhở với định dạng đúng
-                try:
-                    reminder_time = datetime.strptime(reminder_time_str, '%Y-%m-%d %H:%M')
-                    reminder_time = timezone.localize(reminder_time)
-                except ValueError:
-                    logger.error(f"Lỗi: Nhắc nhở với thời gian không hợp lệ: {reminder_time_str}")
-                    continue  # Bỏ qua nhắc nhở này nếu thời gian không hợp lệ
 
-                time_diff = abs((reminder_time - now).total_seconds())
-                if time_diff < 1: 
-                    reminder_element = f"{reminder_time} - {reminder_msg} - {user_id} - {channel_id}"
-                    if reminder_element in sent_reminders_set:
-                        print(f"Nhắc nhở đã được gửi trước đó.")
-                        continue
-                    channel = self.bot.get_channel(channel_id)
-                    if channel:
-                        await channel.send(f"<@{user_id}> Nhắc nhở: {reminder_msg}")
-                        print(f"Nhắc nhở gửi đến kênh {channel_id}: {reminder_msg}")
-                    else:
-                        logger.warning(f"Không tìm thấy kênh với ID: {channel_id}")
+                reminder_time, reminder_msg, user_id_str, _, channel_id_str = reminder_parts
+                date, time = reminder_time.split(' ')
+                year, month, day = map(int, date.split('-'))
+                hour, minute, second = map(int, time.split(':'))
+                reminder_time = datetime(year, month, day, hour, minute, second)
+                # Gửi nhắc nhở
+                user_id = int(user_id_str)
+                channel_id = int(channel_id_str)
+                diff = (reminder_time - now).total_seconds()
+                if diff <= 0:
+                    if diff >= -1:
+                        channel = self.bot.get_channel(channel_id)
+                        if channel:
+                            await channel.send(f"<@{user_id}> Nhắc nhở: {reminder_msg}")
+                            print(f"Nhắc nhở gửi đến kênh {channel_id}: {reminder_msg}")
+                        else:
+                            logger.warning(f"Không tìm thấy kênh với ID: {channel_id}")
 
-                    user = await self.bot.fetch_user(user_id)  
-                    if user:
-                        await user.send(f"Nhắc nhở: {reminder_msg}")
-                        print(f"Nhắc nhở gửi đến người dùng {user_id}: {reminder_msg}")
-                    await self.add_sent_reminder(reminder_element)
+                        user = await self.bot.fetch_user(user_id)  
+                        if user:
+                            await user.send(f"Nhắc nhở: {reminder_msg}")
+                            print(f"Nhắc nhở gửi đến người dùng {user_id}: {reminder_msg}")
+                        else:
+                            logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")
+                    
+                    await self.add_sent_reminder(reminder_line)
                     await self.remove_reminder(reminder_line)
             except Exception as e:
                 logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
@@ -134,7 +158,7 @@ class Reminder:
     async def write_remind_to_file(self, hour, minute, day, month, year, reminder, user_id, channel_id, guild_id):
         try:
             with open(self.reminders_path, 'a', encoding='utf-8') as file:
-                reminder_time = f"{year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}"
+                reminder_time = datetime(year, month, day, hour, minute)
                 file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
                 print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
         except Exception as e:

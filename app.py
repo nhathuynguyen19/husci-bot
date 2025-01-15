@@ -1,22 +1,22 @@
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder
-from paths import sent_reminders_path, reminders_path, notifications_path, login_url, data_url
-import discord, aiohttp, os, json, html, asyncio, base64, pytz, lxml, time, random
+# Standard
+import os, json, time, random, logging, asyncio, html, base64
+from datetime import datetime
+
+# Third-party
+import discord, aiohttp, pytz, lxml
 from discord.ext import tasks, commands
 from cryptography.fernet import Fernet
-from config import admin_id, logger
 from colorama import init, Fore
 from dotenv import load_dotenv
-from datetime import datetime
-from bs4 import BeautifulSoup
 from pytz import timezone
-import logging
+from bs4 import BeautifulSoup
 
-# Initialize colorama
-init(autoreset=True)
-timezone = pytz.timezone('Asia/Ho_Chi_Minh')
-previous_notifications = None
+# Local
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder
+from paths import sent_reminders_path, reminders_path, notifications_path, login_url, data_url
+from config import admin_id, logger
 
-# objects
+# Objects
 bot_config = BotConfig() 
 bot = bot_config.create_bot()
 auth_manager = AuthManager(bot_config.fixed_key)
@@ -25,18 +25,21 @@ husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_k
 commands = Commands(husc_notification)
 reminders = Reminder(reminders_path, sent_reminders_path, bot)
 
+# Initialize 
+init(autoreset=True)
+timezone = pytz.timezone('Asia/Ho_Chi_Minh')
+previous_notifications = None
 sent_reminders_set = reminders.load_sent_reminders()
 
 @bot.event
 async def on_ready():
     print(f'Bot đăng nhập thành công với tên: {bot.user}')
-    print("Đồng bộ lệnh...")
     await bot.tree.sync()
-    print("Đồng bộ lệnh thành công")
+    print("Đã đồng bộ lệnh")
     send_notifications.start()
     reminder_loop.start()
     update_guilds_info.start()
-    print("Bot sẵn sàng nhận lệnh!")
+    print("Ready")
 
 @bot.tree.command(name="login", description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
@@ -96,9 +99,9 @@ async def first(ctx: discord.Interaction):
     await user_manager.remember_request(user_id, ctx.user.name, "/first")
 
 @bot.tree.command(name='remind', description="Đặt lịch nhắc nhở")
-async def remind(interaction: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
+async def remind(ctx: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):    
     try:
-        guild_id = interaction.guild.id if interaction.guild else "DM"
+        guild_id = ctx.guild.id if ctx.guild else "DM"
         if guild_id != "DM":
             guild = bot.get_guild(int(guild_id))
             if guild:
@@ -106,9 +109,9 @@ async def remind(interaction: discord.Interaction, reminder: str, day: int, mont
             else:
                 logger.warning(f"Không tìm thấy server với ID: {guild_id}")
         
-        await interaction.response.defer()  # Đảm bảo không bị timeout
-        await reminders.write_remind_to_file(hour, minute, day, month, year, reminder, interaction.user.id, interaction.channel.id, guild_id)
-        print(f"Nhắc nhở {reminder} đã được ghi vào file.")
+        await ctx.response.defer()  # Đảm bảo không bị timeout
+        await reminders.write_remind_to_file(hour, minute, day, month, year, reminder, ctx.user.id, ctx.channel.id, guild_id)
+        await ctx.followup.send(f"Đặt nhắc nhở '{reminder}' thành công vào lúc: ```{hour:02d}:{minute:02d} {day:02d}-{month:02d}-{year}```")
     except Exception as e:
         logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
     
