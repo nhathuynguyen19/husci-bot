@@ -130,7 +130,6 @@ class HUSCNotifications:
         print(f"Thông tin đăng nhập hợp lệ: {time.time() - start_time:.2f}s")
     
     async def get_notifications(self, user_id, user_manager, auth_manager):
-        print("\nSTART GET NOTIFICATIONS:")
         start_time = time.time()
         credentials = await user_manager.get_user_credentials(user_id)
         if credentials is None:

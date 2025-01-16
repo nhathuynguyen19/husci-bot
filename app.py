@@ -2,7 +2,6 @@ import discord, pytz
 from cryptography.fernet import Fernet
 from discord.ext import tasks, commands
 from datetime import datetime
-from colorama import init, Fore
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, Events
 from paths  import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
 
@@ -18,7 +17,6 @@ loops = Loops(husc_notification, user_manager, auth_manager, bot)
 events = Events(bot)
 
 # Initialize 
-init(autoreset = True)
 timezone = pytz.timezone('Asia/Ho_Chi_Minh')
 previous_notifications = None
 guilds_info = []
@@ -54,7 +52,7 @@ async def update_guilds_info():
 # Events
 @bot.event
 async def on_ready():
-    events.start(auto_notifications, reminder_loop, update_guilds_info)
+    await events.start(auto_notifications, reminder_loop, update_guilds_info)
 
 # Run
 bot.run(bot_config.token)

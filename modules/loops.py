@@ -12,7 +12,7 @@ class Loops:
         self.bot = bot
 
     async def handle_auto_notifications(self, previous_notifications):
-        print("\nSTART LOOP")
+        print("\nSTART AUTO GET NOTIFICATIONS")
         
         if os.path.exists(users_path):
             with open(users_path, 'r', encoding='utf-8') as file:
@@ -37,10 +37,8 @@ class Loops:
         else:
             previous_notifications = None
 
-        print("Đang tiến hành kiểm tra đăng nhập...")
         await self.husc_notification.check_login_id(user_id, self.user_manager)
         try:
-            print("Đang lấy thông báo...")
             task = asyncio.create_task(self.husc_notification.get_notifications(user_id, self.user_manager, self.auth_manager))
             notifications = await task 
             if isinstance(notifications, list) and notifications:
