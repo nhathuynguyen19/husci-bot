@@ -113,7 +113,7 @@ class Loops:
                     user_id = user['id']
                     user = await self.bot.fetch_user(int(user_id))  
                     if user:
-                        await user.send(f"Tin nhắn mới:\n{latest_email}")
+                        await user.send(f"**Tin nhắn mới**:\n{latest_email}")
                         print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
                     else:
                         logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")

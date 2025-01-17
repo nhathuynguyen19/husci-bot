@@ -32,23 +32,31 @@ class UserManager:
             await asyncio.sleep(10)
 
     async def save_user_to_file(self, user, username=None, password=None):
+        if not username or not password:
+            raise ValueError("Username and password must be provided.")
+        
         user_data = {
             "name": user.name,
             "id": user.id,
             "login_id": username,
             "password": password,
         }
-        data = load_json(users_path)
+
+        try:
+            data = load_json(users_path)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = [] 
+
         if any(existing_user["id"] == user.id for existing_user in data):
             return False
+
         data.append(user_data)
-        with open(users_path, "w", encoding="utf-8") as file:
-            json.dump(data, file, ensure_ascii=False, indent=4)
+        
+        try:
+            with open(users_path, "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+        except Exception as e:
+            raise IOError(f"Error saving user data: {e}")
+        
         return True
 
-    async def remember_request(self, user_id, user_name, command):
-        if not os.path.exists("data/request.txt"):
-            with open("data/request.txt", "w", encoding="utf-8") as file:
-                file.write("Dữ liệu request:\n")
-        with open("data/request.txt", "a", encoding="utf-8") as file:
-            file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {datetime.datetime.now()}\n")

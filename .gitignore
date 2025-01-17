@@ -1,6 +1,8 @@
 .env
 !requirements.txt
 __pycache__/
+tempCodeRunnerFile.py 
+temp.py 
 *.txt
 *.json
 *.log
