@@ -31,7 +31,7 @@ class UserManager:
                 logger.error("Không có thông tin trong file user.json.")
             await asyncio.sleep(10)
 
-    async def save_user_to_file(self, user, username=None, password=None):
+    async def save_user_to_file_when_login(self, user, username=None, password=None):
         if not username or not password:
             raise ValueError("Username and password must be provided.")
         
@@ -40,10 +40,11 @@ class UserManager:
             "id": user.id,
             "login_id": username,
             "password": password,
+            "sms": ""
         }
 
         try:
-            data = load_json(users_path)
+            data = await load_json(users_path)
         except (FileNotFoundError, json.JSONDecodeError):
             data = [] 
 
@@ -59,4 +60,8 @@ class UserManager:
             raise IOError(f"Error saving user data: {e}")
         
         return True
+
+    async def remember_request(self, user_id, user_name, command):
+        with open("request.txt", "a", encoding="utf-8") as file:
+            file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {datetime.datetime.now()}\n")
 

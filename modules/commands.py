@@ -35,7 +35,7 @@ class Commands():
                 await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 return
             password = self.auth_manager.encrypt_password(password, user_id)
-            success = await self.user_manager.save_user_to_file(ctx.user, username, password)
+            success = await self.user_manager.save_user_to_file_when_login(ctx.user, username, password)
             if success:
                 await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
             else:
@@ -81,7 +81,7 @@ class Commands():
             notifications = "Không có thông tin đăng nhập"
         else:
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
-            notifications = await self.husc_notification.get_notification_first_line(self)
+            notifications = await self.husc_notification.get_notification_first_line()
         
         if notifications == "Không có thông tin đăng nhập":
             await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
