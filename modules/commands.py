@@ -43,7 +43,6 @@ class Commands():
             else:
                 logger.error("Tài khoản đã tồn tại.")
                 await ctx.followup.send("Tài khoản đã tồn tại.")
-        await self.loops.handle_email(self.email)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/login")
 
     async def handle_logout(self, ctx):
@@ -157,5 +156,5 @@ class Commands():
         elif email:
             await ctx.followup.send(f"**Tin nhắn mới nhất**:\n{email}")
         else:
-            await ctx.followup.send(f"**Hệ thống đang cập nhật tin nhắn**")
+            await ctx.followup.send(f"**Chưa có tin nhắn**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/message")
