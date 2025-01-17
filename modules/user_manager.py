@@ -1,5 +1,7 @@
-import json, os, datetime, time
+import json, os, datetime, time, asyncio
 from config import logger
+from modules.utils.file import load_json
+from paths import users_path
 
 class UserManager:
     def __init__(self, user_file="data/users.json"):
@@ -15,9 +17,19 @@ class UserManager:
                 for user in users:
                     if user["id"] == user_id:
                         return user
+                
                 return None
         except FileNotFoundError:
             return None
+
+    async def check_login_id(self, user_id):
+        while True:
+            if await self.get_user_credentials(user_id):
+                print("Đã có thông tin trong file user.json")
+                return
+            else:
+                logger.error("Không có thông tin trong file user.json.")
+            await asyncio.sleep(10)
 
     async def save_user_to_file(self, user, username=None, password=None):
         user_data = {
@@ -26,17 +38,11 @@ class UserManager:
             "login_id": username,
             "password": password,
         }
-        try:
-            with open(self.user_file, "r", encoding="utf-8") as file:
-                content = file.read().strip()
-                data = json.loads(content) if content else []
-        except Exception as e:
-            logger.error(f"Lỗi khi đọc file: {e}")
-            data = []
+        data = load_json(users_path)
         if any(existing_user["id"] == user.id for existing_user in data):
             return False
         data.append(user_data)
-        with open(self.user_file, "w", encoding="utf-8") as file:
+        with open(users_path, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
         return True
 

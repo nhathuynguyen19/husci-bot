@@ -1,6 +1,9 @@
-import asyncio, os, logging, discord, json, random
+import asyncio, os, logging, discord, json, random, aiohttp
 from config import logger
 from paths import users_path, notifications_path, guilds_info_path
+from switch import switch
+from modules.utils.file import load_json, save_json
+from modules.utils.http import login_page
 
 
 class Loops:
@@ -37,7 +40,7 @@ class Loops:
         else:
             previous_notifications = None
 
-        await self.husc_notification.check_login_id(user_id, self.user_manager)
+        await self.user_manager.check_login_id(user_id)
         try:
             task = asyncio.create_task(self.husc_notification.get_notifications(user_id, self.user_manager, self.auth_manager))
             notifications = await task 
@@ -48,7 +51,7 @@ class Loops:
                     for guild in self.bot.guilds:
                         text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
                         channel = text_channels[0] if text_channels else None
-                        if channel:
+                        if channel and switch:
                             try:
                                 await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
                                 print(f"Đã gửi thông báo đến kênh: {channel.name} trong server: {guild.name}")
@@ -60,9 +63,9 @@ class Loops:
                         f.writelines([f"- {notification}\n" for notification in notifications])
                     previous_notifications = new_notification
                 else:
-                    print("Không có thông báo mới.")
+                    print("Không có thông báo mới")
             else:
-                print("Không thể lấy thông báo hoặc không có thông báo mới.")
+                print("Không thể lấy thông báo hoặc không có thông báo mới")
         except Exception as e:
             logger.error(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
@@ -80,3 +83,48 @@ class Loops:
             guilds_info.append(guild_info)
         with open(guilds_info_path, "w", encoding="utf-8") as f:
             json.dump(guilds_info, f, ensure_ascii=False, indent=4)
+
+    async def handle_email(self, email_object):
+        # Đọc dữ liệu người dùng từ JSON
+        users_data = await load_json(users_path)
+        tasks = []
+        results = []
+        
+        for user in users_data:
+            login_id, encrypted_password = user.get("login_id"), user.get("password")
+            password = self.auth_manager.decrypt_password(encrypted_password, user.get("id"))
+
+            # Tạo một session riêng cho mỗi người dùng
+            async with aiohttp.ClientSession() as session:  # Tạo session riêng cho mỗi user
+                task = asyncio.create_task(email_object.fetch_data(session, login_id, password))  # Truyền session vào fetch_data
+                tasks.append((user, task))
+                print(f"Session for {login_id}: {session}")
+                # Chờ các tác vụ hoàn thành
+                completed_tasks = await asyncio.gather(*[task for _, task in tasks])
+
+        # Sau khi tất cả các tác vụ hoàn thành, xử lý kết quả
+        for (user, result) in zip([user for user, _ in tasks], completed_tasks):
+            latest_email = result
+            if "sms" not in user:
+                user["sms"] = latest_email
+            else:
+                if user["sms"] != latest_email:
+                    user["sms"] = latest_email
+                    user_id = user['id']
+                    user = await self.bot.fetch_user(int(user_id))  
+                    if user:
+                        await user.send(f"Tin nhắn mới:\n{latest_email}")
+                        print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
+                    else:
+                        logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")
+                    
+            if isinstance(user, dict) and "login_id" in user:
+                results.append({
+                    "login_id": user["login_id"],
+                    "sms": user.get("sms", None)  # Mặc định trả về None nếu không có key "sms"
+                })
+            else:
+                logger.warning(f"Dữ liệu user không hợp lệ: {user}")
+
+        save_json(users_path, users_data)
+        return results

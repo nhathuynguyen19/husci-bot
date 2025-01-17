@@ -1,6 +1,9 @@
 import aiohttp, time
 from bs4 import BeautifulSoup
 from config import logger
+from modules.utils.http import is_login_successful
+from modules.utils.file import add_reminder
+from paths import data_url
 
 class Commands():
     def __init__(self, husc_notification, user_manager, auth_manager):
@@ -27,7 +30,7 @@ class Commands():
                 "__RequestVerificationToken": token['value']
             }
             login_response = await session.post(self.login_url, data=login_data)
-            if not await self.husc_notification.is_login_successful(login_response):
+            if not await is_login_successful(login_response):
                 logger.error("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 return
@@ -49,17 +52,17 @@ class Commands():
         start_time = time.time()
         credentials = await self.user_manager.get_user_credentials(user_id)
         if credentials is None:
-            print("Không có thông tin đăng nhập.")
-            notifications = "Không có thông tin đăng nhập."
+            logger.warning("Không có thông tin đăng nhập")
+            notifications = "Không có thông tin đăng nhập"
         else:
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
             notifications = await self.husc_notification.read_notifications()
 
-        if notifications == "Không có thông tin đăng nhập.":
+        if notifications == "Không có thông tin đăng nhập":
             await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
             return
-        if notifications == "Không có thông báo mới.":
-            await ctx.followup.send(f"**Không có thông báo mới.**")
+        if notifications == "Không có thông báo mới":
+            await ctx.followup.send(f"**Không có thông báo mới**")
         else:
             formatted_notifications = "\n".join([f"{notification}" for notification in notifications])
             await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
@@ -74,17 +77,17 @@ class Commands():
         start_time = time.time()
         credentials = await self.user_manager.get_user_credentials(user_id)
         if credentials is None:
-            print("Không có thông tin đăng nhập.")
-            notifications = "Không có thông tin đăng nhập."
+            logger.warning("Không có thông tin đăng nhập")
+            notifications = "Không có thông tin đăng nhập"
         else:
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
-            notifications = await self.husc_notification.get_notification_first_line()
+            notifications = await self.husc_notification.get_notification_first_line(self)
         
-        if notifications == "Không có thông tin đăng nhập.":
+        if notifications == "Không có thông tin đăng nhập":
             await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
             return
-        if notifications == "Không có thông báo mới.":
-            await ctx.followup.send(f"**Không có thông báo mới.**")
+        if notifications == "Không có thông báo mới":
+            await ctx.followup.send(f"**Không có thông báo mới**")
         elif notifications:
             await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{notifications}")
         else:
@@ -102,7 +105,33 @@ class Commands():
                     logger.warning(f"Không tìm thấy server với ID: {guild_id}")
             
             await ctx.response.defer()  # Đảm bảo không bị timeout
-            await reminders.write_remind_to_file(date_time, reminder, ctx.user.id, ctx.channel.id, guild_id)
+            await add_reminder(date_time, reminder, ctx.user.id, ctx.channel.id, guild_id)
             await ctx.followup.send(f"Đặt nhắc nhở '{reminder}' thành công vào lúc: ```{date_time.hour:02d}:{date_time.minute:02d} {date_time.day:02d}-{date_time.month:02d}-{date_time.year}```")
         except Exception as e:
             logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
+
+    async def handle_message(self, ctx):
+        user_id = ctx.user.id
+        if not ctx.response.is_done():
+            await ctx.response.defer(ephemeral=True)
+
+        email = None
+        start_time = time.time()
+        credentials = await self.user_manager.get_user_credentials(user_id)
+        if credentials is None:
+            logger.warning("Không có thông tin đăng nhập")
+            email = "Không có thông tin đăng nhập"
+        else:
+            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
+            email = credentials["sms"]
+        
+        if email == "Không có thông tin đăng nhập":
+            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            return
+        if email == "Không có tin nhắn mới":
+            await ctx.followup.send(f"**Không có tin nhắn mới**")
+        elif email:
+            await ctx.followup.send(f"**Tin nhắn mới nhất**:\n{email}")
+        else:
+            await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy tin nhắn.**")
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/message")
