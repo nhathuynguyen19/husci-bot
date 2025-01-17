@@ -11,10 +11,10 @@ bot = bot_config.create_bot()
 auth_manager = AuthManager(bot_config.fixed_key)
 user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
-commands = Commands(husc_notification, user_manager, auth_manager)
 reminders = Reminder(reminders_path, sent_reminders_path, bot)
 loops = Loops(husc_notification, user_manager, auth_manager, bot)
 email = Email(data_url[1], login_url)
+commands = Commands(husc_notification, user_manager, auth_manager, loops, email)
 
 # Initialize 
 init(autoreset=True)
@@ -25,6 +25,9 @@ guilds_info = []
 @bot.tree.command(name="login",description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
     await commands.handle_login(ctx, username, password)
+@bot.tree.command(name="logout", description="Đăng xuất")
+async def login(ctx):
+    await commands.handle_logout(ctx)
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     await commands.handle_notifications(ctx)

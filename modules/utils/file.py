@@ -18,7 +18,7 @@ async def load_json(path):
             f.write('[]')
         return []
 # save
-def save_json(file_path, data):
+async def save_json(file_path, data):
     """Lưu dữ liệu vào file JSON."""
     try:
         with open(file_path, 'w', encoding='utf-8') as f:

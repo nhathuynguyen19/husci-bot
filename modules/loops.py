@@ -1,4 +1,4 @@
-import asyncio, os, logging, discord, json, random, aiohttp
+import asyncio, os, logging, discord, json, random, aiohttp, time
 from config import logger
 from paths import users_path, notifications_path, guilds_info_path
 from switch import switch
@@ -92,7 +92,8 @@ class Loops:
         
         for user in users_data:
             login_id, encrypted_password = user.get("login_id"), user.get("password")
-            password = self.auth_manager.decrypt_password(encrypted_password, user.get("id"))
+            start_time = time.time()
+            password = await self.auth_manager.decrypt_password(encrypted_password, user.get("id"))
 
             # Tạo một session riêng cho mỗi người dùng
             async with aiohttp.ClientSession() as session:  # Tạo session riêng cho mỗi user
@@ -126,5 +127,5 @@ class Loops:
             else:
                 logger.warning(f"Dữ liệu user không hợp lệ: {user}")
 
-        save_json(users_path, users_data)
+        await save_json(users_path, users_data)
         return results

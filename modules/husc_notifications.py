@@ -92,8 +92,10 @@ class HUSCNotifications:
             return "Không có thông tin đăng nhập"
         print(f"Tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f} giây")
         login_id, encrypted_password = credentials.get("login_id"), credentials.get("password")
-        await self.check_login_infomation(login_id, encrypted_password)
-        password = auth_manager.decrypt_password(encrypted_password, user_id) 
+        start_time = time.time()
+        await self.check_login_infomation(login_id, encrypted_password, start_time)
+        start_time = time.time()
+        password = await auth_manager.decrypt_password(encrypted_password, user_id, start_time) 
         async with aiohttp.ClientSession() as session:
             task = asyncio.create_task(self.fetch_data(session, login_id, password))
             return await task

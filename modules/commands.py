@@ -2,15 +2,17 @@ import aiohttp, time
 from bs4 import BeautifulSoup
 from config import logger
 from modules.utils.http import is_login_successful
-from modules.utils.file import add_reminder
-from paths import data_url
+from modules.utils.file import add_reminder, load_json, save_json
+from paths import data_url, users_path
 
 class Commands():
-    def __init__(self, husc_notification, user_manager, auth_manager):
+    def __init__(self, husc_notification, user_manager, auth_manager, loops, email):
         self.login_url = husc_notification.login_url
         self.husc_notification = husc_notification
         self.user_manager = user_manager
         self.auth_manager = auth_manager
+        self.loops = loops
+        self.email = email
 
     async def handle_login(self, ctx, username: str, password: str):
         user_id = ctx.user.id
@@ -34,14 +36,35 @@ class Commands():
                 logger.error("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
                 return
-            password = self.auth_manager.encrypt_password(password, user_id)
+            password = await self.auth_manager.encrypt_password(password, user_id)
             success = await self.user_manager.save_user_to_file_when_login(ctx.user, username, password)
             if success:
                 await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
             else:
                 logger.error("Tài khoản đã tồn tại.")
                 await ctx.followup.send("Tài khoản đã tồn tại.")
+        await self.loops.handle_email(self.email)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/login")
+
+    async def handle_logout(self, ctx):
+        condition = False
+        user_id = ctx.user.id
+        if not ctx.response.is_done():
+            await ctx.response.defer(ephemeral=False)
+        users = await load_json(users_path)
+
+        for user in users:
+            if user_id == user.get("id"):
+                users.remove(user)
+                condition = True
+                logger.warning(f"Người dùng {user.get("name")} đã đăng xuất")
+                await ctx.followup.send("Đã đăng xuất")
+                break
+
+        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+        if condition:
+            await save_json(users_path, users)
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
 
     async def handle_notifications(self, ctx):
         user_id = ctx.user.id
@@ -133,5 +156,5 @@ class Commands():
         elif email:
             await ctx.followup.send(f"**Tin nhắn mới nhất**:\n{email}")
         else:
-            await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy tin nhắn.**")
+            await ctx.followup.send(f"**Hệ thống đang cập nhật tin nhắn**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/message")

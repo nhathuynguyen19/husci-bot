@@ -1,4 +1,4 @@
-import os, discord, base64
+import os, discord, base64, asyncio
 from dotenv import load_dotenv
 from discord.ext import commands
 from config import logger
