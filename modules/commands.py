@@ -61,7 +61,8 @@ class Commands():
                 await ctx.followup.send("Đã đăng xuất")
                 break
 
-        await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+        if not condition:
+            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
         if condition:
             await save_json(users_path, users)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
