@@ -69,7 +69,7 @@ class HUSCNotifications:
         ][:5]
         return notifications if notifications else "Không có thông báo mới"
     
-    async def check_login_infomation(self, login_id, encrypted_password, start_time=time.time()):
+    async def check_login_infomation(self, login_id, encrypted_password, start_time):
         if not login_id or not encrypted_password:
             logger.error("Thông tin đăng nhập không hợp lệ.")
             return "Thông tin đăng nhập không hợp lệ."

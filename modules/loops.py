@@ -93,7 +93,7 @@ class Loops:
         for user in users_data:
             login_id, encrypted_password = user.get("login_id"), user.get("password")
             start_time = time.time()
-            password = await self.auth_manager.decrypt_password(encrypted_password, user.get("id"))
+            password = await self.auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
 
             # Tạo một session riêng cho mỗi người dùng
             async with aiohttp.ClientSession() as session:  # Tạo session riêng cho mỗi user
@@ -110,10 +110,11 @@ class Loops:
                 user["sms"] = latest_email
             else:
                 if user["sms"] != latest_email:
+                    new_login = user["sms"]
                     user["sms"] = latest_email
                     user_id = user['id']
                     user = await self.bot.fetch_user(int(user_id))  
-                    if user:
+                    if user and new_login != "":
                         await user.send(f"**Tin nhắn mới**:\n{latest_email}")
                         print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
                     else:
@@ -122,7 +123,7 @@ class Loops:
             if isinstance(user, dict) and "login_id" in user:
                 results.append({
                     "login_id": user["login_id"],
-                    "sms": user.get("sms", None)  # Mặc định trả về None nếu không có key "sms"
+                    "sms": user.get("sms", "")  # Mặc định trả về None nếu không có key "sms"
                 })
             else:
                 logger.warning(f"Dữ liệu user không hợp lệ: {user}")

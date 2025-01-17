@@ -11,7 +11,7 @@ class AuthManager:
         encrypted = self.fernet.encrypt(combined.encode())
         return base64.b64encode(encrypted).decode("utf-8")
 
-    async def decrypt_password(self, encrypted_password, discord_id, start_time=time.time()):
+    async def decrypt_password(self, encrypted_password, discord_id, start_time):
         encrypted_password_base64 = base64.b64decode(encrypted_password)
         
         # Tiến hành giải mã bằng Fernet
