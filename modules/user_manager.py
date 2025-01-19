@@ -15,7 +15,7 @@ class UserManager:
             with open(self.user_file, "r", encoding="utf-8") as file:
                 users = json.load(file)
                 for user in users:
-                    if user["id"] == user_id:
+                    if user.get("id") == user_id:
                         return user
                 
                 return None

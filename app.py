@@ -1,8 +1,8 @@
 import discord
 from discord.ext import tasks, commands
 from datetime import datetime
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, Email
-from paths  import sent_reminders_path, reminders_path, notifications_path, login_url, data_url
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, UsersHandler
+from paths  import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
 from colorama import init, Fore
 
 # Objects
@@ -13,8 +13,8 @@ user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
 reminders = Reminder(reminders_path, sent_reminders_path, bot)
 loops = Loops(husc_notification, user_manager, auth_manager, bot)
-email = Email(data_url[1], login_url)
-commands = Commands(husc_notification, user_manager, auth_manager, loops, email)
+email_handler = UsersHandler(auth_manager, bot, users_path)
+commands = Commands(husc_notification, user_manager, auth_manager, loops, email_handler)
 
 # Initialize 
 init(autoreset=True)
@@ -54,18 +54,21 @@ async def one_minute():
 async def ten_minutes():
     global guilds_info
     await loops.handle_update_guilds_info(guilds_info)
-    await loops.handle_email(email)
 
 # Events
 @bot.event
 async def on_ready():
-    print(f'Truy cập bot thành công với tên: {Fore.GREEN}{bot.user}')
+    print(f'{Fore.GREEN}{bot.user} {Fore.WHITE}đang đồng bộ lệnh')
     await bot.tree.sync()
+    
     print("Đã đồng bộ lệnh")
     one_second.start()
     one_minute.start()
     ten_minutes.start()
     print("Ready")
+    
+    # init
+    await email_handler.handle_users()
 
 # Run
 bot.run(bot_config.token)

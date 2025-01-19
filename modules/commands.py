@@ -6,13 +6,13 @@ from modules.utils.file import add_reminder, load_json, save_json
 from paths import data_url, users_path
 
 class Commands():
-    def __init__(self, husc_notification, user_manager, auth_manager, loops, email):
+    def __init__(self, husc_notification, user_manager, auth_manager, loops, email_handler):
         self.login_url = husc_notification.login_url
         self.husc_notification = husc_notification
         self.user_manager = user_manager
         self.auth_manager = auth_manager
         self.loops = loops
-        self.email = email
+        self.email_handler = email_handler
 
     async def handle_login(self, ctx, username: str, password: str):
         user_id = ctx.user.id

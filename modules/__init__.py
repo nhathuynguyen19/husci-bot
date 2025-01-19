@@ -5,4 +5,4 @@ from .husc_notifications import HUSCNotifications
 from .commands import Commands
 from .reminders import Reminder
 from .loops import Loops
-from .email import Email
+from .users_handler import UsersHandler
