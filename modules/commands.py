@@ -202,7 +202,7 @@ class Commands():
             # Load nội dung của file Markdown từng dòng
             lines = await load_md_line_by_line(output_path)
 
-            await user_obj.send(f"**Cập nhật cuối**:\n```\n{lines[0]}\n{lines[1]}\n```")
+            await user_obj.send(f"**Lịch sử học tập**:\n```\n{lines[0]}\n{lines[1]}\n```")
             
             for line in lines:
                 if line != lines[0] and line != lines[1]:
