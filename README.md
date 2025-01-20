@@ -6,14 +6,18 @@ Hue University of Sciences Discord-Bot
 ## Commands
 
 - `/login` : Dùng để đăng nhập trang web.
+- `/logout` : Đăng xuất.
 - `/first` : Lấy thông báo mới nhất.
 - `/notifications` : Lấy các thông báo mới nhất.
-- `/remindall` : Lên lịch nhắc nhở.
+- `/remind` : Lên lịch nhắc nhở.
+- `/message` : Tin nhắn mới nhất.
+- `/lastscore` : Lần cập nhật điểm cuối cùng.
+- `/fullscore` : Lịch sử quá trình học tập.
 - Update...
 
 ## Web Push
 
-Tự động thông báo vào kênh Discord mỗi khi có thông tin mới ở https://student.husc.edu.vn/News.
+Tự động thông báo vào kênh Discord mỗi khi có thông tin mới về thông báo, tin nhắn, điểm thi,...
 
 ## Trang web lấy dữ liệu
 
