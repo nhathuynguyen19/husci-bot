@@ -1,9 +1,10 @@
-import discord
+import discord, subprocess
 from discord.ext import tasks, commands
 from datetime import datetime
-from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, UsersHandler
+from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, EmailsHandler
 from paths  import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
 from colorama import init, Fore
+from modules.utils.http import handle_users
 
 # Objects
 bot_config = BotConfig() 
@@ -13,8 +14,8 @@ user_manager = UserManager()
 husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
 reminders = Reminder(reminders_path, sent_reminders_path, bot)
 loops = Loops(husc_notification, user_manager, auth_manager, bot)
-email_handler = UsersHandler(auth_manager, bot, users_path)
-commands = Commands(husc_notification, user_manager, auth_manager, loops, email_handler)
+emails_handler = EmailsHandler(auth_manager, bot, users_path)
+commands = Commands(husc_notification, user_manager, auth_manager, loops, emails_handler)
 
 # Initialize 
 init(autoreset=True)
@@ -41,6 +42,9 @@ async def remind(ctx: discord.Interaction, reminder: str, day: int, month: int, 
 @bot.tree.command(name="message", description="Xem tin nhắn mới nhất")
 async def message(ctx):
     await commands.handle_message(ctx)
+@bot.tree.command(name="lastscore", description="Xem lại cập nhật điểm lần cuối")
+async def last_score(ctx):
+    await commands.handle_last_score(ctx, bot)
     
 # Loops
 @tasks.loop(seconds=1)
@@ -68,7 +72,7 @@ async def on_ready():
     print("Ready")
     
     # init
-    await email_handler.handle_users()
-
+    await handle_users(auth_manager, bot, emails_handler)
+    
 # Run
 bot.run(bot_config.token)

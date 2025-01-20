@@ -6,3 +6,4 @@ python-dotenv
 pyzt
 lxml
 colorama
+markdown

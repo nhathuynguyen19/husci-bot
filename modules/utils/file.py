@@ -1,6 +1,53 @@
 from config import logger
-import asyncio, os, datetime, json
+import asyncio, os, datetime, json, unicodedata, markdown
 from paths import sent_reminders_path, reminders_path
+
+# html
+# md to html
+async def md_to_html(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        md_content = file.read()
+    html_content = markdown.markdown(md_content)
+    return html_content
+# save html
+async def save_html(file_path, data):
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(data)
+        print(f"Dữ liệu đã được lưu thành công vào {file_path}")
+    except Exception as e:
+        logger.error(f"Đã xảy ra lỗi khi lưu dữ liệu: {e}")
+        
+# md
+# save
+async def save_md(file_path, data):
+    """Lưu dữ liệu vào file MD dưới dạng văn bản thuần túy."""
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(data)
+        print(f"Dữ liệu đã được lưu thành công vào {file_path}")
+    except Exception as e:
+        logger.error(f"Đã xảy ra lỗi khi lưu dữ liệu: {e}")
+# load
+async def load_md(file_path):
+    try:
+        # Kiểm tra nếu tệp tồn tại
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+            return content
+        else:
+            print(f"Không tìm thấy tệp tại đường dẫn: {file_path}")
+            return None
+    except Exception as e:
+        print(f"Đã xảy ra lỗi khi tải tệp: {e}")
+        return None
+        
+# str
+async def remove_accents(input_str):
+    normalized_str = unicodedata.normalize('NFD', input_str)
+    filtered_str = ''.join(c for c in normalized_str if unicodedata.category(c) != 'Mn')
+    return filtered_str
 
 # json
 # load
@@ -25,7 +72,7 @@ async def save_json(file_path, data):
             json.dump(data, f, ensure_ascii=False, indent=4)
         print(f"Dữ liệu đã được lưu thành công vào {file_path}")
     except Exception as e:
-        print(f"Đã xảy ra lỗi khi lưu dữ liệu: {e}")
+        logger.error(f"Đã xảy ra lỗi khi lưu dữ liệu: {e}")
 
 # txt
 # load

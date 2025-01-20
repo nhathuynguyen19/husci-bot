@@ -1,18 +1,18 @@
-import aiohttp, time
+import aiohttp, time, os, discord
 from bs4 import BeautifulSoup
 from config import logger
 from modules.utils.http import is_login_successful
-from modules.utils.file import add_reminder, load_json, save_json
-from paths import data_url, users_path
+from modules.utils.file import add_reminder, load_json, save_json, load_md
+from paths import data_url, users_path, BASE_DIR
 
 class Commands():
-    def __init__(self, husc_notification, user_manager, auth_manager, loops, email_handler):
+    def __init__(self, husc_notification, user_manager, auth_manager, loops, emails_handler):
         self.login_url = husc_notification.login_url
         self.husc_notification = husc_notification
         self.user_manager = user_manager
         self.auth_manager = auth_manager
         self.loops = loops
-        self.email_handler = email_handler
+        self.emails_handler = emails_handler
 
     async def handle_login(self, ctx, username: str, password: str):
         user_id = ctx.user.id
@@ -158,3 +158,27 @@ class Commands():
         else:
             await ctx.followup.send(f"**Chưa có tin nhắn**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/message")
+
+    async def handle_last_score(self, ctx, bot):
+        user_id = ctx.user.id
+        users = await load_json(users_path)
+        login_id = None
+
+        for user in users:
+            if user["id"] == user_id:
+                login_id = user["login_id"]
+        
+        if not ctx.response.is_done():
+            await ctx.response.defer(ephemeral=True)
+
+        user_obj = await bot.fetch_user(int(user_id))
+        if user_obj:
+            message = "**Cập nhật cuối**:\n```"
+            output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
+            message += await load_md(output_path)
+            message += "\n```"
+            await user_obj.send(message)
+            await ctx.followup.send(f"**Done!**")
+        else:
+            await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
+            logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
