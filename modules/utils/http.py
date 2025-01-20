@@ -1,7 +1,7 @@
 import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
 from config import logger
-from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md
+from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
@@ -162,6 +162,28 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             # Kiểm tra dữ liệu, cập nhật, thông báo
             scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', f"{login_id}.json")
             old_scores = await load_json(scores_file_path)
+
+            default_len = len("Lop hoc phan")
+            max_length_data = max(len(s["Lop hoc phan"]) for s in format_data_json)
+            length_LHP = max(default_len, max_length_data)
+            length_LH = len("Lan hoc")
+            length_QTHT = len("Diem QTHT")
+            length_DT = len("Diem thi")
+            length_TD = len("Tong diem")
+            
+            markdown_table = f"| {'Lop hoc phan': <{length_LHP}} | {'Diem QTHT': <{length_QTHT}} | {'Diem thi': <{length_DT}} | {'Tong diem': <{length_TD}} |\n"
+            markdown_table += f"| {'-' * length_LHP} | {'-' * length_QTHT} | {'-' * length_DT} | {'-' * length_TD} |\n"
+            markdown_table_full = markdown_table
+
+            for item in format_data_json:
+                markdown_table_full += f"| {item['Lop hoc phan']:<{length_LHP}} | {item['Diem QTHT']:<{length_QTHT}} | {item['Diem thi']:<{length_DT}} | {item['Tong diem']:<{length_TD}} |\n"
+
+            markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
+
+            old_full_markdown = await load_md(markdown_full_file_path)
+            if old_full_markdown != markdown_table_full:
+                await save_md(markdown_full_file_path, markdown_table_full)
+            
             if old_scores != format_data_json:
                 if old_scores != []:
                     diffs = []
@@ -172,24 +194,20 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                                 diffs.append(obj2)
                                 break
                             
-                    default_len = len("Lop hoc phan")
                     max_length_diffs = max(len(s["Lop hoc phan"]) for s in diffs)
                     length_LHP = max(default_len, max_length_diffs)
-                    length_LH = len("Lan hoc")
-                    length_QTHT = len("Diem QTHT")
-                    length_DT = len("Diem thi")
-                    length_TD = len("Tong diem")
 
                     # Tạo bảng Markdown với độ rộng cột phù hợp
                     # Định dạng đúng bảng Markdown với dấu đóng đúng vị trí
                     markdown_table = f"| {'Lop hoc phan': <{length_LHP}} | {'Diem QTHT': <{length_QTHT}} | {'Diem thi': <{length_DT}} | {'Tong diem': <{length_TD}} |\n"
                     markdown_table += f"| {'-' * length_LHP} | {'-' * length_QTHT} | {'-' * length_DT} | {'-' * length_TD} |\n"
-
+                    
                     for item in diffs:
                         markdown_table += f"| {item['Lop hoc phan']:<{length_LHP}} | {item['Diem QTHT']:<{length_QTHT}} | {item['Diem thi']:<{length_DT}} | {item['Tong diem']:<{length_TD}} |\n"
 
                     markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
                     await save_md(markdown_file_path, markdown_table)
+                    
                     print(markdown_table)
                     user_id = user['id']
                     user_obj = await bot.fetch_user(int(user_id))

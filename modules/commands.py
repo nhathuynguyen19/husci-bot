@@ -1,6 +1,6 @@
 import aiohttp, time, os, discord
 from bs4 import BeautifulSoup
-from config import logger
+from config import logger, load_md_line_by_line
 from modules.utils.http import is_login_successful
 from modules.utils.file import add_reminder, load_json, save_json, load_md
 from paths import data_url, users_path, BASE_DIR
@@ -178,6 +178,36 @@ class Commands():
             message += await load_md(output_path)
             message += "\n```"
             await user_obj.send(message)
+            await ctx.followup.send(f"**Done!**")
+        else:
+            await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
+            logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
+
+    async def handle_full_score(self, ctx, bot):
+        user_id = ctx.user.id
+        users = await load_json(users_path)
+        login_id = None
+
+        for user in users:
+            if user["id"] == user_id:
+                login_id = user["login_id"]
+        
+        if not ctx.response.is_done():
+            await ctx.response.defer(ephemeral=True)
+
+        user_obj = await bot.fetch_user(int(user_id))
+        if user_obj:
+            output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
+            
+            # Load nội dung của file Markdown từng dòng
+            lines = await load_md_line_by_line(output_path)
+
+            await user_obj.send(f"**Cập nhật cuối**:\n```\n{lines[0]}\n{lines[1]}\n```")
+            
+            for line in lines:
+                if line != lines[0] and line != lines[1]:
+                    await user_obj.send(f"\n```\n{line}\n```")
+            
             await ctx.followup.send(f"**Done!**")
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
