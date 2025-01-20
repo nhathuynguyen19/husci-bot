@@ -171,6 +171,15 @@ class Commands():
         if not ctx.response.is_done():
             await ctx.response.defer(ephemeral=True)
 
+        start_time = time.time()
+        credentials = await self.user_manager.get_user_credentials(user_id)
+        if credentials is None:
+            logger.warning("Không có thông tin đăng nhập")
+            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            return
+        else:
+            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
+
         user_obj = await bot.fetch_user(int(user_id))
         if user_obj:
             message = "**Cập nhật cuối**:\n```"
@@ -194,6 +203,15 @@ class Commands():
         
         if not ctx.response.is_done():
             await ctx.response.defer(ephemeral=True)
+
+        start_time = time.time()
+        credentials = await self.user_manager.get_user_credentials(user_id)
+        if credentials is None:
+            logger.warning("Không có thông tin đăng nhập")
+            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            return
+        else:
+            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
 
         user_obj = await bot.fetch_user(int(user_id))
         if user_obj:
