@@ -1,4 +1,3 @@
-
 import time, aiohttp, asyncio
 from config import logger
 from bs4 import BeautifulSoup
@@ -13,13 +12,23 @@ class EmailsHandler:
         self.users_path = users_path
 
     async def process_result(self, result):
-        users_data = await load_json(self.users_path)
+        try:
+            # Load dữ liệu người dùng từ file
+            users_data = await load_json(self.users_path)
 
-        # Cập nhật sms cho user có id trùng với id trong result
-        for user in users_data:
-            if user["id"] == result["id"]:
-                user["sms"] = result["sms"]  # Chỉ cập nhật sms
-                break
+            # Cập nhật sms cho user có id trùng với id trong result
+            updated = False
+            for user in users_data:
+                if user["id"] == result["id"]:
+                    if user.get("sms") != result["sms"]:  # Chỉ cập nhật nếu có thay đổi
+                        user["sms"] = result["sms"]
+                        updated = True
+                    break  # Dừng vòng lặp khi đã tìm thấy người dùng
 
-        await save_json(self.users_path, users_data)
+            # Lưu lại dữ liệu người dùng đã cập nhật
+            if updated:
+                await save_json(self.users_path, users_data)
+                print(f"Dữ liệu người dùng {result['id']} đã được cập nhật.")
+        except Exception as e:
+            print(f"Lỗi khi xử lý kết quả: {str(e)}")
 

@@ -39,7 +39,8 @@ class UserManager:
             "name": user.name,
             "id": user.id,
             "login_id": username,
-            "password": password
+            "password": password,
+            "sms": ""
         }
 
         try:

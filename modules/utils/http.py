@@ -96,36 +96,37 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             emails = [
                 f"[{link.text.strip()}](https://student.husc.edu.vn{link['href']})"
                 for link in filtered_links
-            ][:5]
+            ][:1]
 
-            user_obj = None
-            user_id = None
             Changed = False
             if emails:
                 latest_email = emails[0]
+            else:
+                latest_email = ""
                 
-                if "sms" not in user:
-                    user["sms"] = latest_email
+            if "sms" not in user:
+                user["sms"] = latest_email
+                Changed = True
+            else:
+                if user["sms"] != latest_email:
                     Changed = True
-                else:
-                    if user["sms"] != latest_email:
-                        Changed = True
-                        old_message = user["sms"]
-                        user["sms"] = latest_email
-                        user_id = user['id']
-                        user_obj = await bot.fetch_user(int(user_id))
-                        if user_obj and old_message != "":
-                            await user_obj.send(f"**Tin nhắn mới**:\n{latest_email}")
-                            print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
-                        else:
-                            print(f"Không tìm thấy người dùng với ID: {user_id}")
-                            
-                if Changed:
-                    result = {
-                        "id": user["id"],
-                        "sms": user.get("sms", "")
-                    }
-                    await emails_handler.process_result(result)
+                    old_message = user["sms"]
+                    user["sms"] = latest_email
+                    user_id = user['id']
+                    user_obj = await bot.fetch_user(int(user_id))
+                    if user_obj and old_message != "":
+                        await user_obj.send(f"**Tin nhắn mới**:\n{latest_email}")
+                        print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
+                    else:
+                        print(f"Không tìm thấy người dùng với ID: {user_id}")
+                        
+            if Changed:
+                result = {
+                    "id": user["id"],
+                    "sms": user.get("sms", "")
+                }
+                await emails_handler.process_result(result)
+                
 
             # Cập nhật bảng điểm:
             tbody = scores_list.find('tbody')
