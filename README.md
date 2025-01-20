@@ -9,7 +9,7 @@ Hue University of Sciences Discord-Bot
 - `/logout` : Đăng xuất.
 - `/first` : Lấy thông báo mới nhất.
 - `/notifications` : Lấy các thông báo mới nhất.
-- `/remindall` : Lên lịch nhắc nhở.
+- `/remind` : Lên lịch nhắc nhở.
 - `/message` : Tin nhắn mới nhất.
 - `/lastscore` : Lần cập nhật điểm cuối cùng.
 - `/fullscore` : Lịch sử quá trình học tập.
