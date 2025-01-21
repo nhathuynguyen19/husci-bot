@@ -192,6 +192,8 @@ class Commands():
                 message += "\n```"
                 await user_obj.send(message)
                 await ctx.followup.send(f"**Done!**")
+            else:
+                await ctx.followup.send(f"**Không có cập nhật cuối**")
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
