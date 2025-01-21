@@ -225,7 +225,7 @@ class Commands():
         if user_obj:
             output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
             output = await load_md(output_path)
-            await ctx.followup.send(f"Lịch sử quá trình học tập\n```\n{output}\n```")
+            await ctx.followup.send(f"**Lịch sử quá trình học tập:**\n```\n{output}\n```")
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
