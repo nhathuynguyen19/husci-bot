@@ -191,6 +191,7 @@ class Commands():
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/lastscore")
 
     async def handle_full_score(self, ctx, bot):
         user_id = ctx.user.id
@@ -230,3 +231,4 @@ class Commands():
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/fullscore")
