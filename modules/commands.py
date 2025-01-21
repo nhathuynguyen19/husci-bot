@@ -185,12 +185,13 @@ class Commands():
 
         user_obj = await bot.fetch_user(int(user_id))
         if user_obj:
-            message = "**Cập nhật cuối**:\n```"
-            output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
-            message += await load_md(output_path)
-            message += "\n```"
-            await user_obj.send(message)
-            await ctx.followup.send(f"**Done!**")
+            if os.path.exists(output_path):
+                message = "**Cập nhật cuối**:\n```"
+                output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
+                message += await load_md(output_path)
+                message += "\n```"
+                await user_obj.send(message)
+                await ctx.followup.send(f"**Done!**")
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
