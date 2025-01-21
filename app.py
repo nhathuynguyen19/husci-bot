@@ -45,7 +45,7 @@ async def message(ctx):
 @bot.tree.command(name="lastscore", description="Xem lại cập nhật điểm lần cuối")
 async def last_score(ctx):
     await commands.handle_last_score(ctx, bot)
-@bot.tree.command(name="fullscore", description="Xem bảng điểm")
+@bot.tree.command(name="totalscore", description="Xem bảng điểm")
 async def full_score(ctx):
     await commands.handle_full_score(ctx, bot)
     

@@ -3,9 +3,6 @@ from bs4 import BeautifulSoup
 from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
-from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options
 
 
 async def is_login_successful(response):
