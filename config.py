@@ -1,4 +1,4 @@
-import logging, discord
+import logging, discord, re, aiohttp, asyncio
 
 admin_id=767394443820662784
 
@@ -20,4 +20,17 @@ async def load_md_line_by_line(file_path):
     except Exception as e:
         print(f"Error reading file {file_path}: {e}")
         return []
+
+async def convert_to_acronym(text):
+    # Loại bỏ ký tự đặc biệt, giữ lại chữ cái, số và dấu cách
+    cleaned_text = re.sub(r"[^\w\s-]", "", text)
+    
+    # Tách từ và loại bỏ các từ bị bỏ qua
+    words = cleaned_text.split()
+    
+    # Lấy chữ cái đầu tiên của mỗi từ (viết hoa)
+    acronym = "".join(word[0].upper() for word in words)
+    
+    return acronym
+
 

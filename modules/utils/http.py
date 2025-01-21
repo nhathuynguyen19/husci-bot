@@ -1,6 +1,6 @@
 import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
-from config import logger
+from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
 from selenium import webdriver
@@ -153,7 +153,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             format_data_json = []
             for data in data_results:
                 score_dict = {
-                    "Lop hoc phan": await remove_accents(data[2]),
+                    "Lop hoc phan": await convert_to_acronym(await remove_accents(data[2])),
                     "Lan hoc": data[4],
                     "Diem QTHT": data[5],
                     "Diem thi": data[6] if int(data[4]) == 1 else data[8],
