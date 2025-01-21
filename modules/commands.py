@@ -184,10 +184,10 @@ class Commands():
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
 
         user_obj = await bot.fetch_user(int(user_id))
+        output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
         if user_obj:
             if os.path.exists(output_path):
                 message = "**Cập nhật cuối**:\n```"
-                output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
                 message += await load_md(output_path)
                 message += "\n```"
                 await user_obj.send(message)
