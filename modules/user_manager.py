@@ -1,4 +1,4 @@
-import json, os, datetime, time, asyncio
+import json, os, datetime, time, asyncio, pytz
 from config import logger
 from modules.utils.file import load_json
 from paths import users_path
@@ -62,6 +62,11 @@ class UserManager:
         return True
 
     async def remember_request(self, user_id, user_name, command):
-        with open("request.txt", "a", encoding="utf-8") as file:
-            file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {datetime.datetime.now()}\n")
+        # Định nghĩa múi giờ (Ví dụ: Asia/Ho_Chi_Minh cho Việt Nam)
+        timezone = pytz.timezone("Asia/Ho_Chi_Minh")
+        current_time = datetime.datetime.now(timezone)
+        
+        # Ghi dữ liệu vào file với thời gian đúng múi giờ
+        with open("data/request.txt", "a", encoding="utf-8") as file:
+            file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {current_time}\n")
 
