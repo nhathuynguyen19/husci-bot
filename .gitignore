@@ -6,3 +6,5 @@ temp.py
 *.txt
 *.json
 *.log
+!README.md
+data/
