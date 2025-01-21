@@ -127,6 +127,7 @@ class Commands():
                 else:
                     logger.warning(f"Không tìm thấy server với ID: {guild_id}")
             
+            await ctx.response.defer()  # Đảm bảo không bị timeout
             await add_reminder(date_time, reminder, ctx.user.id, ctx.channel.id, guild_id)
             await ctx.followup.send(f"Đặt nhắc nhở '{reminder}' thành công vào lúc: ```{date_time.hour:02d}:{date_time.minute:02d} {date_time.day:02d}-{date_time.month:02d}-{date_time.year}```")
         except Exception as e:
