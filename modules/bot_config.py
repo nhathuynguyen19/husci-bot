@@ -1,7 +1,7 @@
 import os, discord, base64, asyncio
 from dotenv import load_dotenv
 from discord.ext import commands
-from config import logger
+from modules.utils.config import logger
 
 class BotConfig:
     def __init__(self):

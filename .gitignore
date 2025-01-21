@@ -7,4 +7,4 @@ temp.py
 *.json
 *.log
 !README.md
-data/
+*.md

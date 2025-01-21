@@ -1,5 +1,5 @@
 import time, aiohttp, asyncio
-from config import logger
+from modules.utils.config import logger
 from bs4 import BeautifulSoup
 from paths import login_url, data_url, temp_path
 from modules.utils.file import save_txt, load_json, save_json

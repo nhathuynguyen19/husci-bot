@@ -1,6 +1,6 @@
 import base64, time
 from cryptography.fernet import Fernet
-from config import logger
+from modules.utils.config import logger
 
 class AuthManager:
     def __init__(self, key):

@@ -1,6 +1,6 @@
 import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
-from config import logger, convert_to_acronym
+from modules.utils.config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
 from selenium import webdriver
@@ -161,7 +161,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                 }
                 format_data_json.append(score_dict)
             # Kiểm tra dữ liệu, cập nhật, thông báo
-            scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', f"{login_id}.json")
+            scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'info', f"{login_id}.json")
             old_scores = await load_json(scores_file_path)
 
             temp = max(len(s["LHP"]) for s in format_data_json)
@@ -208,7 +208,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     for item in diffs:
                         markdown_table += f"|{item['LHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['Thi']:<{length_DT}}|{item['Tong']:<{length_TD}}|\n"
 
-                    markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
+                    markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last' f"{login_id}.md")
                     await save_md(markdown_file_path, markdown_table)
                     
                     print(markdown_table)
