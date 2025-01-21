@@ -137,6 +137,8 @@ class Commands():
         user_id = ctx.user.id
         if not ctx.response.is_done():
             await ctx.response.defer(ephemeral=True)
+            
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/message")
 
         email = None
         start_time = time.time()
@@ -157,12 +159,13 @@ class Commands():
             await ctx.followup.send(f"**Tin nhắn mới nhất**:\n{email}")
         else:
             await ctx.followup.send(f"**Chưa có tin nhắn**")
-        await self.user_manager.remember_request(user_id, ctx.user.name, "/message")
 
     async def handle_last_score(self, ctx, bot):
         user_id = ctx.user.id
         users = await load_json(users_path)
         login_id = None
+
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/lastscore")
 
         for user in users:
             if user["id"] == user_id:
@@ -191,12 +194,13 @@ class Commands():
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
-        await self.user_manager.remember_request(user_id, ctx.user.name, "/lastscore")
 
     async def handle_full_score(self, ctx, bot):
         user_id = ctx.user.id
         users = await load_json(users_path)
         login_id = None
+        
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/fullscore")
 
         for user in users:
             if user["id"] == user_id:
@@ -231,4 +235,3 @@ class Commands():
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
-        await self.user_manager.remember_request(user_id, ctx.user.name, "/fullscore")
