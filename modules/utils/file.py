@@ -1,6 +1,7 @@
 from config import logger
-import asyncio, os, datetime, json, unicodedata, markdown
+import asyncio, os, json, unicodedata, markdown
 from paths import sent_reminders_path, reminders_path
+from datetime import datetime
 
 # html
 # md to html
@@ -113,10 +114,27 @@ async def add_sent_reminder(reminder_line):
 # add
 async def add_reminder(date_time, reminder, user_id, channel_id, guild_id):
     try:
+        # Kiểm tra nếu thư mục chứa file không tồn tại
+        if not os.path.exists(os.path.dirname(reminders_path)):
+            logger.error(f"Thư mục chứa file không tồn tại: {os.path.dirname(reminders_path)}")
+            return
+        
+        # Kiểm tra nếu date_time là đối tượng datetime hợp lệ
+        if not isinstance(date_time, datetime):
+            raise ValueError("date_time phải là đối tượng datetime hợp lệ.")
+        
+        # Tạo đối tượng datetime và ghi nhắc nhở vào file
+        reminder_time = datetime(date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute)
+        
+        # Ghi nhắc nhở vào file
         with open(reminders_path, 'a', encoding='utf-8') as file:
-            reminder_time = datetime(date_time.year, date_time.month, date_time.day, date_time.hour, date_time.minute)
             file.write(f"{reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}\n")
-            print(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
+            logger.info(f"Đã lưu nhắc nhở: {reminder_time} - {reminder} - {user_id} - {guild_id} - {channel_id}")
+        
+    except ValueError as ve:
+        logger.error(f"Lỗi giá trị: {ve}")
+    except FileNotFoundError as fnf:
+        logger.error(f"Không tìm thấy file: {fnf}")
     except Exception as e:
         logger.error(f"Lỗi khi ghi nhắc nhở vào file: {e}")
 # remove

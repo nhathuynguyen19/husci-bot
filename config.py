@@ -30,6 +30,10 @@ async def convert_to_acronym(text):
     
     # Lấy chữ cái đầu tiên của mỗi từ (viết hoa)
     acronym = "".join(word[0].upper() for word in words)
+
+    for i in range(len(acronym) - 1, 0, -1):
+        if acronym[i] == "-":
+            acronym = acronym[:i]
     
     return acronym
 

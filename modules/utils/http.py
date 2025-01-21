@@ -153,19 +153,19 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             format_data_json = []
             for data in data_results:
                 score_dict = {
-                    "Lop hoc phan": await convert_to_acronym(await remove_accents(data[2])),
+                    "LHP": await convert_to_acronym(await remove_accents(data[2])),
                     "Lan hoc": data[4],
                     "QTHT": data[5],
                     "Thi": data[6] if int(data[4]) == 1 else data[8],
-                    "TD": data[7] if int(data[4]) == 1 else data[9]
+                    "Tong": data[7] if int(data[4]) == 1 else data[9]
                 }
                 format_data_json.append(score_dict)
             # Kiểm tra dữ liệu, cập nhật, thông báo
             scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', f"{login_id}.json")
             old_scores = await load_json(scores_file_path)
 
-            temp = max(len(s["Lop hoc phan"]) for s in format_data_json)
-            length_LHP = max(len("Lop hoc phan"), temp)
+            temp = max(len(s["LHP"]) for s in format_data_json)
+            length_LHP = max(len("LHP"), temp)
             
             temp = max(len(s["QTHT"]) for s in format_data_json)
             length_QTHT = max(len("QTHT"), temp)
@@ -173,16 +173,16 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             temp = max(len(s["Thi"]) for s in format_data_json)
             length_DT = max(len("Thi"), temp)
 
-            temp = max(len(s["TD"]) for s in format_data_json)
-            length_TD = max(len("TD"), temp)
+            temp = max(len(s["Tong"]) for s in format_data_json)
+            length_TD = max(len("Tong"), temp)
             
-            markdown_table = f"| {'Lop hoc phan': <{length_LHP}} | {'QTHT': <{length_QTHT}} | {'Thi': <{length_DT}} | {'TD': <{length_TD}} |\n"
-            markdown_table += f"| {'-' * length_LHP} | {'-' * length_QTHT} | {'-' * length_DT} | {'-' * length_TD} |\n"
+            markdown_table = f"|{'LHP': <{length_LHP}}|{'QTHT': <{length_QTHT}}|{'Thi': <{length_DT}}|{'Tong': <{length_TD}}|\n"
+            markdown_table += f"|{'-' * length_LHP}|{'-' * length_QTHT}|{'-' * length_DT}|{'-' * length_TD}|\n"
             markdown_table_full = markdown_table
 
             for item in format_data_json:
-                if item["QTHT"] or item["Thi"] or item["TD"]:
-                    markdown_table_full += f"| {item['Lop hoc phan']:<{length_LHP}} | {item['QTHT']:<{length_QTHT}} | {item['Thi']:<{length_DT}} | {item['TD']:<{length_TD}} |\n"
+                if item["QTHT"] or item["Thi"] or item["Tong"]:
+                    markdown_table_full += f"|{item['LHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['Thi']:<{length_DT}}|{item['Tong']:<{length_TD}}|\n"
 
             markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
 
@@ -200,17 +200,13 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                                 diffs.append(obj2)
                                 break
 
-                    temp = max(len(s["Lop hoc phan"]) for s in format_data_json)
-                    max_length_diffs = max(len(s["Lop hoc phan"]) for s in diffs)
+                    temp = max(len(s["LHP"]) for s in format_data_json)
+                    max_length_diffs = max(len(s["LHP"]) for s in diffs)
                     length_LHP = max(temp, max_length_diffs)
 
                     # Tạo bảng Markdown với độ rộng cột phù hợp
-                    # Định dạng đúng bảng Markdown với dấu đóng đúng vị trí
-                    markdown_table = f"| {'Lop hoc phan': <{length_LHP}} | {'QTHT': <{length_QTHT}} | {'Thi': <{length_DT}} | {'TD': <{length_TD}} |\n"
-                    markdown_table += f"| {'-' * length_LHP} | {'-' * length_QTHT} | {'-' * length_DT} | {'-' * length_TD} |\n"
-                    
                     for item in diffs:
-                        markdown_table += f"| {item['Lop hoc phan']:<{length_LHP}} | {item['QTHT']:<{length_QTHT}} | {item['Thi']:<{length_DT}} | {item['TD']:<{length_TD}} |\n"
+                        markdown_table += f"|{item['LHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['Thi']:<{length_DT}}|{item['Tong']:<{length_TD}}|\n"
 
                     markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
                     await save_md(markdown_file_path, markdown_table)

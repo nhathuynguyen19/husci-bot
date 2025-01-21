@@ -127,11 +127,11 @@ class Commands():
                 else:
                     logger.warning(f"Không tìm thấy server với ID: {guild_id}")
             
-            await ctx.response.defer()  # Đảm bảo không bị timeout
             await add_reminder(date_time, reminder, ctx.user.id, ctx.channel.id, guild_id)
             await ctx.followup.send(f"Đặt nhắc nhở '{reminder}' thành công vào lúc: ```{date_time.hour:02d}:{date_time.minute:02d} {date_time.day:02d}-{date_time.month:02d}-{date_time.year}```")
         except Exception as e:
             logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
+        await self.user_manager.remember_request(ctx.user.id, ctx.user.name, "/remind")
 
     async def handle_message(self, ctx):
         user_id = ctx.user.id
@@ -190,8 +190,7 @@ class Commands():
                 message = "**Cập nhật cuối**:\n```"
                 message += await load_md(output_path)
                 message += "\n```"
-                await user_obj.send(message)
-                await ctx.followup.send(f"**Done!**")
+                await ctx.followup.send(message)
             else:
                 await ctx.followup.send(f"**Không có cập nhật cuối**")
         else:
@@ -224,17 +223,8 @@ class Commands():
         user_obj = await bot.fetch_user(int(user_id))
         if user_obj:
             output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
-            
-            # Load nội dung của file Markdown từng dòng
-            lines = await load_md_line_by_line(output_path)
-
-            await user_obj.send(f"**Lịch sử học tập**:\n```\n{lines[0]}\n{lines[1]}\n```")
-            
-            for line in lines:
-                if line != lines[0] and line != lines[1]:
-                    await user_obj.send(f"\n```\n{line}\n```")
-            
-            await ctx.followup.send(f"**Done!**")
+            output = await load_md(output_path)
+            await ctx.followup.send(f"Lịch sử quá trình học tập\n```\n{output}\n```")
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
