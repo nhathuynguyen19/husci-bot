@@ -1,6 +1,6 @@
 import aiohttp, time, os, discord
 from bs4 import BeautifulSoup
-from modules.utils.config import logger, load_md_line_by_line
+from config import logger, load_md_line_by_line
 from modules.utils.http import is_login_successful
 from modules.utils.file import add_reminder, load_json, save_json, load_md
 from paths import data_url, users_path, BASE_DIR

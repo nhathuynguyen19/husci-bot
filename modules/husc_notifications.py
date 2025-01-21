@@ -1,7 +1,7 @@
 import asyncio, aiohttp, lxml, time, json, os
 from bs4 import BeautifulSoup
 from colorama import init, Fore
-from modules.utils.config import logger
+from config import logger
 from modules.utils.http import fetch_page, fetch_page_content, login_page
 from paths import data_url
 

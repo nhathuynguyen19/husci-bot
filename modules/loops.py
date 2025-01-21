@@ -1,5 +1,5 @@
 import asyncio, os, logging, discord, json, random, aiohttp, time
-from modules.utils.config import logger
+from config import logger
 from paths import users_path, notifications_path, guilds_info_path
 from modules.utils.switch import switch
 from modules.utils.file import load_json, save_json

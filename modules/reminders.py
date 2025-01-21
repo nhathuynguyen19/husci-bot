@@ -1,4 +1,4 @@
-from modules.utils.config import logger
+from config import logger
 import asyncio, pytz, discord, aiohttp, os
 from datetime import datetime
 from pytz import timezone

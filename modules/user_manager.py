@@ -1,5 +1,6 @@
-import json, os, datetime, time, asyncio, pytz
-from modules.utils.config import logger
+import pytz
+import json, os, datetime, time, asyncio
+from config import logger
 from modules.utils.file import load_json
 from paths import users_path
 

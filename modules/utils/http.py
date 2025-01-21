@@ -1,6 +1,6 @@
 import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
-from modules.utils.config import logger, convert_to_acronym
+from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
 from selenium import webdriver

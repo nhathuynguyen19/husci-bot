@@ -1,4 +1,4 @@
-from modules.utils.config import logger
+from config import logger
 import asyncio, os, json, unicodedata, markdown
 from paths import sent_reminders_path, reminders_path
 from datetime import datetime
