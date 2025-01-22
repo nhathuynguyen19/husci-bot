@@ -77,7 +77,7 @@ async def on_ready():
     print("Ready")
     
     # init
-    await handle_users(auth_manager, bot, emails_handler, tasks)
+    await handle_users(auth_manager, bot, emails_handler, tasks_phase)
     
 # Run
 bot.run(bot_config.token)
