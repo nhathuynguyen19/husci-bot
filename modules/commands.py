@@ -24,7 +24,7 @@ class Commands():
             token = soup.find('input', {'name': '__RequestVerificationToken'})
             if not token:
                 logger.error("Không tìm thấy token xác thực!")
-                await ctx.followup.send("Không tìm thấy token xác thực!")
+                await ctx.followup.send("**Không tìm thấy token xác thực!**")
                 return
             login_data = {
                 "loginID": username,
@@ -33,16 +33,18 @@ class Commands():
             }
             login_response = await session.post(self.login_url, data=login_data)
             if not await is_login_successful(login_response):
-                logger.error("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
-                await ctx.followup.send("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập.")
+                logger.error("Tài khoản mật khẩu không chính xác hoặc đã đăng nhập")
+                await ctx.followup.send("**Ủa bạn ơi, tài khoản mật khẩu không chính xác hoặc đã đăng nhập rồi!**")
                 return
             password = await self.auth_manager.encrypt_password(password, user_id)
             success = await self.user_manager.save_user_to_file_when_login(ctx.user, username, password)
             if success:
-                await ctx.followup.send(f"Đăng nhập thành công cho người dùng {ctx.user.name}.")
+                data = await load_json(users_path)
+                length = len(data)
+                await ctx.followup.send(f"**Chào mừng {ctx.user.name} gia nhập quân đoàn Husciers cùng với {length - 1} thành viên khác**")
             else:
-                logger.error("Tài khoản đã tồn tại.")
-                await ctx.followup.send("Tài khoản đã tồn tại.")
+                logger.error("Tài khoản đã tồn tại")
+                await ctx.followup.send(f"**Ủa bạn, bạn đã đăng nhập rồi mà! {ctx.user.name} phải không?**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/login")
 
     async def handle_logout(self, ctx):
@@ -51,17 +53,18 @@ class Commands():
         if not ctx.response.is_done():
             await ctx.response.defer(ephemeral=False)
         users = await load_json(users_path)
+        length = len(users)
 
         for user in users:
             if user_id == user.get("id"):
                 users.remove(user)
                 condition = True
-                logger.warning(f"Người dùng {user.get("name")} đã đăng xuất")
-                await ctx.followup.send("Đã đăng xuất")
+                logger.warning(f"**Người dùng {user.get("name")} đã đăng xuất khỏi server Huscier**")
+                await ctx.followup.send(f"**Người dùng {user.get("name")} đã đăng xuất khỏi server Husci**")
                 break
 
         if not condition:
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Đăng nhập đi rồi đăng xuất -_-**")
         if condition:
             await save_json(users_path, users)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
@@ -82,13 +85,13 @@ class Commands():
             notifications = await self.husc_notification.read_notifications()
 
         if notifications == "Không có thông tin đăng nhập":
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
             return
         if notifications == "Không có thông báo mới":
             await ctx.followup.send(f"**Không có thông báo mới**")
         else:
             formatted_notifications = "\n".join([f"{notification}" for notification in notifications])
-            await ctx.followup.send(f"**Các thông báo mới từ HUSC**:\n{formatted_notifications}")
+            await ctx.followup.send(f"**Các thông báo mới từ Husci:**\n{formatted_notifications}")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/notifications")
     
     async def handle_first(self, ctx):
@@ -107,14 +110,14 @@ class Commands():
             notifications = await self.husc_notification.get_notification_first_line()
         
         if notifications == "Không có thông tin đăng nhập":
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
             return
         if notifications == "Không có thông báo mới":
             await ctx.followup.send(f"**Không có thông báo mới**")
         elif notifications:
-            await ctx.followup.send(f"**Thông báo mới nhất từ HUSC**:\n{notifications}")
+            await ctx.followup.send(f"**Thông báo mới nhất từ Husci**:\n{notifications}")
         else:
-            await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo.**")
+            await ctx.followup.send(f"**Đã xảy ra lỗi khi lấy thông báo**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/first")
 
     async def handle_remind(self, ctx, bot, reminder, reminders, date_time):
@@ -129,7 +132,7 @@ class Commands():
             
             await ctx.response.defer()  # Đảm bảo không bị timeout
             await add_reminder(date_time, reminder, ctx.user.id, ctx.channel.id, guild_id)
-            await ctx.followup.send(f"Đặt nhắc nhở '{reminder}' thành công vào lúc: ```{date_time.hour:02d}:{date_time.minute:02d} {date_time.day:02d}-{date_time.month:02d}-{date_time.year}```")
+            await ctx.followup.send(f"**Đặt nhắc nhở** `{reminder}` **thành công vào lúc:**```{date_time.hour:02d}:{date_time.minute:02d} {date_time.day:02d}-{date_time.month:02d}-{date_time.year}```")
         except Exception as e:
             logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
         await self.user_manager.remember_request(ctx.user.id, ctx.user.name, "/remind")
@@ -152,7 +155,7 @@ class Commands():
             email = credentials["sms"]
         
         if email == "Không có thông tin đăng nhập":
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
             return
         if email == "Không có tin nhắn mới":
             await ctx.followup.send(f"**Không có tin nhắn mới**")
@@ -179,7 +182,7 @@ class Commands():
         credentials = await self.user_manager.get_user_credentials(user_id)
         if credentials is None:
             logger.warning("Không có thông tin đăng nhập")
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
             return
         else:
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
@@ -216,7 +219,7 @@ class Commands():
         credentials = await self.user_manager.get_user_credentials(user_id)
         if credentials is None:
             logger.warning("Không có thông tin đăng nhập")
-            await ctx.followup.send("Chưa đăng nhập tài khoản HUSC! Dùng lệnh `/login` để đăng nhập.")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
             return
         else:
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
