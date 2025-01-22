@@ -21,6 +21,7 @@ commands = Commands(husc_notification, user_manager, auth_manager, loops, emails
 init(autoreset=True)
 previous_notifications = None
 guilds_info = []
+tasks = []
 
 # Commands
 @bot.tree.command(name="login",description="Đăng nhập HUSC")

@@ -205,7 +205,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     for item in diffs:
                         markdown_table += f"|{item['LHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['Thi']:<{length_DT}}|{item['Tong']:<{length_TD}}|\n"
 
-                    markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last' f"{login_id}.md")
+                    markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
                     await save_md(markdown_file_path, markdown_table)
                     
                     print(markdown_table)
