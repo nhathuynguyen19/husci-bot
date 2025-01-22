@@ -218,6 +218,10 @@ async def handle_users(auth_manager, bot, emails_handler):
     while True:
         users_data = await load_json(users_path)
 
+        current_login_ids = {user.get("login_id") for user in users_data}
+
+        processed_users = processed_users.intersection(current_login_ids)
+
         for user in users_data:
             login_id = user.get("login_id")
             if login_id in processed_users:
