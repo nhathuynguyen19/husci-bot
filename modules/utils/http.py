@@ -4,6 +4,8 @@ from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
 
+processed_users = set()
+tasks_phase = []
 
 async def is_login_successful(response):
     content = await response.text()
@@ -64,6 +66,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             "__RequestVerificationToken": token
         }
         await session.post(login_url, data=login_data)
+        user_id_spec = user["id"]
 
         # Vòng lặp lấy dữ liệu chung
         while True:
@@ -95,35 +98,12 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                 for link in filtered_links
             ][:1]
 
-            Changed = False
             if emails:
                 latest_email = emails[0]
             else:
                 latest_email = ""
-                
-            if "sms" not in user:
-                user["sms"] = latest_email
-                Changed = True
-            else:
-                if user["sms"] != latest_email:
-                    Changed = True
-                    old_message = user["sms"]
-                    user["sms"] = latest_email
-                    user_id = user['id']
-                    user_obj = await bot.fetch_user(int(user_id))
-                    if user_obj and old_message != "":
-                        await user_obj.send(f"**Tin nhắn mới**:\n{latest_email}")
-                        print(f"Tin nhắn mới đã gửi đến {user_id}: {latest_email}")
-                    else:
-                        print(f"Không tìm thấy người dùng với ID: {user_id}")
                         
-            if Changed:
-                result = {
-                    "id": user["id"],
-                    "sms": user.get("sms", "")
-                }
-                await emails_handler.process_result(result)
-                
+            await emails_handler.process_result(latest_email, user_id_spec, bot)   
 
             # Cập nhật bảng điểm:
             tbody = scores_list.find('tbody')
@@ -234,13 +214,24 @@ async def _handle_user_data(login_id, password, user, bot, emails_handler):
         print(f"Session cho {login_id} đã được tạo và sử dụng.")
         await fetch_data(session, login_id, password, user, bot, emails_handler)
 
-async def handle_users(auth_manager, bot, emails_handler, tasks_phase):
-    users_data = await load_json(users_path)
+async def handle_users(auth_manager, bot, emails_handler):
+    global processed_users
+    global tasks_phase
+    
+    while True:
+        users_data = await load_json(users_path)
 
-    for user in users_data:
-        login_id, encrypted_password = user.get("login_id"), user.get("password")
-        start_time = time.time()
-        password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
+        for user in users_data:
+            login_id = user.get("login_id")
+            if login_id in processed_users:
+                continue 
 
-        task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
-        tasks_phase.append(task)
+            encrypted_password = user.get("password")
+            start_time = time.time()
+            password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
+
+            task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
+            tasks_phase.append(task)
+            processed_users.add(login_id)
+
+        await asyncio.sleep(5)

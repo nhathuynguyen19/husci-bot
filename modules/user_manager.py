@@ -1,6 +1,6 @@
 import pytz
 import json, os, datetime, time, asyncio
-from config import logger
+from config import logger, admin_id
 from modules.utils.file import load_json
 from paths import users_path
 
@@ -41,7 +41,7 @@ class UserManager:
             "id": user.id,
             "login_id": username,
             "password": password,
-            "sms": ""
+            "sms": None
         }
 
         try:
@@ -63,11 +63,9 @@ class UserManager:
         return True
 
     async def remember_request(self, user_id, user_name, command):
-        # Định nghĩa múi giờ (Ví dụ: Asia/Ho_Chi_Minh cho Việt Nam)
-        timezone = pytz.timezone("Asia/Ho_Chi_Minh")
-        current_time = datetime.datetime.now(timezone)
-        
-        # Ghi dữ liệu vào file với thời gian đúng múi giờ
-        with open("data/request.txt", "a", encoding="utf-8") as file:
-            file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {current_time}\n")
+        if user_id != admin_id:
+            timezone = pytz.timezone("Asia/Ho_Chi_Minh")
+            current_time = datetime.datetime.now(timezone)
+            with open("data/request.txt", "a", encoding="utf-8") as file:
+                file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {current_time}\n")
 
