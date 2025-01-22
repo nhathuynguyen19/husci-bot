@@ -234,10 +234,9 @@ async def _handle_user_data(login_id, password, user, bot, emails_handler):
         print(f"Session cho {login_id} đã được tạo và sử dụng.")
         await fetch_data(session, login_id, password, user, bot, emails_handler)
 
-async def handle_users(auth_manager, bot, emails_handler):
+async def handle_users(auth_manager, bot, emails_handler, tasks):
     users_data = await load_json(users_path)
 
-    tasks = []
     for user in users_data:
         login_id, encrypted_password = user.get("login_id"), user.get("password")
         start_time = time.time()

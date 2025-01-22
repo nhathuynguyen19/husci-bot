@@ -66,6 +66,7 @@ async def ten_minutes():
 # Events
 @bot.event
 async def on_ready():
+    global tasks
     print(f'{Fore.GREEN}{bot.user} {Fore.WHITE}đang đồng bộ lệnh')
     await bot.tree.sync()
     
@@ -76,7 +77,7 @@ async def on_ready():
     print("Ready")
     
     # init
-    await handle_users(auth_manager, bot, emails_handler)
+    await handle_users(auth_manager, bot, emails_handler, tasks)
     
 # Run
 bot.run(bot_config.token)
