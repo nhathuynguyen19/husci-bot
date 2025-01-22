@@ -21,7 +21,7 @@ commands = Commands(husc_notification, user_manager, auth_manager, loops, emails
 init(autoreset=True)
 previous_notifications = None
 guilds_info = []
-tasks = []
+tasks_phase = []
 
 # Commands
 @bot.tree.command(name="login",description="Đăng nhập HUSC")
@@ -66,7 +66,7 @@ async def ten_minutes():
 # Events
 @bot.event
 async def on_ready():
-    global tasks
+    global tasks_phase
     print(f'{Fore.GREEN}{bot.user} {Fore.WHITE}đang đồng bộ lệnh')
     await bot.tree.sync()
     

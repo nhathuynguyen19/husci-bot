@@ -234,7 +234,7 @@ async def _handle_user_data(login_id, password, user, bot, emails_handler):
         print(f"Session cho {login_id} đã được tạo và sử dụng.")
         await fetch_data(session, login_id, password, user, bot, emails_handler)
 
-async def handle_users(auth_manager, bot, emails_handler, tasks):
+async def handle_users(auth_manager, bot, emails_handler, tasks_phase):
     users_data = await load_json(users_path)
 
     for user in users_data:
@@ -243,4 +243,4 @@ async def handle_users(auth_manager, bot, emails_handler, tasks):
         password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
 
         task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
-        tasks.append(task)
+        tasks_phase.append(task)
