@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 [HUSC-Notifications-Discord-Bot]
+Copyright (c) 2024 [nhathuynguyen19]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,43 +28,39 @@ This project uses the following third-party libraries. Their respective licenses
 
 ### discord.py
 - License: MIT License
-- Source: [discord.py LICENSE](https://github.com/Rapptz/discord.py/blob/master/LICENSE)
-
----
+- Source: https://github.com/Rapptz/discord.py/blob/master/LICENSE
 
 ### aiohttp
 - License: Apache License 2.0
-- Source: [aiohttp LICENSE](https://github.com/aio-libs/aiohttp/blob/main/LICENSE)
+- Source: https://github.com/aio-libs/aiohttp/blob/main/LICENSE
 
----
-
-### pytz
+### beautifulsoup4
 - License: MIT License
-- Source: [pytz LICENSE](https://github.com/stub42/pytz/blob/master/LICENSE.txt)
-
----
-
-### lxml
-- License: Dual License (BSD and GPL)
-- Source: [lxml LICENSE](https://github.com/lxml/lxml/blob/master/LICENSES.txt)
-
----
-
-### BeautifulSoup
-- License: MIT License
-- Source: [BeautifulSoup LICENSE](https://www.crummy.com/software/BeautifulSoup/#Download)
-
----
+- Source: https://github.com/wention/BeautifulSoup4/blob/master/LICENSE
 
 ### cryptography
 - License: Apache License 2.0
-- Source: [cryptography LICENSE](https://github.com/pyca/cryptography/blob/main/LICENSE)
-
----
+- Source: https://github.com/pyca/cryptography/blob/main/LICENSE
 
 ### python-dotenv
 - License: MIT License
-- Source: [python-dotenv LICENSE](https://github.com/theskumar/python-dotenv/blob/main/LICENSE)
+- Source: https://github.com/theskumar/python-dotenv/blob/main/LICENSE
+
+### pytz
+- License: MIT License
+- Source: https://github.com/stub42/pytz/blob/master/LICENSE.txt
+
+### lxml
+- License: Dual License (BSD and GPL)
+- Source: https://github.com/lxml/lxml/blob/master/LICENSES.txt
+
+### colorama
+- License: MIT License
+- Source: https://github.com/tartley/colorama/blob/master/LICENSE
+
+### markdown
+- License: MIT License
+- Source: https://github.com/Python-Markdown/markdown/blob/master/LICENSE
 
 ---
 

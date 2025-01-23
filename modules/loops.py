@@ -37,7 +37,7 @@ class Loops:
             else:
                 previous_notifications = "Empty" 
         else:
-            previous_notifications = None
+            previous_notifications = Nonek
 
         await self.user_manager.check_login_id(user_id)
         try:

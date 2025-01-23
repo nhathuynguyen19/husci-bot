@@ -12,7 +12,7 @@ Hue University of Sciences Discord-Bot
 - `/remind` : Lên lịch nhắc nhở.
 - `/message` : Tin nhắn mới nhất.
 - `/lastscore` : Lần cập nhật điểm cuối cùng.
-- `/fullscore` : Lịch sử quá trình học tập.
+- `/scoretable` : Lịch sử quá trình học tập.
 - Update...
 
 ## Web Push
