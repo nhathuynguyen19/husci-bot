@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import temp_path, login_url, data_url, users_path, BASE_DIR
+from modules.utils.switch import score_switch
 
 processed_users = set()
 tasks_phase = []
@@ -188,7 +189,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     print(markdown_table)
                     user_id = user['id']
                     user_obj = await bot.fetch_user(int(user_id))
-                    if user_obj:
+                    if user_obj and score_switch:
                         message = f"**Cập nhật điểm**:\n```\n{markdown_table}\n```"
                         await user_obj.send(message)
                         print(f"Đã gửi bảng điểm đến {user_id}")

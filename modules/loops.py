@@ -1,10 +1,11 @@
 import asyncio, os, logging, discord, json, random, aiohttp, time
 from config import logger
-from paths import users_path, notifications_path, guilds_info_path
+from paths import users_path, notifications_path, guilds_info_path, unique_member_ids_path
 from modules.utils.switch import switch
-from modules.utils.file import load_json, save_json
+from modules.utils.file import load_json, save_json, save_txt
 from modules.utils.http import login_page
 
+guilds_info = []
 
 class Loops:
     def __init__(self, husc_notification, user_manager, auth_manager, bot):
@@ -69,18 +70,39 @@ class Loops:
         except Exception as e:
             logger.error(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
-    async def handle_update_guilds_info(self, guilds_info):
+    async def handle_update_guilds_info(self):
+        global guilds_info
+        unique_members = {}
+
         for guild in self.bot.guilds:
-            text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
-            channel = text_channels[0] if text_channels else None
+            for member in guild.members:
+                if member.id not in unique_members:
+                    unique_members[member.id] = member.name
+
             guild_info = {
                 'guild_name': guild.name,
                 'guild_id': str(guild.id),
-                'channel_name': channel.name,
-                'channel_id': str(channel.id),
                 'member_count': guild.member_count
             }
             guilds_info.append(guild_info)
+
         with open(guilds_info_path, "w", encoding="utf-8") as f:
             json.dump(guilds_info, f, ensure_ascii=False, indent=4)
+
+        sorted_unique_members = sorted(
+            [{'id': str(member_id), 'username': username} for member_id, username in unique_members.items()],
+            key=lambda x: x['username'].lower()
+        )
+        
+        data_members = {
+            'total_unique_members': len(unique_members),
+            'unique_members': sorted_unique_members
+        }
+        if os.path.exists(unique_member_ids_path):
+            old_data = await load_json(unique_member_ids_path)
+            if old_data != data_members:
+                await save_json(unique_member_ids_path, data_members)
+        else:
+            await save_json(unique_member_ids_path, data_members)
+
 

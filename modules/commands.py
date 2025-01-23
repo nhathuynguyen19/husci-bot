@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from config import logger, load_md_line_by_line
 from modules.utils.http import is_login_successful
 from modules.utils.file import add_reminder, load_json, save_json, load_md
-from paths import data_url, users_path, BASE_DIR
+from paths import data_url, users_path, BASE_DIR, unique_member_ids_path
 
 class Commands():
     def __init__(self, husc_notification, user_manager, auth_manager, loops, emails_handler):
@@ -41,7 +41,8 @@ class Commands():
             if success:
                 data = await load_json(users_path)
                 length = len(data)
-                await ctx.followup.send(f"**Chào mừng {ctx.user.name} gia nhập quân đoàn Husciers cùng với {length - 1} thành viên khác**")
+                data_members = await load_json(unique_member_ids_path)
+                await ctx.followup.send(f"**Chào mừng {ctx.user.name} gia nhập quân đoàn Husciers cùng với {length - 1}/{data_members['total_unique_members']} thành viên khác**")
             else:
                 logger.error("Tài khoản đã tồn tại")
                 await ctx.followup.send(f"**Ủa bạn, bạn đã đăng nhập rồi mà! {ctx.user.name} phải không?**")

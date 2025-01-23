@@ -20,7 +20,6 @@ commands = Commands(husc_notification, user_manager, auth_manager, loops, emails
 # Initialize 
 init(autoreset=True)
 previous_notifications = None
-guilds_info = []
 
 # Commands
 @bot.tree.command(name="login",description="Đăng nhập HUSC")
@@ -53,14 +52,11 @@ async def full_score(ctx):
 @tasks.loop(seconds=1)
 async def one_second():
     await reminders.check_reminders()
+    await loops.handle_update_guilds_info()
 @tasks.loop(minutes=1)
 async def one_minute():
     global previous_notifications
     await loops.handle_auto_notifications(previous_notifications)
-@tasks.loop(minutes=10)
-async def ten_minutes():
-    global guilds_info
-    await loops.handle_update_guilds_info(guilds_info)
 
 # Events
 @bot.event
@@ -71,7 +67,6 @@ async def on_ready():
     print("Đã đồng bộ lệnh")
     one_second.start()
     one_minute.start()
-    ten_minutes.start()
     print("Ready")
     
     # init
