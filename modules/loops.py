@@ -88,6 +88,8 @@ class Loops:
             old_guilds_info = await load_json(guilds_info_path)
             if old_guilds_info != guilds_info:
                 await save_json(guilds_info_path, guilds_info)
+        else:
+            await save_json(guilds_info_path, guilds_info)
 
         sorted_unique_members = sorted(
             [{'id': str(member_id), 'username': username} for member_id, username in unique_members.items()],
