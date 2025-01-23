@@ -188,7 +188,7 @@ class Commands():
             print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
 
         user_obj = await bot.fetch_user(int(user_id))
-        output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', f"{login_id}.md")
+        output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
         if user_obj:
             if os.path.exists(output_path):
                 message = "**Cập nhật cuối**:\n```"
@@ -206,7 +206,7 @@ class Commands():
         users = await load_json(users_path)
         login_id = None
         
-        await self.user_manager.remember_request(user_id, ctx.user.name, "/fullscore")
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/scoretable")
 
         for user in users:
             if user["id"] == user_id:
