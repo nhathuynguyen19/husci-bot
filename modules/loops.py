@@ -5,8 +5,6 @@ from modules.utils.switch import switch
 from modules.utils.file import load_json, save_json, save_txt
 from modules.utils.http import login_page
 
-guilds_info = []
-
 class Loops:
     def __init__(self, husc_notification, user_manager, auth_manager, bot):
         self.login_url = husc_notification.login_url
@@ -71,7 +69,7 @@ class Loops:
             logger.error(f"Đã xảy ra lỗi trong vòng lặp thông báo: {e}")
 
     async def handle_update_guilds_info(self):
-        global guilds_info
+        guilds_info = []
         unique_members = {}
 
         for guild in self.bot.guilds:
@@ -86,8 +84,10 @@ class Loops:
             }
             guilds_info.append(guild_info)
 
-        with open(guilds_info_path, "w", encoding="utf-8") as f:
-            json.dump(guilds_info, f, ensure_ascii=False, indent=4)
+        if os.path.exists(guilds_info_path):
+            old_guilds_info = await load_json(guilds_info_path)
+            if old_guilds_info != guilds_info:
+                await save_json(guilds_info_path, guilds_info)
 
         sorted_unique_members = sorted(
             [{'id': str(member_id), 'username': username} for member_id, username in unique_members.items()],
