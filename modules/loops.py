@@ -1,5 +1,5 @@
 import asyncio, os, logging, discord, json, random, aiohttp, time
-from config import logger
+from config import logger, admin_id
 from paths import users_path, notifications_path, guilds_info_path, unique_member_ids_path
 from modules.utils.switch import switch
 from modules.utils.file import load_json, save_json, save_txt
@@ -47,17 +47,19 @@ class Loops:
                 new_notification = notifications[0] 
                 if previous_notifications != new_notification and previous_notifications is not None or previous_notifications == "Empty":
                     formatted_notification = f"- {new_notification}"
-                    for guild in self.bot.guilds:
-                        text_channels = [ch for ch in guild.channels if isinstance(ch, discord.TextChannel)]
-                        channel = text_channels[0] if text_channels else None
-                        if channel and switch:
+
+                    # gửi thông báo đến tất cả user trong tất cả server
+                    users_data = await load_json(unique_member_ids_path)
+                    for user in users_data['unique_members']:
+                        if switch:
                             try:
-                                await channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
-                                print(f"Đã gửi thông báo đến kênh: {channel.name} trong server: {guild.name}")
+                                await self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
+                                print(f"Đã gửi thông báo đến user: {user['username']}")
                             except discord.Forbidden:
-                                logger.warning(f"Bot không có quyền gửi tin nhắn trong kênh: {channel.name} của server: {guild.name}")
+                                logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
                             except discord.HTTPException as e:
-                                logger.error(f"Lỗi HTTP khi gửi tin nhắn đến kênh: {channel.name} của server: {guild.name}, chi tiết: {e}")
+                                logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
+                        
                     with open("data/notifications.txt", "w", encoding="utf-8") as f:
                         f.writelines([f"- {notification}\n" for notification in notifications])
                     previous_notifications = new_notification
