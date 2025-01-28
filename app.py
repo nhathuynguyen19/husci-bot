@@ -10,7 +10,7 @@ from modules.utils.http import handle_users
 bot_config = BotConfig() 
 bot = bot_config.create_bot()
 auth_manager = AuthManager(bot_config.fixed_key)
-user_manager = UserManager()
+user_manager = UserManager(users_path)
 husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
 reminders = Reminder(reminders_path, sent_reminders_path, bot)
 loops = Loops(husc_notification, user_manager, auth_manager, bot)
