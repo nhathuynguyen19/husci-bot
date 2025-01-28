@@ -2,7 +2,7 @@ import discord, subprocess
 from discord.ext import tasks, commands
 from datetime import datetime
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, EmailsHandler
-from paths  import sent_reminders_path, reminders_path, notifications_path, login_url, data_url, users_path
+from paths  import sent_reminders_path, guilds_info_path, reminders_path, notifications_path, login_url, data_url, users_path, unique_member_ids_path, path_creator, bot_log_path
 from colorama import init, Fore
 from modules.utils.http import handle_users
 
@@ -20,6 +20,18 @@ commands = Commands(husc_notification, user_manager, auth_manager, loops, emails
 # Initialize 
 init(autoreset=True)
 previous_notifications = None
+
+# tạo các đường dẫn
+try:
+    path_creator(bot_log_path)
+    path_creator(sent_reminders_path)
+    path_creator(reminders_path)
+    path_creator(notifications_path)
+    path_creator(users_path)
+    path_creator(guilds_info_path)
+    path_creator(unique_member_ids_path)
+except Exception as e:
+    print(f"Error creating path: {e}")
 
 # Commands
 @bot.tree.command(name="login",description="Đăng nhập HUSC")

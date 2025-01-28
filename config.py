@@ -1,13 +1,16 @@
 import logging, discord, re, aiohttp, asyncio
+from paths import bot_log_path, path_creator
 
 admin_id=767394443820662784
+
+path_creator(bot_log_path)
 
 # Configure logger
 logging.basicConfig(
     level=logging.WARNING,
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
-    filename="data/bot.log",
+    filename=bot_log_path,
     filemode="a"
 )
 logger = logging.getLogger(__name__)

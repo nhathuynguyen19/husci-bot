@@ -2,7 +2,7 @@ import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
 from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
-from paths import temp_path, login_url, data_url, users_path, BASE_DIR
+from paths import login_url, data_url, users_path, BASE_DIR, path_creator
 from modules.utils.switch import score_switch
 
 processed_users = set()
@@ -137,6 +137,8 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
             # Kiểm tra dữ liệu, cập nhật, thông báo
             scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'info', f"{login_id}.json")
+            path_creator(scores_file_path)
+            
             old_scores = await load_json(scores_file_path)
 
             temp = max(len(s["LopHP"]) for s in format_data_json)
@@ -160,6 +162,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     markdown_table_full += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
             markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
+            path_creator(markdown_full_file_path)
 
             old_full_markdown = await load_md(markdown_full_file_path)
             if old_full_markdown != markdown_table_full:
@@ -184,6 +187,8 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                         markdown_table += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
                     markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
+                    path_creator(markdown_file_path)
+                    
                     await save_md(markdown_file_path, markdown_table)
                     
                     print(markdown_table)

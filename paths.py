@@ -10,8 +10,14 @@ reminders_path = os.path.join(BASE_DIR, 'data', 'reminders.txt')
 notifications_path = os.path.join(BASE_DIR, 'data', 'notifications.txt')
 users_path = os.path.join(BASE_DIR, 'data', 'users.json')
 guilds_info_path = os.path.join(BASE_DIR, 'data', 'guilds_info.json')
-temp_path = os.path.join(BASE_DIR, 'data', 'temp.txt')
 unique_member_ids_path = os.path.join(BASE_DIR, 'data', 'unique_member_ids.json')
+bot_log_path = os.path.join(BASE_DIR, 'data', 'bot.log')
+
+def path_creator(path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    # Tạo file rỗng nếu chưa tồn tại
+    if not os.path.exists(path):
+        open(path, 'w').close()
 
 login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = [

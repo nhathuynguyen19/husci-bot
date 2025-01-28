@@ -1,9 +1,10 @@
 import asyncio, os, logging, discord, json, random, aiohttp, time
 from config import logger, admin_id
-from paths import users_path, notifications_path, guilds_info_path, unique_member_ids_path
+from paths import users_path, notifications_path, guilds_info_path, unique_member_ids_path, path_creator
 from modules.utils.switch import switch
 from modules.utils.file import load_json, save_json, save_txt
 from modules.utils.http import login_page
+from asyncio import sleep
 
 class Loops:
     def __init__(self, husc_notification, user_manager, auth_manager, bot):
@@ -15,29 +16,34 @@ class Loops:
 
     async def handle_auto_notifications(self, previous_notifications):
         print("\nSTART AUTO GET NOTIFICATIONS")
-        
-        if os.path.exists(users_path):
-            with open(users_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
-        else:
-            data = []
-        if data:
-            random_item = random.choice(data)
-            random_id = random_item.get("id")
-            print(f"ID ngẫu nhiên: {random_id}")
-        else:
-            logging.warning("Danh sách rỗng hoặc không có dữ liệu.")
+        while True:
+            if os.path.exists(users_path):
+                with open(users_path, 'r', encoding='utf-8') as file:
+                    data = json.load(file)
+            else:
+                data = []
+
+            random_id = None
+            if data:
+                random_item = random.choice(data)
+                random_id = random_item.get("id")
+                print(f"ID ngẫu nhiên: {random_id}")
+                break
+            else:
+                logging.warning("Danh sách rỗng hoặc không có dữ liệu.")
+                print("Danh sách rỗng hoặc không có dữ liệu.")
+                await asyncio.sleep(1)
 
         user_id = random_id
-
+        is_new_notification = False
         if os.path.exists(notifications_path):
             notifications = await self.husc_notification.read_notifications()
             if notifications:
-                previous_notifications = notifications[0].lstrip('- ').strip()
-            else:
-                previous_notifications = "Empty" 
-        else:
-            previous_notifications = Nonek
+                if notifications[0]:
+                    previous_notifications = notifications[0].lstrip('- ').strip()
+                    is_new_notification = True
+                else:
+                    previous_notifications = None
 
         await self.user_manager.check_login_id(user_id)
         try:
@@ -45,24 +51,27 @@ class Loops:
             notifications = await task 
             if isinstance(notifications, list) and notifications:
                 new_notification = notifications[0] 
-                if previous_notifications != new_notification and previous_notifications is not None or previous_notifications == "Empty":
-                    formatted_notification = f"- {new_notification}"
+                if previous_notifications != new_notification or previous_notifications is None:
+                    if is_new_notification:
+                        formatted_notification = f"- {new_notification}"
 
-                    # gửi thông báo đến tất cả user trong tất cả server
-                    users_data = await load_json(unique_member_ids_path)
-                    for user in users_data['unique_members']:
-                        if switch:
-                            try:
-                                await self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
-                                print(f"Đã gửi thông báo đến user: {user['username']}")
-                            except discord.Forbidden:
-                                logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
-                            except discord.HTTPException as e:
-                                logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
-                        
-                    with open("data/notifications.txt", "w", encoding="utf-8") as f:
-                        f.writelines([f"- {notification}\n" for notification in notifications])
-                    previous_notifications = new_notification
+                        # gửi thông báo đến tất cả user trong tất cả server
+                        users_data = await load_json(unique_member_ids_path)
+                        for user in users_data['unique_members']:
+                            if switch:
+                                try:
+                                    await self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
+                                    print(f"Đã gửi thông báo đến user: {user['username']}")
+                                except discord.Forbidden:
+                                    logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
+                                except discord.HTTPException as e:
+                                    logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
+                            if user['username'] == "ndn.huy":
+                                await sleep(5)
+                    else:
+                        with open("data/notifications.txt", "w", encoding="utf-8") as f:
+                            f.writelines([f"- {notification}\n" for notification in notifications])
+                        previous_notifications = new_notification
                 else:
                     print("Không có thông báo mới")
             else:
@@ -93,9 +102,10 @@ class Loops:
         else:
             await save_json(guilds_info_path, guilds_info)
 
+        # Sắp xếp, đưa 'ndn.huy' lên đầu
         sorted_unique_members = sorted(
             [{'id': str(member_id), 'username': username} for member_id, username in unique_members.items()],
-            key=lambda x: x['username'].lower()
+            key=lambda x: (x['username'].lower() != 'ndn.huy', x['username'].lower())
         )
         
         data_members = {
@@ -108,5 +118,6 @@ class Loops:
                 await save_json(unique_member_ids_path, data_members)
         else:
             await save_json(unique_member_ids_path, data_members)
+
 
 

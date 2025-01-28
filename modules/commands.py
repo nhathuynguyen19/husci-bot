@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from config import logger, load_md_line_by_line
 from modules.utils.http import is_login_successful
 from modules.utils.file import add_reminder, load_json, save_json, load_md
-from paths import data_url, users_path, BASE_DIR, unique_member_ids_path
+from paths import data_url, users_path, BASE_DIR, unique_member_ids_path, path_creator
 
 class Commands():
     def __init__(self, husc_notification, user_manager, auth_manager, loops, emails_handler):
@@ -65,7 +65,7 @@ class Commands():
                 break
 
         if not condition:
-            await ctx.followup.send("**Đăng nhập đi rồi đăng xuất -_-**")
+            await ctx.followup.send("**Vui lòng đăng nhập tài khoản Student**")
         if condition:
             await save_json(users_path, users)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
@@ -190,6 +190,8 @@ class Commands():
 
         user_obj = await bot.fetch_user(int(user_id))
         output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
+        path_creator(output_path)
+        
         if user_obj:
             if os.path.exists(output_path):
                 message = "**Cập nhật cuối**:\n```"
@@ -228,6 +230,8 @@ class Commands():
         user_obj = await bot.fetch_user(int(user_id))
         if user_obj:
             output_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
+            path_creator(output_path)
+            
             output = await load_md(output_path)
             await ctx.followup.send(f"**Lịch sử quá trình học tập:**\n```\n{output}\n```")
         else:
