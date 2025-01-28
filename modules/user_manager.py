@@ -2,7 +2,7 @@ import pytz
 import json, os, datetime, time, asyncio
 from config import logger, admin_id
 from modules.utils.file import load_json
-from paths import users_path
+from paths import users_path, request_path
 
 class UserManager:
     def __init__(self, user_file="data/users.json"):
@@ -66,6 +66,6 @@ class UserManager:
         if user_id != admin_id:
             timezone = pytz.timezone("Asia/Ho_Chi_Minh")
             current_time = datetime.datetime.now(timezone)
-            with open("data/request.txt", "a", encoding="utf-8") as file:
+            with open(request_path, "a", encoding="utf-8") as file:
                 file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {current_time}\n")
 
