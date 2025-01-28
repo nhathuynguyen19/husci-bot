@@ -1,10 +1,11 @@
-.env
-!requirements.txt
+# .env
+# !requirements.txt
+# tempCodeRunnerFile.py 
+# temp.py 
+# *.txt
+# *.json
+# *.log
+# !README.md
+# *.md
+
 __pycache__/
-tempCodeRunnerFile.py 
-temp.py 
-*.txt
-*.json
-*.log
-!README.md
-*.md
