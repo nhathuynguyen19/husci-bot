@@ -2,7 +2,7 @@ import discord, subprocess
 from discord.ext import tasks, commands
 from datetime import datetime
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, EmailsHandler
-from paths  import sent_reminders_path, guilds_info_path, reminders_path, notifications_path, login_url, data_url, users_path, unique_member_ids_path, path_creator, bot_log_path
+from paths  import sent_reminders_path, guilds_info_path, reminders_path, notifications_path, login_url, data_url, users_path, unique_member_ids_path, path_creator, bot_log_path, request_path
 from colorama import init, Fore
 from modules.utils.http import handle_users
 
@@ -30,6 +30,7 @@ try:
     path_creator(users_path)
     path_creator(guilds_info_path)
     path_creator(unique_member_ids_path)
+    path_creator(request_path)
 except Exception as e:
     print(f"Error creating path: {e}")
 
