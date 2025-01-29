@@ -1,9 +1,7 @@
 import logging, discord, re, aiohttp, asyncio
-from paths import bot_log_path, path_creator
+from paths import bot_log_path
 
 admin_id=767394443820662784
-
-path_creator(bot_log_path)
 
 # Configure logger
 logging.basicConfig(

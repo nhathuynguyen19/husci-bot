@@ -32,7 +32,7 @@ class Loops:
             else:
                 logging.warning("Danh sách rỗng hoặc không có dữ liệu.")
                 print("Danh sách rỗng hoặc không có dữ liệu.")
-                await asyncio.sleep(1)
+                await asyncio.sleep(3)
 
         user_id = random_id
         is_new_notification = False

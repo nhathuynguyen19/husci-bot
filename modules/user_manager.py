@@ -2,7 +2,9 @@ import pytz
 import json, os, datetime, time, asyncio
 from config import logger, admin_id
 from modules.utils.file import load_json
-from paths import users_path, request_path
+from paths import users_path, request_path, path_creator
+
+path_creator(request_path)
 
 class UserManager:
     def __init__(self, user_file="data/users.json"):
@@ -63,9 +65,11 @@ class UserManager:
         return True
 
     async def remember_request(self, user_id, user_name, command):
+        print(f"user_id: {user_id}, admin_id: {admin_id}")  # Debug giá trị
         if user_id != admin_id:
             timezone = pytz.timezone("Asia/Ho_Chi_Minh")
             current_time = datetime.datetime.now(timezone)
             with open(request_path, "a", encoding="utf-8") as file:
                 file.write(f"User ID: {user_id}, User Name: {user_name}, Command: {command}, Time: {current_time}\n")
+            print("Dữ liệu đã ghi vào file")  # Xác nhận đã ghi
 

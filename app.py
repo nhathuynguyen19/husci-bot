@@ -6,17 +6,6 @@ from paths  import sent_reminders_path, guilds_info_path, reminders_path, notifi
 from colorama import init, Fore
 from modules.utils.http import handle_users
 
-# Objects
-bot_config = BotConfig() 
-bot = bot_config.create_bot()
-auth_manager = AuthManager(bot_config.fixed_key)
-user_manager = UserManager(users_path)
-husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
-reminders = Reminder(reminders_path, sent_reminders_path, bot)
-loops = Loops(husc_notification, user_manager, auth_manager, bot)
-emails_handler = EmailsHandler(auth_manager, bot, users_path)
-commands = Commands(husc_notification, user_manager, auth_manager, loops, emails_handler)
-
 # Initialize 
 init(autoreset=True)
 previous_notifications = None
@@ -33,6 +22,17 @@ try:
     path_creator(request_path)
 except Exception as e:
     print(f"Error creating path: {e}")
+
+# Objects
+bot_config = BotConfig() 
+bot = bot_config.create_bot()
+auth_manager = AuthManager(bot_config.fixed_key)
+user_manager = UserManager(users_path)
+husc_notification = HUSCNotifications(login_url, data_url[0], bot_config.fixed_key, notifications_path)
+reminders = Reminder(reminders_path, sent_reminders_path, bot)
+loops = Loops(husc_notification, user_manager, auth_manager, bot)
+emails_handler = EmailsHandler(auth_manager, bot, users_path)
+commands = Commands(husc_notification, user_manager, auth_manager, loops, emails_handler)
 
 # Commands
 @bot.tree.command(name="login",description="Đăng nhập HUSC")
