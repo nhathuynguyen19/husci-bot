@@ -24,7 +24,7 @@ except Exception as e:
     print(f"Error creating path: {e}")
 
 # Objects
-bot_config = BotConfig() 
+bot_config = BotConfig()
 bot = bot_config.create_bot()
 auth_manager = AuthManager(bot_config.fixed_key)
 user_manager = UserManager(users_path)

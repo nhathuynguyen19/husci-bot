@@ -257,3 +257,53 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 2025-01-29 12:37:55 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
 2025-01-29 12:37:58 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
 2025-01-29 12:38:01 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:14 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-01-29 12:41:14 - INFO - logging in using static token
+2025-01-29 12:41:15 - INFO - Shard ID None has connected to Gateway (Session ID: 8cb419bc0ae686a423e1f14b83776c9a).
+2025-01-29 12:41:19 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:22 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:25 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:28 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:31 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:34 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:37 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:37 - ERROR - Ignoring exception in command 'login'
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 858, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\huyth\OneDrive\Documents\Code\My projects\husci\public\app.py", line 40, in login
+    await commands.handle_login(ctx, username, password)
+  File "c:\Users\huyth\OneDrive\Documents\Code\My projects\husci\public\modules\commands.py", line 20, in handle_login
+    await ctx.response.defer(ephemeral=True)
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\interactions.py", line 709, in defer
+    await adapter.create_interaction_response(
+    ...<6 lines>...
+    )
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\webhook\async_.py", line 223, in request
+    raise HTTPException(response, data)
+discord.errors.HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'login' raised an exception: HTTPException: 400 Bad Request (error code: 40060): Interaction has already been acknowledged.
+2025-01-29 12:41:40 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:43 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:46 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:49 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:52 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:55 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:41:58 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:42:01 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:42:04 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:42:07 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:42:10 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
+2025-01-29 12:42:13 - WARNING - Danh sách r\u1ed7ng ho\u1eb7c không có d\u1eef li\u1ec7u.
