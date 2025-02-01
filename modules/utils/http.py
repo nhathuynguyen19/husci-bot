@@ -233,12 +233,16 @@ async def handle_users(auth_manager, bot, emails_handler):
             if login_id in processed_users:
                 continue 
 
-            encrypted_password = user.get("password")
-            start_time = time.time()
-            password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
+            try:
+                encrypted_password = user.get("password")
+                start_time = time.time()
+                password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
 
-            task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
-            tasks_phase.append(task)
+                task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
+                tasks_phase.append(task)
+            except Exception as e:
+                print(f"Đã xảy ra lỗi: {e}")
+                
             processed_users.add(login_id)
 
         await asyncio.sleep(5)
