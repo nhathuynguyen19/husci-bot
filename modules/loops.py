@@ -52,15 +52,22 @@ class Loops:
             if isinstance(notifications, list) and notifications:
                 new_notification = notifications[0] 
                 if previous_notifications != new_notification or previous_notifications is None:
+                    
+                    with open("data/notifications.txt", "w", encoding="utf-8") as f:
+                        f.writelines([f"- {notification}\n" for notification in notifications])
+                    previous_notifications = new_notification
+                    
                     if is_new_notification:
                         formatted_notification = f"- {new_notification}"
 
                         # gửi thông báo đến tất cả user trong tất cả server
                         users_data = await load_json(unique_member_ids_path)
+
+                        send_tasks = []
                         for user in users_data['unique_members']:
                             if switch:
                                 try:
-                                    await self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}")
+                                    send_tasks.append(self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}"))
                                     print(f"Đã gửi thông báo đến user: {user['username']}")
                                 except discord.Forbidden:
                                     logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
@@ -68,10 +75,6 @@ class Loops:
                                     logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
                             if user['username'] == "ndn.huy":
                                 await sleep(5)
-                    else:
-                        with open("data/notifications.txt", "w", encoding="utf-8") as f:
-                            f.writelines([f"- {notification}\n" for notification in notifications])
-                        previous_notifications = new_notification
                 else:
                     print("Không có thông báo mới")
             else:

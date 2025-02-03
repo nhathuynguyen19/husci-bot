@@ -9,6 +9,7 @@ from modules.utils.http import handle_users
 # Initialize 
 init(autoreset=True)
 previous_notifications = None
+is_sending_notification = False
 
 # tạo các đường dẫn
 try:
@@ -68,8 +69,15 @@ async def one_second():
     await loops.handle_update_guilds_info()
 @tasks.loop(minutes=1)
 async def one_minute():
-    global previous_notifications
-    await loops.handle_auto_notifications(previous_notifications)
+    global previous_notifications, is_sending_notification
+    if not is_sending_notification:
+        print("Đang gửi thông báo, bỏ qua vòng lặp này...")
+        return
+    is_sending_notification = True
+    try:
+        await loops.handle_auto_notifications(previous_notifications)
+    finally:
+        is_sending_notification = False
 
 # Events
 @bot.event

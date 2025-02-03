@@ -579,3 +579,5 @@ Traceback (most recent call last):
   File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\ext\tasks\__init__.py", line 395, in start
     raise RuntimeError('Task is already launched and is not completed.')
 RuntimeError: Task is already launched and is not completed.
+2025-02-03 11:01:20 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-03 11:01:20 - INFO - logging in using static token
