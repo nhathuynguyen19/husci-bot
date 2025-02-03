@@ -70,7 +70,7 @@ async def one_second():
 @tasks.loop(minutes=1)
 async def one_minute():
     global previous_notifications, is_sending_notification
-    if not is_sending_notification:
+    if is_sending_notification:
         print("Đang gửi thông báo, bỏ qua vòng lặp này...")
         return
     is_sending_notification = True
