@@ -7,3 +7,6 @@
 2025-02-03 12:12:25 - WARNING - Không tìm th\u1ea5y kênh h\u1ee3p l\u1ec7 trong guild: H\u1ed9i ng\u01b0\u1eddi "Gà" I.T
 2025-02-03 12:12:25 - WARNING - Không tìm th\u1ea5y kênh h\u1ee3p l\u1ec7 trong guild: nhathuynguyen
 2025-02-03 12:12:25 - WARNING - Không tìm th\u1ea5y kênh h\u1ee3p l\u1ec7 trong guild: Husci
+2025-02-03 12:47:50 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-03 12:47:50 - INFO - logging in using static token
+2025-02-03 12:47:51 - INFO - Shard ID None has connected to Gateway (Session ID: 9257467f40376f30e660ca083c49f60e).
