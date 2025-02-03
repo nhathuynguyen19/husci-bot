@@ -53,10 +53,6 @@ class Loops:
                 new_notification = notifications[0] 
                 if previous_notifications != new_notification or previous_notifications is None:
                     
-                    with open("data/notifications.txt", "w", encoding="utf-8") as f:
-                        f.writelines([f"- {notification}\n" for notification in notifications])
-                    previous_notifications = new_notification
-                    
                     if is_new_notification:
                         formatted_notification = f"- {new_notification}"
 
@@ -78,6 +74,11 @@ class Loops:
 
                         # **Chờ tất cả tin nhắn gửi xong trước khi tiếp tục vòng lặp**
                         await asyncio.gather(*send_tasks)
+                    else:
+                        with open("data/notifications.txt", "w", encoding="utf-8") as f:
+                            f.writelines([f"- {notification}\n" for notification in notifications])
+                        previous_notifications = new_notification
+                        
                 else:
                     print("Không có thông báo mới")
             else:

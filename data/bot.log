@@ -581,3 +581,6 @@ Traceback (most recent call last):
 RuntimeError: Task is already launched and is not completed.
 2025-02-03 11:01:20 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-03 11:01:20 - INFO - logging in using static token
+2025-02-03 11:54:05 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-03 11:54:05 - INFO - logging in using static token
+2025-02-03 11:54:06 - INFO - Shard ID None has connected to Gateway (Session ID: 22527f48110966b216b185651c6dbc53).
