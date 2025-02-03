@@ -75,6 +75,9 @@ class Loops:
                                     logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
                             if user['username'] == "ndn.huy":
                                 await sleep(5)
+
+                        # **Chờ tất cả tin nhắn gửi xong trước khi tiếp tục vòng lặp**
+                        await asyncio.gather(*send_tasks)
                 else:
                     print("Không có thông báo mới")
             else:
