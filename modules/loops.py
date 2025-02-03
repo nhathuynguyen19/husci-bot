@@ -60,29 +60,27 @@ class Loops:
                         users_data = await load_json(unique_member_ids_path)
 
                         send_tasks = []
-                        for user in users_data['unique_members']:
-                            if switch:
+                        for guild in self.bot.guilds:
+                            # Lấy kênh text đầu tiên của guild
+                            channel = next((ch for ch in guild.text_channels if ch.permissions_for(guild.me).send_messages), None)
+                            
+                            if channel and switch:
                                 try:
-                                    user_obj = self.bot.get_user(int(user['id']))
-                                    if user_obj and isinstance(user_obj, discord.User):
-                                        send_tasks.append(user_obj.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}"))
-                                        print(f"Đã gửi thông báo đến user: {user['username']}")
-                                    else:
-                                        logger.warning(f"Không thể gửi tin nhắn đến user: {user['username']}")
+                                    send_tasks.append(channel.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}"))
+                                    print(f"Đã gửi thông báo đến guild: {guild.name} (ID: {guild.id})")
                                 except discord.Forbidden:
-                                    logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
+                                    logger.warning(f"Bot không có quyền gửi tin nhắn vào {channel.name} của guild {guild.name}")
                                 except discord.HTTPException as e:
-                                    logger.error(f"Lỗi HTTP khi gửi tin nhắn đến user: {user['username']}, chi tiết: {e}")
-                            if user['username'] == "ndn.huy":
-                                await sleep(5)
+                                    logger.error(f"Lỗi HTTP khi gửi tin nhắn vào guild {guild.name}, chi tiết: {e}")
+                            else:
+                                logger.warning(f"Không tìm thấy kênh hợp lệ trong guild: {guild.name}")
 
-                        # **Chờ tất cả tin nhắn gửi xong trước khi tiếp tục vòng lặp**
+                        # Gửi tin nhắn đồng thời
                         await asyncio.gather(*send_tasks)
-                    else:
+                        
                         with open("data/notifications.txt", "w", encoding="utf-8") as f:
                             f.writelines([f"- {notification}\n" for notification in notifications])
                         previous_notifications = new_notification
-                        
                 else:
                     print("Không có thông báo mới")
             else:
