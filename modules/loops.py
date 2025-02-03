@@ -63,8 +63,12 @@ class Loops:
                         for user in users_data['unique_members']:
                             if switch:
                                 try:
-                                    send_tasks.append(self.bot.get_user(int(user['id'])).send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}"))
-                                    print(f"Đã gửi thông báo đến user: {user['username']}")
+                                    user_obj = self.bot.get_user(int(user['id']))
+                                    if user_obj and isinstance(user_obj, discord.User):
+                                        send_tasks.append(user_obj.send(f"**Thông báo mới nhất từ HUSC**:\n{formatted_notification}"))
+                                        print(f"Đã gửi thông báo đến user: {user['username']}")
+                                    else:
+                                        logger.warning(f"Không thể gửi tin nhắn đến user: {user['username']}")
                                 except discord.Forbidden:
                                     logger.warning(f"Bot không thể gửi tin nhắn đến user: {user['username']}")
                                 except discord.HTTPException as e:
