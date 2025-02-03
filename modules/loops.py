@@ -78,7 +78,7 @@ class Loops:
                         # Gửi tin nhắn đồng thời
                         await asyncio.gather(*send_tasks)
                         
-                        with open("data/notifications.txt", "w", encoding="utf-8") as f:
+                        with open(notifications_path, "w", encoding="utf-8") as f:
                             f.writelines([f"- {notification}\n" for notification in notifications])
                         previous_notifications = new_notification
                 else:
