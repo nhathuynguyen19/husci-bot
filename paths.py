@@ -13,6 +13,7 @@ guilds_info_path = os.path.join(BASE_DIR, 'data', 'guilds_info.json')
 unique_member_ids_path = os.path.join(BASE_DIR, 'data', 'unique_member_ids.json')
 bot_log_path = os.path.join(BASE_DIR, 'data', 'bot.log')
 request_path = os.path.join(BASE_DIR, 'data', 'request.txt')
+data_path = os.path.join(BASE_DIR, 'data')
 
 def path_creator(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)

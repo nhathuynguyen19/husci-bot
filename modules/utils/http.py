@@ -4,6 +4,7 @@ from config import logger, convert_to_acronym
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import login_url, data_url, users_path, BASE_DIR, path_creator
 from modules.utils.switch import score_switch
+from modules.utils.autopush import push_to_git
 
 processed_users = set()
 tasks_phase = []
@@ -202,8 +203,10 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                         logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")
                     
                     await save_json(scores_file_path, format_data_json)
+                    await push_to_git(BASE_DIR, "Update scores")
                 if old_scores == []:
                     await save_json(scores_file_path, format_data_json)
+                    await push_to_git(BASE_DIR, "Update scores")
                     
             # Kết thúc vòng 
             await asyncio.sleep(10)

@@ -4,6 +4,7 @@ from config import logger, load_md_line_by_line
 from modules.utils.http import is_login_successful
 from modules.utils.file import add_reminder, load_json, save_json, load_md
 from paths import data_url, users_path, BASE_DIR, unique_member_ids_path, path_creator
+from modules.utils.autopush import push_to_git
 
 class Commands():
     def __init__(self, husc_notification, user_manager, auth_manager, loops, emails_handler):
@@ -47,6 +48,7 @@ class Commands():
                 logger.error("Tài khoản đã tồn tại")
                 await ctx.followup.send(f"**Ủa bạn, bạn đã đăng nhập rồi mà! {ctx.user.name} phải không?**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/login")
+        await push_to_git(BASE_DIR)
 
     async def handle_logout(self, ctx):
         condition = False
@@ -69,6 +71,7 @@ class Commands():
         if condition:
             await save_json(users_path, users)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
+        await push_to_git(BASE_DIR)
 
     async def handle_notifications(self, ctx):
         user_id = ctx.user.id
@@ -137,6 +140,7 @@ class Commands():
         except Exception as e:
             logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
         await self.user_manager.remember_request(ctx.user.id, ctx.user.name, "/remind")
+        await push_to_git(BASE_DIR)
 
     async def handle_message(self, ctx):
         user_id = ctx.user.id
