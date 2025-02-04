@@ -2,9 +2,10 @@ import discord, subprocess
 from discord.ext import tasks, commands
 from datetime import datetime
 from modules import UserManager, BotConfig, AuthManager, HUSCNotifications, Commands, Reminder, Loops, EmailsHandler
-from paths  import sent_reminders_path, guilds_info_path, reminders_path, notifications_path, login_url, data_url, users_path, unique_member_ids_path, path_creator, bot_log_path, request_path
+from paths import sent_reminders_path, guilds_info_path, reminders_path, notifications_path, login_url, data_url, users_path, unique_member_ids_path, path_creator, bot_log_path, request_path, BASE_DIR
 from colorama import init, Fore
 from modules.utils.http import handle_users
+from modules.utils.autopush import push_to_git
 
 # Initialize 
 init(autoreset=True)
@@ -70,6 +71,9 @@ async def one_second():
 @tasks.loop(minutes=1)
 async def one_minute():
     global previous_notifications, is_sending_notification
+
+    await push_to_git(BASE_DIR)
+    
     if is_sending_notification:
         print("Đang gửi thông báo, bỏ qua vòng lặp này...")
         return
