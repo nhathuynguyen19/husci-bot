@@ -32,3 +32,6 @@
 2025-02-04 04:56:57 - WARNING - Danh sách rỗng hoặc không có dữ liệu.
 2025-02-04 04:57:01 - WARNING - Danh sách rỗng hoặc không có dữ liệu.
 2025-02-04 04:57:04 - WARNING - Danh sách rỗng hoặc không có dữ liệu.
+2025-02-04 05:02:31 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-04 05:02:31 - INFO - logging in using static token
+2025-02-04 05:02:32 - INFO - Shard ID None has connected to Gateway (Session ID: d3e882adbf0b18c3541ebcff09678e44).
