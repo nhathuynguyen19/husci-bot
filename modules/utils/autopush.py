@@ -18,7 +18,7 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
             print("❌ Không có thay đổi nào để commit.")
             return
 
-        # Thêm các thay đổi
+        # Thêm các thay đổi 
         subprocess.run(["git", "-C", repo_path, "add", data_path], check=True)
         
         # Commit các thay đổi
