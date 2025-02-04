@@ -1,2 +1,2 @@
-switch = False
-score_switch = False
+switch = True
+score_switch = True
