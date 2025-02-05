@@ -1,2 +1,4 @@
 User ID: 1021783859416797298, User Name: g.turtle, Command: /login, Time: 2025-02-05 22:46:27.520111+07:00
 User ID: 1021783859416797298, User Name: g.turtle, Command: /first, Time: 2025-02-05 22:46:43.104781+07:00
+User ID: 1021783859416797298, User Name: g.turtle, Command: /first, Time: 2025-02-05 22:47:17.052391+07:00
+User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 2025-02-05 22:47:21.487579+07:00
