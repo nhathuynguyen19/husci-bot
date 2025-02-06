@@ -5,3 +5,4 @@ User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 20
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-06 14:34:56.246029+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /login, Time: 2025-02-06 14:35:23.900319+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-06 14:35:32.534014+07:00
+User ID: 1185452627396411424, User Name: 0375249859, Command: /login, Time: 2025-02-06 23:15:12.728116+07:00
