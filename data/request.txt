@@ -8,3 +8,5 @@ User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, T
 User ID: 1185452627396411424, User Name: 0375249859, Command: /login, Time: 2025-02-06 23:15:12.728116+07:00
 User ID: 1185452627396411424, User Name: 0375249859, Command: /login, Time: 2025-02-07 00:10:14.826665+07:00
 User ID: 1185452627396411424, User Name: 0375249859, Command: /lastscore, Time: 2025-02-07 00:10:50.620565+07:00
+User ID: 1224445473960493198, User Name: truongpersonal, Command: /lastscore, Time: 2025-02-07 00:53:40.041864+07:00
+User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-07 00:53:45.297319+07:00
