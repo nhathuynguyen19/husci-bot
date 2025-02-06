@@ -75,3 +75,4 @@
 2025-02-06 07:35:36 - ERROR - File '/home/container/Husci-Bot/data/scores/info/23t1020573.json' không hợp lệ. Trả về danh sách rỗng
 2025-02-06 09:46:34 - WARNING - Can't keep up, shard ID None websocket is 41.3s behind.
 2025-02-06 11:21:45 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
+2025-02-06 12:34:06 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
