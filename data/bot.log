@@ -94,3 +94,4 @@
 2025-02-07 09:26:53 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
 2025-02-07 18:00:03 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-07 18:00:03 - INFO - logging in using static token
+2025-02-07 18:00:05 - INFO - Shard ID None has connected to Gateway (Session ID: f6c5e1fa3efb206eb800ab700bebd041).
