@@ -92,3 +92,5 @@
 2025-02-07 06:28:38 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
 2025-02-07 07:42:24 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
 2025-02-07 09:26:53 - INFO - Shard ID None has successfully RESUMED session d3e882adbf0b18c3541ebcff09678e44.
+2025-02-07 18:00:03 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-07 18:00:03 - INFO - logging in using static token
