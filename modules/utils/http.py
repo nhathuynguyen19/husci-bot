@@ -192,7 +192,6 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     
                     await save_md(markdown_file_path, markdown_table)
                     
-                    print(markdown_table)
                     user_id = user['id']
                     user_obj = await bot.fetch_user(int(user_id))
                     if user_obj and score_switch:
