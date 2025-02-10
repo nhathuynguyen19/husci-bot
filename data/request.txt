@@ -13,3 +13,4 @@ User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, T
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-07 15:48:04.251604+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-07 19:55:58.515587+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-08 15:57:16.643083+07:00
+User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-10 14:54:21.402555+07:00
