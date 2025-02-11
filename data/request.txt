@@ -23,3 +23,4 @@ User ID: 1188706778460983316, User Name: thaithu2., Command: /message, Time: 202
 User ID: 1188706778460983316, User Name: thaithu2., Command: /scoretable, Time: 2025-02-11 11:34:17.808066+07:00
 User ID: 1188706778460983316, User Name: thaithu2., Command: /scoretable, Time: 2025-02-11 11:37:51.138187+07:00
 User ID: 1036683044104458250, User Name: icebieu_69, Command: /scoretable, Time: 2025-02-11 11:43:25.980905+07:00
+User ID: 1036683044104458250, User Name: icebieu_69, Command: /login, Time: 2025-02-11 11:45:24.618695+07:00
