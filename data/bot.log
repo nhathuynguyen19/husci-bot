@@ -163,3 +163,4 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-11 15:07:06 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-11 17:12:41 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-11 20:11:17 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
+2025-02-11 22:48:51 - WARNING - Can't keep up, shard ID None websocket is 41.7s behind.
