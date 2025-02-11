@@ -21,3 +21,4 @@ User ID: 1188706778460983316, User Name: thaithu2., Command: /login, Time: 2025-
 User ID: 1188706778460983316, User Name: thaithu2., Command: /lastscore, Time: 2025-02-11 11:34:02.135316+07:00
 User ID: 1188706778460983316, User Name: thaithu2., Command: /message, Time: 2025-02-11 11:34:10.500696+07:00
 User ID: 1188706778460983316, User Name: thaithu2., Command: /scoretable, Time: 2025-02-11 11:34:17.808066+07:00
+User ID: 1188706778460983316, User Name: thaithu2., Command: /scoretable, Time: 2025-02-11 11:37:51.138187+07:00
