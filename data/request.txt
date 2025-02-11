@@ -18,3 +18,4 @@ User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, T
 User ID: 1188706778460983316, User Name: thaithu2., Command: /login, Time: 2025-02-11 11:33:12.909173+07:00
 User ID: 1188706778460983316, User Name: thaithu2., Command: /lastscore, Time: 2025-02-11 11:33:30.183460+07:00
 User ID: 1188706778460983316, User Name: thaithu2., Command: /login, Time: 2025-02-11 11:33:56.163610+07:00
+User ID: 1188706778460983316, User Name: thaithu2., Command: /lastscore, Time: 2025-02-11 11:34:02.135316+07:00
