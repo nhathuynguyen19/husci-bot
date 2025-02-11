@@ -151,3 +151,4 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-10 22:22:47 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-11 01:50:52 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-11 04:32:46 - WARNING - Không có thông tin đăng nhập
+2025-02-11 04:33:22 - ERROR - File '/home/container/Husci-Bot/data/scores/info/23t1020481.json' không hợp lệ. Trả về danh sách rỗng
