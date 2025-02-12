@@ -30,3 +30,7 @@ User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 20
 User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:05.471615+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /login, Time: 2025-02-12 11:59:20.363024+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:28.748555+07:00
+User ID: 494453511841382401, User Name: diphen102, Command: /first, Time: 2025-02-12 11:59:42.051600+07:00
+User ID: 494453511841382401, User Name: diphen102, Command: /notifications, Time: 2025-02-12 11:59:45.971245+07:00
+User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:49.953176+07:00
+User ID: 494453511841382401, User Name: diphen102, Command: /scoretable, Time: 2025-02-12 11:59:56.080620+07:00
