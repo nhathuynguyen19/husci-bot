@@ -29,3 +29,4 @@ User ID: 1036683044104458250, User Name: icebieu_69, Command: /scoretable, Time:
 User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 2025-02-12 09:49:53.653792+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:05.471615+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /login, Time: 2025-02-12 11:59:20.363024+07:00
+User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:28.748555+07:00
