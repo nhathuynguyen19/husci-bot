@@ -26,3 +26,4 @@ User ID: 1036683044104458250, User Name: icebieu_69, Command: /scoretable, Time:
 User ID: 1036683044104458250, User Name: icebieu_69, Command: /login, Time: 2025-02-11 11:45:24.618695+07:00
 User ID: 1036683044104458250, User Name: icebieu_69, Command: /scoretable, Time: 2025-02-11 11:45:49.600426+07:00
 User ID: 1036683044104458250, User Name: icebieu_69, Command: /scoretable, Time: 2025-02-11 17:59:28.377056+07:00
+User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 2025-02-12 09:49:53.653792+07:00
