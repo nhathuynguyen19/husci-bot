@@ -167,3 +167,5 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-12 00:11:15 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-12 02:10:05 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
 2025-02-12 03:10:36 - INFO - Shard ID None has successfully RESUMED session d89457c791f9a42ef37b2c5da1d2e6e5.
+2025-02-12 04:03:34 - ERROR - Unclosed connection
+client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443, is_ssl=True, ssl=True, proxy=None, proxy_auth=None, proxy_headers_hash=None)>
