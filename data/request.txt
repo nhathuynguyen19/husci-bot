@@ -34,3 +34,4 @@ User ID: 494453511841382401, User Name: diphen102, Command: /first, Time: 2025-0
 User ID: 494453511841382401, User Name: diphen102, Command: /notifications, Time: 2025-02-12 11:59:45.971245+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /lastscore, Time: 2025-02-12 11:59:49.953176+07:00
 User ID: 494453511841382401, User Name: diphen102, Command: /scoretable, Time: 2025-02-12 11:59:56.080620+07:00
+User ID: 1224445473960493198, User Name: truongpersonal, Command: /scoretable, Time: 2025-02-12 12:40:23.045091+07:00
