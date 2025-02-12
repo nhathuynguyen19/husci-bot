@@ -208,7 +208,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     await push_to_git(BASE_DIR, "Update scores")
                     
             # Kết thúc vòng 
-            await asyncio.sleep(10)
+            await asyncio.sleep(30)
 
     except Exception as e:
         print(f"Đã xảy ra lỗi: {e}")
