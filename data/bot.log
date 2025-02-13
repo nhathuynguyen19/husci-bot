@@ -918,3 +918,5 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-13 17:01:03 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-13 17:01:03 - INFO - logging in using static token
 2025-02-13 17:01:04 - INFO - Shard ID None has connected to Gateway (Session ID: 797a008e5623220bf3f6fcb6d458ea78).
+2025-02-13 17:01:26 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-13 17:01:26 - ERROR - Đã xảy ra lỗi: cannot access local variable 'page' where it is not associated with a value
