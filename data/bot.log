@@ -904,3 +904,5 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-13 15:40:15 - INFO - logging in using static token
 2025-02-13 15:40:16 - INFO - Shard ID None has connected to Gateway (Session ID: 893aefa9334ad089c1281125cc82a5cc).
 2025-02-13 15:48:48 - INFO - Shard ID None has successfully RESUMED session 893aefa9334ad089c1281125cc82a5cc.
+2025-02-13 16:21:14 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-13 16:21:15 - WARNING - Không tìm thấy danh sách tin nhắn!
