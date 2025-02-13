@@ -192,3 +192,9 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-13 00:32:13 - INFO - Shard ID None has successfully RESUMED session 570c3e04b713c094c41be0cd93ab008f.
 2025-02-13 01:35:59 - INFO - Shard ID None has successfully RESUMED session 570c3e04b713c094c41be0cd93ab008f.
 2025-02-13 05:02:54 - INFO - Shard ID None has successfully RESUMED session 570c3e04b713c094c41be0cd93ab008f.
+2025-02-13 12:17:59 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 12:17:59 - INFO - logging in using static token
+2025-02-13 12:18:01 - INFO - Shard ID None has connected to Gateway (Session ID: 02d38b1e4c722b5ba2b385843e1656d3).
+2025-02-13 12:21:51 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 12:21:51 - INFO - logging in using static token
+2025-02-13 12:21:53 - INFO - Shard ID None has connected to Gateway (Session ID: afcf2aae167f4c88ed71fa3de066cd5f).
