@@ -1,6 +1,6 @@
 import aiohttp, time, asyncio, os, unicodedata, discord
 from bs4 import BeautifulSoup
-from config import logger, convert_to_acronym
+from config import logger, convert_to_acronym, admin_id
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import login_url, data_url, users_path, BASE_DIR, path_creator
 from modules.utils.switch import score_switch
@@ -105,13 +105,15 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             
         # Lấy bảng điểm
         try:
-            read_page = await session.post(data_url[2], data=login_data)
+            read_page = await session.post(data_url[2], data=login_data, timeout=20)
             html = BeautifulSoup(await read_page.text(), 'html.parser')
             scores_list = html.find('table', class_='table table-bordered table-hover')
             if not scores_list:
                 logger.warning("Không tìm thấy bảng điểm!")
                 await asyncio.sleep(10)
                 continue
+        except asyncio.TimeoutError:
+            logger.error("Request bị timeout sau 20 giây")
         except Exception as e:
             logger.error(f"Đã xảy ra lỗi: {e}")
         print(f"(fetch data) Đã lấy bảng điểm của {login_id}")
@@ -244,7 +246,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                 await push_to_git(BASE_DIR, "Update scores")
                 
         # Kết thúc vòng 
-        await asyncio.sleep(90)
+        await asyncio.sleep(600)
 
 # From Emails
 async def _handle_user_data(login_id, password, user, bot, emails_handler):

@@ -25,5 +25,6 @@ login_url = "https://student.husc.edu.vn/Account/Login"
 data_url = [
     "https://student.husc.edu.vn/News",
     "https://student.husc.edu.vn/Message/Inbox",
-    "https://student.husc.edu.vn/Statistics/HistoryOfStudying"
+    "https://student.husc.edu.vn/Statistics/HistoryOfStudying",
+    "https://student.husc.edu.vn/TimeTable/Week"
 ]
