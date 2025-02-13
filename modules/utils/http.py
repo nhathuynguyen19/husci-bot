@@ -350,10 +350,20 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             "Thứ 7": 5
         }
         # print(days_map)
-        period_times = [
-            (7, 0), (8, 0), (9, 0), (10, 0),  
-            (13, 0), (14, 0), (15, 0), (16, 0),  
-            (17, 30), (18, 25), (19, 20), (20, 15)  
+        # Danh sách khoảng thời gian cho từng tiết học
+        period_ranges = [
+            (7, 0, 7, 59),    # Tiết 0: 7h - 7h59
+            (8, 0, 8, 59),    # Tiết 1: 8h - 8h59
+            (9, 0, 9, 59),    # Tiết 2: 9h - 9h59
+            (10, 0, 12, 59),  # Tiết 3: 10h - 12h59
+            (13, 0, 13, 59),  # Tiết 4: 13h - 13h59
+            (14, 0, 14, 59),  # Tiết 5: 14h - 14h59
+            (15, 0, 15, 59),  # Tiết 6: 15h - 15h59
+            (16, 0, 17, 29),  # Tiết 7: 16h - 17h29
+            (17, 30, 18, 24), # Tiết 8: 17h30 - 18h24
+            (18, 25, 19, 19), # Tiết 9: 18h25 - 19h19
+            (19, 20, 20, 14), # Tiết 10: 19h20 - 20h14
+            (20, 15, 21, 4)  # Tiết 11: 20h15 - 21h04
         ]
         # Tạo bảng rỗng: 12 tiết x 6 cột (Thứ 2 -> Thứ 7)
         time_table = [[""] * 6 for _ in range(12)]
@@ -372,27 +382,43 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         # print(f"Thứ hiện tại: {weekday}")
 
         # Xác định tiết học hiện tại
-        current_period = None
-        for i, (hour, minute) in enumerate(period_times):
-            if now.hour < hour or (now.hour == hour and now.minute < minute):
-                current_period = i
-                break
-        if current_period is None:
-            current_period = 11  # Nếu đã qua tiết cuối, đặt ở hàng cuối
+        current_hour, current_minute = now.hour, now.minute
+        current_period = 12  # Mặc định nếu quá 21h05
+        # Trước 7h thì là -1
+        if current_hour < 7:
+            current_period = -1
+        else:
+            for i, (start_h, start_m, end_h, end_m) in enumerate(period_ranges):
+                if (start_h < current_hour < end_h) or \
+                (current_hour == start_h and current_minute >= start_m) or \
+                (current_hour == end_h and current_minute <= end_m):
+                    current_period = i
+                    break
 
         # Đặt dấu "*"
-        for row in range(12):
-            if row == current_period:
-                time_table[row][weekday] = "*"
+        if current_period == -1:
+            time_table[0][weekday] = "⭘"
+        elif current_period == 12:
+            time_table[11][weekday] = "☾"
+        else:
+            for row in range(12):
+                if row == current_period:
+                    time_table[row][weekday] = "☀"
 
         # Tạo bảng Markdown
         headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]
         col_widths = [max(len(headers_time_table[i]), max(len(row[i]) for row in time_table)) for i in range(6)]
         # Xuất ra Markdown
-        md_time_table = "|" + "|".join(day.ljust(col_widths[i]) for i, day in enumerate(headers_time_table)) + "|\n"
-        md_time_table += "|" + "|".join("-" * col_widths[i] for i in range(6)) + "|\n"
+        md_time_table = "  |" + "|".join(day.ljust(col_widths[i]) for i, day in enumerate(headers_time_table)) + "|\n"
+        md_time_table += "  |" + "|".join("-" * col_widths[i] for i in range(6)) + "|\n"
+
+        peri = 1
         for row in time_table:
-            md_time_table += "|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
+            if peri < 10:
+                md_time_table += f" {peri}|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
+            else:
+                md_time_table += f"{peri}|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
+            peri += 1
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
         path_creator(week_md_path)
