@@ -691,3 +691,59 @@ discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 1000
 2025-02-13 16:32:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-13 16:32:44 - INFO - logging in using static token
 2025-02-13 16:32:46 - INFO - Shard ID None has connected to Gateway (Session ID: 9c8a5757f9dfe04071d6b3d19fabfb09).
+2025-02-13 16:34:48 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:34:48 - INFO - logging in using static token
+2025-02-13 16:34:50 - INFO - Shard ID None has connected to Gateway (Session ID: faa28dd6cf0d52bb38593b0db48b2290).
+2025-02-13 16:39:51 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:39:51 - INFO - logging in using static token
+2025-02-13 16:39:52 - INFO - Shard ID None has connected to Gateway (Session ID: 7b7e830b92587e35b05a84ee737295ef).
+2025-02-13 16:42:06 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:42:06 - INFO - logging in using static token
+2025-02-13 16:42:08 - INFO - Shard ID None has connected to Gateway (Session ID: 6a50c576c2292b1c8423e1865463327b).
+2025-02-13 16:43:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:43:44 - INFO - logging in using static token
+2025-02-13 16:43:45 - INFO - Shard ID None has connected to Gateway (Session ID: 252161d96614cb8ceca2782bd992607f).
+2025-02-13 16:45:26 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:45:26 - INFO - logging in using static token
+2025-02-13 16:45:28 - INFO - Shard ID None has connected to Gateway (Session ID: 587d21169e1ee01e98a9911a81a35264).
+2025-02-13 16:46:55 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:46:55 - INFO - logging in using static token
+2025-02-13 16:46:58 - INFO - Shard ID None has connected to Gateway (Session ID: 1e12238f0b6d39733b69622152064caa).
+2025-02-13 16:49:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:49:27 - INFO - logging in using static token
+2025-02-13 16:49:29 - INFO - Shard ID None has connected to Gateway (Session ID: 936212a0fabad8ad8a61d3e19517c72b).
+2025-02-13 16:49:52 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: [WinError 121] The semaphore timeout period has expired
+2025-02-13 16:49:53 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: [WinError 121] The semaphore timeout period has expired
+2025-02-13 16:53:41 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:53:41 - INFO - logging in using static token
+2025-02-13 16:53:42 - INFO - Shard ID None has connected to Gateway (Session ID: 8afeeb053c31701a2ede36da9782de91).
+2025-02-13 16:54:08 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:54:08 - INFO - logging in using static token
+2025-02-13 16:54:10 - INFO - Shard ID None has connected to Gateway (Session ID: 8155e96bfda407afb83ff57d6840e7d6).
+2025-02-13 16:56:05 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:56:05 - INFO - logging in using static token
+2025-02-13 16:56:07 - INFO - Shard ID None has connected to Gateway (Session ID: 4f9295e369aba2d525849e0187ed170f).
+2025-02-13 17:04:30 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 17:04:30 - INFO - logging in using static token
+2025-02-13 17:04:32 - INFO - Shard ID None has connected to Gateway (Session ID: f71eeb4a6dd4a9a241876b5e8c7c445e).
+2025-02-13 17:05:07 - ERROR - Ignoring exception in command 'timetable'
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 858, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\huyth\OneDrive\Documents\Code\My projects\husci\app.py", line 70, in timetable
+    await commands.handle_timetable(ctx, bot)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Commands' object has no attribute 'handle_timetable'. Did you mean: 'handle_time_table_week'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an exception: AttributeError: 'Commands' object has no attribute 'handle_timetable'

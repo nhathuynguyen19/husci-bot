@@ -65,6 +65,9 @@ async def last_score(ctx):
 @bot.tree.command(name="scoretable", description="Xem bảng điểm")
 async def full_score(ctx):
     await commands.handle_full_score(ctx, bot)
+@bot.tree.command(name="timetable", description="Lịch học trong tuần")
+async def timetable(ctx):
+    await commands.handle_timetable(ctx, bot)
     
 # Loops
 @tasks.loop(seconds=1)

@@ -1,4 +1,4 @@
-import aiohttp, time, asyncio, os, unicodedata, discord
+import aiohttp, time, asyncio, os, unicodedata, discord, json
 from bs4 import BeautifulSoup
 from config import logger, convert_to_acronym, admin_id
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
@@ -117,6 +117,22 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         except Exception as e:
             logger.error(f"Đã xảy ra lỗi: {e}")
         print(f"(fetch data) Đã lấy bảng điểm của {login_id}")
+
+        # Lấy phần thời khóa biểu
+        timetable_list = None
+        try:
+            read_page = await session.post(data_url[3], data=login_data, timeout=20)
+            html = BeautifulSoup(await read_page.text(), 'html.parser')
+            timetable_list = html.find('table', class_='table table-bordered')
+            if not timetable_list:
+                logger.warning("Không tìm thấy thời khóa biểu!")
+                await asyncio.sleep(10)
+                continue
+        except asyncio.TimeoutError:
+            logger.error("Request bị timeout sau 20 giây")
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
+        print(f"(fetch data) Đã lấy thời khóa biểu của {login_id}")
 
         # Cập nhật emails
         try:
@@ -244,6 +260,108 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             if old_scores == []:
                 await save_json(scores_file_path, format_data_json)
                 await push_to_git(BASE_DIR, "Update scores")
+
+        # if user_id_spec == admin_id:
+        #     print(timetable_list)
+
+        # Lấy thông tin thời khóa biểu
+        days = []
+        for th in timetable_list.find_all("th", class_="text-center"):
+            text = th.get_text(strip=True, separator="\n").split("\n")
+            if len(text) == 2:
+                days.append({"day": text[0], "date": text[1]})
+
+        rows = timetable_list.find_all("tr")
+        schedule = []
+        current_session = None
+
+        # if user_id_spec == admin_id:
+        #     print(rows)
+        #     print(len(rows))
+
+        for row in rows:
+            # if user_id_spec == admin_id:
+            #     print(row)
+            if row.find("td", class_="hitec-td-tkbTuan"):
+                current_session = row.get_text(strip=True)
+                # if user_id_spec == admin_id:
+                    # print(current_session)
+                continue
+
+            cols = row.find_all("td")
+            # if user_id_spec == admin_id:
+            #     print(cols)
+            #     print(len(cols))
+            for i, col in enumerate(cols):
+                dl = col.find("dl")
+                if dl:
+                    periods_dd = dl.find_all("dd")
+                    # print(periods_dd)
+                    # if user_id_spec == admin_id:
+                    #     print(len(periods_dd))
+                    if len(periods_dd) < 3:
+                        continue  # Bỏ qua nếu không đủ thông tin
+
+                    periods_text = periods_dd[0].get_text(strip=True).replace("- Tiết:", "")
+                    # print(repr(periods_dd[0].get_text(strip=True)))
+                    print(periods_text)
+                    if " - " in periods_text:
+                        try:
+                            start, end = map(int, periods_text.split(" - "))
+                            periods = list(range(start, end + 1))  # Danh sách số tiết
+                        except ValueError:
+                            periods = [int(periods_text)]  # Nếu không thể split, chỉ lấy một tiết
+                    else:
+                        periods = [int(periods_text)]  # Chỉ có một tiết duy nhất
+
+                    subject_info = {
+                        "session": current_session,
+                        "day": days[i]["day"],
+                        "date": days[i]["date"],
+                        "subject": dl.dt.a.get_text(strip=True),
+                        "link": dl.dt.a["href"],
+                        "periods": periods,
+                        "room": periods_dd[1].get_text(strip=True).replace("- Phòng: ", ""),
+                        "teacher": periods_dd[2].get_text(strip=True).replace("- Giáo viên: ", ""),
+                    }
+                    schedule.append(subject_info)
+
+        week_file_path = os.path.join(BASE_DIR, 'data', 'schedule', 'info', 'week', f"{login_id}.json")
+        path_creator(week_file_path)
+        await save_json(week_file_path, schedule)
+        print(f"(fetch data) Đã lưu thông tin thời khóa biểu của {login_id}")
+
+        # lưu thành bảng thời khóa biểu
+        # Mapping thứ -> cột trong bảng
+        days_map = {
+            "Thứ 2": 0,
+            "Thứ 3": 1,
+            "Thứ 4": 2,
+            "Thứ 5": 3,
+            "Thứ 6": 4,
+            "Thứ 7": 5
+        }
+        # Tạo bảng rỗng: 12 tiết x 6 cột (Thứ 2 -> Thứ 7)
+        time_table = [[""] * 6 for _ in range(12)]
+        # Điền dữ liệu vào bảng
+        for entry in schedule:
+            day_idx = days_map[entry["day"]]  # Xác định cột
+            for period in entry["periods"]:
+                time_table[period - 1][day_idx] = await convert_to_acronym(await remove_accents(entry["subject"]))  # Ghi vào ô tương ứng
+
+        # Tạo bảng Markdown
+        headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]
+        col_widths = [max(len(headers_time_table[i]), max(len(row[i]) for row in time_table)) for i in range(6)]
+        # Xuất ra Markdown
+        md_time_table = "|" + "|".join(day.ljust(col_widths[i]) for i, day in enumerate(headers_time_table)) + "|\n"
+        md_time_table += "|" + "|".join("-" * col_widths[i] for i in range(6)) + "|\n"
+        for row in time_table:
+            md_time_table += "|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
+
+        week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
+        path_creator(week_md_path)
+        await save_md(week_md_path, md_time_table)
+        print(f"(fetch data) Đã lưu thời khóa biểu dưới dạng Markdown của {login_id}")
                 
         # Kết thúc vòng 
         await asyncio.sleep(600)

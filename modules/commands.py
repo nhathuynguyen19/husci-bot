@@ -238,3 +238,36 @@ class Commands():
         else:
             await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
             logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
+
+    async def handle_time_table_week(self, ctx, bot):
+        user_id = ctx.user.id
+        users = await load_json(users_path)
+        login_id = None
+        await self.user_manager.remember_request(user_id, ctx.user.name, "/timetable")
+
+        for user in users:
+            if user["id"] == user_id:
+                login_id = user["login_id"]
+        
+        if not ctx.response.is_done():
+            await ctx.response.defer(ephemeral=True)
+
+        start_time = time.time()
+        credentials = await self.user_manager.get_user_credentials(user_id)
+        if credentials is None:
+            logger.warning("Không có thông tin đăng nhập")
+            await ctx.followup.send("**Chưa đăng nhập tài khoản Student! Dùng lệnh `/login` để đăng nhập**")
+            return
+        else:
+            print(f"Đã tìm thấy thông tin đăng nhập: {time.time() - start_time:.2f}s")
+
+        user_obj = await bot.fetch_user(int(user_id))
+        if user_obj:
+            week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")            
+            path_creator(week_md_path)
+            
+            output = await load_md(week_md_path)
+            await ctx.followup.send(f"**Thời khóa biểu tuần:**\n```\n{output}\n```")
+        else:
+            await ctx.followup.send(f"**Error! Không tìm thấy người dùng với ID: {user_obj}**")
+            logger.warning(f"Không tìm thấy người dùng với ID: {user_obj}")
