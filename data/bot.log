@@ -927,3 +927,4 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-13 17:01:36 - ERROR - Đã xảy ra lỗi: cannot access local variable 'emails_list' where it is not associated with a value
 2025-02-13 17:01:36 - ERROR - Đã xảy ra lỗi: cannot access local variable 'scores_list' where it is not associated with a value
 2025-02-13 17:01:36 - ERROR - Đã xảy ra lỗi: cannot access local variable 'data_results' where it is not associated with a value
+2025-02-13 17:24:54 - INFO - Shard ID None has successfully RESUMED session 797a008e5623220bf3f6fcb6d458ea78.
