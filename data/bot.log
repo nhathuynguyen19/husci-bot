@@ -747,3 +747,27 @@ Traceback (most recent call last):
   File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 876, in _do_call
     raise CommandInvokeError(self, e) from e
 discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an exception: AttributeError: 'Commands' object has no attribute 'handle_timetable'
+2025-02-13 17:06:04 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 17:06:04 - INFO - logging in using static token
+2025-02-13 17:06:05 - INFO - Shard ID None has connected to Gateway (Session ID: 9d9ef29ad98d63bcb4a74d5ef561dc23).
+2025-02-13 17:06:11 - ERROR - Ignoring exception in command 'timetable'
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 858, in _do_call
+    return await self._callback(interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\huyth\OneDrive\Documents\Code\My projects\husci\app.py", line 70, in timetable
+    await commands.handle_timetable(ctx, bot)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Commands' object has no attribute 'handle_timetable'. Did you mean: 'handle_time_table_week'?
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\app_commands\commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an exception: AttributeError: 'Commands' object has no attribute 'handle_timetable'
