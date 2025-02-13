@@ -1,13 +1,18 @@
-import aiohttp, time, asyncio, os, unicodedata, discord, json
+import aiohttp, time, asyncio, os, unicodedata, discord, json, pytz
 from bs4 import BeautifulSoup
 from config import logger, convert_to_acronym, admin_id
 from modules.utils.file import save_txt, load_json, save_json, remove_accents, save_md, load_md
 from paths import login_url, data_url, users_path, BASE_DIR, path_creator
 from modules.utils.switch import score_switch
 from modules.utils.autopush import push_to_git
+from datetime import datetime
 
 processed_users = set()
 tasks_phase = []
+
+# Đặt múi giờ Việt Nam
+tz_vn = pytz.timezone("Asia/Ho_Chi_Minh")
+now = datetime.now(tz_vn)  # Lấy thời gian hiện tại theo múi giờ Việt Nam
 
 async def is_login_successful(response):
     content = await response.text()
@@ -332,6 +337,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         print(f"(fetch data) Đã lưu thông tin thời khóa biểu của {login_id}")
 
         # lưu thành bảng thời khóa biểu
+        # Danh sách thời gian bắt đầu mỗi tiết (giữ nguyên)
         # Mapping thứ -> cột trong bảng
         days_map = {
             "Thứ 2": 0,
@@ -341,6 +347,11 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             "Thứ 6": 4,
             "Thứ 7": 5
         }
+        period_times = [
+            (7, 0), (8, 0), (9, 0), (10, 0),  
+            (13, 0), (14, 0), (15, 0), (16, 0),  
+            (17, 30), (18, 25), (19, 20), (20, 15)  
+        ]
         # Tạo bảng rỗng: 12 tiết x 6 cột (Thứ 2 -> Thứ 7)
         time_table = [[""] * 6 for _ in range(12)]
         # Điền dữ liệu vào bảng
@@ -348,6 +359,26 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             day_idx = days_map[entry["day"]]  # Xác định cột
             for period in entry["periods"]:
                 time_table[period - 1][day_idx] = entry["room"]  # Ghi vào ô tương ứng
+
+        # Xác định thời gian hiện tại
+        now = datetime.now(tz_vn)
+        weekday = now.weekday()  # Thứ 2 là 0, Thứ 7 là 5
+        if weekday > 5:
+            weekday = 5  # Nếu là Chủ Nhật, đặt mặc định vào thứ 7
+
+        # Xác định tiết học hiện tại
+        current_period = None
+        for i, (hour, minute) in enumerate(period_times):
+            if now.hour < hour or (now.hour == hour and now.minute < minute):
+                current_period = i
+                break
+        if current_period is None:
+            current_period = 11  # Nếu đã qua tiết cuối, đặt ở hàng cuối
+
+        # Đặt dấu "*"
+        for row in range(12):
+            if row == current_period:
+                time_table[row][weekday] = "*"
 
         # Tạo bảng Markdown
         headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]
