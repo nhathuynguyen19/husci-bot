@@ -1,0 +1,89 @@
+[
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 3",
+        "date": "11/02/2025",
+        "subject": "Xác suất thống kê - Nhóm 8",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TOA2023.008/",
+        "periods": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "room": "- Phòng:E304",
+        "teacher": "- Giáo viên:Võ Quang Mẫn"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 4",
+        "date": "12/02/2025",
+        "subject": "Java cơ bản - Nhóm 8",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN1033.008/",
+        "periods": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "room": "- Phòng:E501 - Lab",
+        "teacher": "- Giáo viên:Nguyễn Văn Trung"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 5",
+        "date": "13/02/2025",
+        "subject": "Thiết kế cơ sở dữ liệu - Nhóm 4",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN4012.004/",
+        "periods": [
+            1,
+            2,
+            3
+        ],
+        "room": "- Phòng:E301",
+        "teacher": "- Giáo viên:Trần Thị Phương Chi"
+    },
+    {
+        "session": "BUỔI CHIỀU",
+        "day": "Thứ 2",
+        "date": "10/02/2025",
+        "subject": "Phương pháp tính - Nhóm 7",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TOA2033.007/",
+        "periods": [
+            5,
+            6,
+            7,
+            8
+        ],
+        "room": "- Phòng:F301",
+        "teacher": "- Giáo viên:Nguyễn Đặng Hồ Hải"
+    },
+    {
+        "session": "BUỔI TỐI",
+        "day": "Thứ 2",
+        "date": "10/02/2025",
+        "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 9",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.009/",
+        "periods": [
+            9,
+            10,
+            11
+        ],
+        "room": "- Phòng:F201",
+        "teacher": "- Giáo viên:Nguyễn Thế Dũng"
+    },
+    {
+        "session": "BUỔI TỐI",
+        "day": "Thứ 5",
+        "date": "13/02/2025",
+        "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 9",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.009/",
+        "periods": [
+            9,
+            10,
+            11
+        ],
+        "room": "- Phòng:F201",
+        "teacher": "- Giáo viên:Nguyễn Thế Dũng"
+    }
+]

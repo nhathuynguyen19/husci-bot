@@ -213,3 +213,481 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-13 13:21:29 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-13 13:21:29 - INFO - logging in using static token
 2025-02-13 13:21:30 - INFO - Shard ID None has connected to Gateway (Session ID: 4263a519292fb6903b765259341226e9).
+2025-02-13 13:51:35 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:51:35 - INFO - logging in using static token
+2025-02-13 13:51:37 - INFO - Shard ID None has connected to Gateway (Session ID: a0e71e9e2fa46d563943578db3be7035).
+2025-02-13 13:51:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:51:42 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:52:27 - INFO - logging in using static token
+2025-02-13 13:52:28 - INFO - Shard ID None has connected to Gateway (Session ID: 90abeb5e086ddb85bbae88d00fbcbc48).
+2025-02-13 13:52:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:52:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:52:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:29 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:53:29 - INFO - logging in using static token
+2025-02-13 13:53:30 - INFO - Shard ID None has connected to Gateway (Session ID: c74bd9f36298bf2f47864c4aa52461ad).
+2025-02-13 13:53:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:36 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:36 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:53:36 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:55:43 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:55:43 - INFO - logging in using static token
+2025-02-13 13:55:44 - INFO - Shard ID None has connected to Gateway (Session ID: 18864e62aeb53b1db959e3b17bcc62e7).
+2025-02-13 13:55:49 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:55:49 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:55:49 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:55:49 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:55:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:55:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:55:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:56:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:56:44 - INFO - logging in using static token
+2025-02-13 13:56:46 - INFO - Shard ID None has connected to Gateway (Session ID: 20e00569b0cc08affae42a7393ff76d7).
+2025-02-13 13:56:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:56:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:56:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:56:51 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:56:51 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:28 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:57:28 - INFO - logging in using static token
+2025-02-13 13:57:30 - INFO - Shard ID None has connected to Gateway (Session ID: 4ac75ee6bf6fe9453dc8ce9c48a5f113).
+2025-02-13 13:57:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 13:57:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:57:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 13:59:58 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 13:59:58 - INFO - logging in using static token
+2025-02-13 13:59:59 - INFO - Shard ID None has connected to Gateway (Session ID: f183a5db780c57eed3746e269556e710).
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:00:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:02:05 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:02:05 - INFO - logging in using static token
+2025-02-13 14:02:07 - INFO - Shard ID None has connected to Gateway (Session ID: 948986e0f828a80fe1b9a4619b1e4547).
+2025-02-13 14:02:11 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:02:12 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:49 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:03:49 - INFO - logging in using static token
+2025-02-13 14:03:51 - INFO - Shard ID None has connected to Gateway (Session ID: 93590d34192c9f0bfa0bb59369ee504f).
+2025-02-13 14:03:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:03:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: 'NoneType' object is not callable
+2025-02-13 14:05:26 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:05:26 - INFO - logging in using static token
+2025-02-13 14:05:28 - INFO - Shard ID None has connected to Gateway (Session ID: 0c4a69628a46f1b73114f23578bf290f).
+2025-02-13 14:05:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:05:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:43 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:07:44 - INFO - logging in using static token
+2025-02-13 14:07:45 - INFO - Shard ID None has connected to Gateway (Session ID: 72c84868014c1aae87f141b02b9eb568).
+2025-02-13 14:07:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:50 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:51 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:51 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:07:51 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:12:32 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:12:32 - INFO - logging in using static token
+2025-02-13 14:12:33 - INFO - Shard ID None has connected to Gateway (Session ID: bb9fee2e06bca448e8e9a94e359746d8).
+2025-02-13 14:12:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:12:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:16:12 - WARNING - Can't keep up, shard ID None websocket is 12.3s behind.
+2025-02-13 14:16:12 - WARNING - Can't keep up, shard ID None websocket is 12.3s behind.
+2025-02-13 14:17:21 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:17:21 - INFO - logging in using static token
+2025-02-13 14:17:23 - INFO - Shard ID None has connected to Gateway (Session ID: 92e9b066ebd2e17e9fd28004a91c747b).
+2025-02-13 14:17:27 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:27 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:28 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:17:28 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:28 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:28 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:28 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:17:54 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:17:54 - INFO - logging in using static token
+2025-02-13 14:17:55 - INFO - Shard ID None has connected to Gateway (Session ID: ec2b66b4d9b419f022995dbc0d7e6df1).
+2025-02-13 14:18:00 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:00 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:00 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:00 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:01 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:01 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:18:01 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:18:23 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:18:23 - INFO - logging in using static token
+2025-02-13 14:18:25 - INFO - Shard ID None has connected to Gateway (Session ID: 069fa27850f8a2bbfbda4078b841643a).
+2025-02-13 14:18:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:18:44 - INFO - logging in using static token
+2025-02-13 14:18:46 - INFO - Shard ID None has connected to Gateway (Session ID: 1460f39083cd39372d2e10c944732437).
+2025-02-13 14:19:30 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:30 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:30 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:19:31 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:31 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:31 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:31 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:19:41 - ERROR - Attempting a reconnect in 1.32s
+Traceback (most recent call last):
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\client.py", line 667, in connect
+    await self.ws.poll_event()
+  File "C:\Users\huyth\AppData\Local\Programs\Python\Python313\Lib\site-packages\discord\gateway.py", line 648, in poll_event
+    raise ConnectionClosed(self.socket, shard_id=self.shard_id, code=code) from None
+discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 1000
+2025-02-13 14:19:43 - INFO - Shard ID None has successfully RESUMED session 1460f39083cd39372d2e10c944732437.
+2025-02-13 14:24:28 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:24:28 - INFO - logging in using static token
+2025-02-13 14:24:30 - INFO - Shard ID None has connected to Gateway (Session ID: 7c306577fbdd35530213efb13515e7d3).
+2025-02-13 14:24:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:24:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:24:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:24:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:24:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:24:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:24:35 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:09 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:25:09 - INFO - logging in using static token
+2025-02-13 14:25:10 - INFO - Shard ID None has connected to Gateway (Session ID: 3495b1f1a57f7e9b8920922b263d889b).
+2025-02-13 14:25:14 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:25:16 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:30 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:27:30 - INFO - logging in using static token
+2025-02-13 14:27:32 - INFO - Shard ID None has connected to Gateway (Session ID: c1c845b1073bc724afa24d28293d0fd0).
+2025-02-13 14:27:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:27:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:38 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:27:39 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:19 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:28:19 - INFO - logging in using static token
+2025-02-13 14:28:21 - INFO - Shard ID None has connected to Gateway (Session ID: eb23316453d7b94fe48ff49b1dfec0be).
+2025-02-13 14:28:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:28:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:17 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:31:17 - INFO - logging in using static token
+2025-02-13 14:31:19 - INFO - Shard ID None has connected to Gateway (Session ID: 7151e4b5ca947c804f30ef16e2127f7e).
+2025-02-13 14:31:23 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:23 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:24 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:24 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:24 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:24 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:31:24 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:50 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:31:50 - INFO - logging in using static token
+2025-02-13 14:31:51 - INFO - Shard ID None has connected to Gateway (Session ID: eafa16aa1cc429b557d605cf654813e4).
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:31:56 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:26 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:33:26 - INFO - logging in using static token
+2025-02-13 14:33:28 - INFO - Shard ID None has connected to Gateway (Session ID: ea749f7d6a67797f73fd53cfbd87231f).
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:32 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:33:58 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:33:58 - INFO - logging in using static token
+2025-02-13 14:33:59 - INFO - Shard ID None has connected to Gateway (Session ID: 005a22091d480bd08a58bbaf8bc64dac).
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:34:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:34:27 - INFO - logging in using static token
+2025-02-13 14:34:29 - INFO - Shard ID None has connected to Gateway (Session ID: a96bbbbc08e8c02dea413076c99228d7).
+2025-02-13 14:34:36 - WARNING - Shard ID 0 timed out waiting for chunks for guild_id 866123551995461672.
+2025-02-13 14:34:41 - WARNING - Shard ID 0 timed out waiting for chunks for guild_id 884663041373925428.
+2025-02-13 14:35:07 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:35:07 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:35:07 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:35:07 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:35:08 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:35:08 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:35:08 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:38:57 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:38:57 - INFO - logging in using static token
+2025-02-13 14:38:59 - INFO - Shard ID None has connected to Gateway (Session ID: cf3325ad39a5a95f45b40a6f888c2811).
+2025-02-13 14:39:03 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:39:03 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:39:03 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:39:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:39:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:39:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:39:04 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:40:34 - INFO - logging in using static token
+2025-02-13 14:40:36 - INFO - Shard ID None has connected to Gateway (Session ID: a9bdb587cc72ce355b84fbb9d2ee0451).
+2025-02-13 14:40:40 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:40:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:20 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:42:20 - INFO - logging in using static token
+2025-02-13 14:42:22 - INFO - Shard ID None has connected to Gateway (Session ID: 239fbaf4fc22078b6a67d06aa7688086).
+2025-02-13 14:42:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:27 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:42:27 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:42:27 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:19 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:46:19 - INFO - logging in using static token
+2025-02-13 14:46:21 - INFO - Shard ID None has connected to Gateway (Session ID: 1bde844b966074b5d247b5236a44e9ee).
+2025-02-13 14:46:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:46:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:25 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:46:26 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:48:37 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:48:37 - INFO - logging in using static token
+2025-02-13 14:48:39 - INFO - Shard ID None has connected to Gateway (Session ID: 9ad298b3815f3c7b6114e97cdbde7cab).
+2025-02-13 14:48:43 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:48:44 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:48:44 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:48:44 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:48:44 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:48:44 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:50:27 - INFO - logging in using static token
+2025-02-13 14:50:28 - INFO - Shard ID None has connected to Gateway (Session ID: 7a0c46b659d0b81f91ebfb6ca57e26a2).
+2025-02-13 14:50:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:33 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:50:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:50:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:28 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:51:28 - INFO - logging in using static token
+2025-02-13 14:51:30 - INFO - Shard ID None has connected to Gateway (Session ID: c2a6c1bbdd74df514d272f1da7b03f20).
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:51:34 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:53:11 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:53:11 - INFO - logging in using static token
+2025-02-13 14:53:12 - INFO - Shard ID None has connected to Gateway (Session ID: a469cab197ce2c19204554b7d95468c8).
+2025-02-13 14:53:17 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:17 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:53:18 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:18 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:18 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:18 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:18 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:48 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:53:48 - INFO - logging in using static token
+2025-02-13 14:53:50 - INFO - Shard ID None has connected to Gateway (Session ID: e42d588b1147268d8d12a88aec14a118).
+2025-02-13 14:53:54 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:54 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:53:54 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:53:55 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:57:34 - INFO - logging in using static token
+2025-02-13 14:57:36 - INFO - Shard ID None has connected to Gateway (Session ID: 9b1bec8209fda3d06c65fd39b22f014f).
+2025-02-13 14:57:40 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:40 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:2'
+2025-02-13 14:57:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:41 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:57:43 - ERROR - \u0110ã x\u1ea3y ra l\u1ed7i: invalid literal for int() with base 10: '- Ti\u1ebft:1'
+2025-02-13 14:58:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:58:27 - INFO - logging in using static token
+2025-02-13 14:58:29 - INFO - Shard ID None has connected to Gateway (Session ID: ccc8ae02493716eec354151ca121a50f).
+2025-02-13 14:59:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 14:59:34 - INFO - logging in using static token
+2025-02-13 14:59:36 - INFO - Shard ID None has connected to Gateway (Session ID: 0ba76479a99ca131057529ec739429b4).
+2025-02-13 15:01:42 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:01:42 - INFO - logging in using static token
+2025-02-13 15:01:44 - INFO - Shard ID None has connected to Gateway (Session ID: 225b5a13edac22ad67f89da345d4f29d).
+2025-02-13 15:02:56 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:02:56 - INFO - logging in using static token
+2025-02-13 15:02:57 - INFO - Shard ID None has connected to Gateway (Session ID: fbeaae6c75d77c9d649525225d480149).
+2025-02-13 15:04:55 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:04:55 - INFO - logging in using static token
+2025-02-13 15:04:57 - INFO - Shard ID None has connected to Gateway (Session ID: cf702451117d17d269df502646ee73c0).
+2025-02-13 15:06:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:06:34 - INFO - logging in using static token
+2025-02-13 15:06:36 - INFO - Shard ID None has connected to Gateway (Session ID: c5a9fd3ee1b52ead39e3fc400f78e344).
+2025-02-13 15:07:04 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:07:04 - INFO - logging in using static token
+2025-02-13 15:07:06 - INFO - Shard ID None has connected to Gateway (Session ID: 3a3cbd20b632b0d8cdfd0c1403e406fe).
+2025-02-13 15:13:52 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:13:52 - INFO - logging in using static token
+2025-02-13 15:13:53 - INFO - Shard ID None has connected to Gateway (Session ID: 1fc5a8cab08737c5810413766e117c6d).
+2025-02-13 15:15:09 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:15:09 - INFO - logging in using static token
+2025-02-13 15:15:11 - INFO - Shard ID None has connected to Gateway (Session ID: 6345f2e27e90cd43c520fd113680893f).
+2025-02-13 15:17:12 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:17:12 - INFO - logging in using static token
+2025-02-13 15:17:14 - INFO - Shard ID None has connected to Gateway (Session ID: e02cfcf2d39f68e3d48fb45d30d6efae).
+2025-02-13 15:18:24 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:18:24 - INFO - logging in using static token
+2025-02-13 15:18:25 - INFO - Shard ID None has connected to Gateway (Session ID: 9478702c19a06404a943433644400cc4).
+2025-02-13 15:24:50 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:24:50 - INFO - logging in using static token
+2025-02-13 15:24:52 - INFO - Shard ID None has connected to Gateway (Session ID: 6277854013a5db106f30cd4e55e4bcbf).
+2025-02-13 15:27:58 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:27:58 - INFO - logging in using static token
+2025-02-13 15:28:00 - INFO - Shard ID None has connected to Gateway (Session ID: 9c2a04176fbf412c10aeae3be1221894).
+2025-02-13 15:30:47 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:30:47 - INFO - logging in using static token
+2025-02-13 15:30:49 - INFO - Shard ID None has connected to Gateway (Session ID: f74fa28878dbe59de6ada1aea402f123).
+2025-02-13 15:34:41 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:34:41 - INFO - logging in using static token
+2025-02-13 15:34:43 - INFO - Shard ID None has connected to Gateway (Session ID: 295e198283c6b973908e410ad9a62fb3).
+2025-02-13 15:35:37 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:35:37 - INFO - logging in using static token
+2025-02-13 15:35:39 - INFO - Shard ID None has connected to Gateway (Session ID: 6dac0fcc6efa7cd94e4b8ebae3680b48).
+2025-02-13 15:37:00 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:37:00 - INFO - logging in using static token
+2025-02-13 15:37:02 - INFO - Shard ID None has connected to Gateway (Session ID: 583c058c19c5c81257b6b6472ca156f2).
+2025-02-13 15:38:04 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:38:04 - INFO - logging in using static token
+2025-02-13 15:38:06 - INFO - Shard ID None has connected to Gateway (Session ID: a54e892d43b665d6c5f532ab4c68ab18).
+2025-02-13 15:38:40 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:38:40 - INFO - logging in using static token
+2025-02-13 15:38:42 - INFO - Shard ID None has connected to Gateway (Session ID: 7c346159f1f2ebc0322240cafbe12577).
+2025-02-13 15:39:32 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:39:32 - INFO - logging in using static token
+2025-02-13 15:39:33 - INFO - Shard ID None has connected to Gateway (Session ID: ba9c1f01d563e9bc8688c326dbf122a2).
+2025-02-13 15:41:40 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:41:40 - INFO - logging in using static token
+2025-02-13 15:41:41 - INFO - Shard ID None has connected to Gateway (Session ID: bbdb8777db50a5f05a2569fcaed9105b).
+2025-02-13 15:43:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:43:34 - INFO - logging in using static token
+2025-02-13 15:43:35 - INFO - Shard ID None has connected to Gateway (Session ID: c00d449fb10f2fa0fd59f4eedc53717e).
+2025-02-13 15:48:50 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:48:50 - INFO - logging in using static token
+2025-02-13 15:48:51 - INFO - Shard ID None has connected to Gateway (Session ID: 0c9d024e2be1ddaa2b3a705897906b3d).
+2025-02-13 15:50:32 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:50:32 - INFO - logging in using static token
+2025-02-13 15:50:34 - INFO - Shard ID None has connected to Gateway (Session ID: 2967d2525dc2a40315d3036861d47106).
+2025-02-13 15:55:42 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:55:42 - INFO - logging in using static token
+2025-02-13 15:55:43 - INFO - Shard ID None has connected to Gateway (Session ID: 345d4a2f80dd5cacb357590ecb28596d).
+2025-02-13 15:56:17 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:56:17 - INFO - logging in using static token
+2025-02-13 15:56:19 - INFO - Shard ID None has connected to Gateway (Session ID: 6481dd76e41ba0ba083a072e61e8e130).
+2025-02-13 15:59:27 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 15:59:27 - INFO - logging in using static token
+2025-02-13 15:59:29 - INFO - Shard ID None has connected to Gateway (Session ID: e04780e8bb2c006133affcd6b8f47783).
+2025-02-13 16:01:36 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:01:36 - INFO - logging in using static token
+2025-02-13 16:01:38 - INFO - Shard ID None has connected to Gateway (Session ID: 96809b91836323a2eddefe104e6546c6).
+2025-02-13 16:02:38 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:02:38 - INFO - logging in using static token
+2025-02-13 16:02:39 - INFO - Shard ID None has connected to Gateway (Session ID: d13d2ef25f640dc062e3424ed9a6a7cc).
+2025-02-13 16:03:12 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:03:12 - INFO - logging in using static token
+2025-02-13 16:03:14 - INFO - Shard ID None has connected to Gateway (Session ID: 322be666a8994ff11e532b707b702df7).
+2025-02-13 16:03:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:03:44 - INFO - logging in using static token
+2025-02-13 16:03:46 - INFO - Shard ID None has connected to Gateway (Session ID: 87154ba6d72b72ce55ec8f13ac062aaa).
+2025-02-13 16:04:09 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:04:09 - INFO - logging in using static token
+2025-02-13 16:04:10 - INFO - Shard ID None has connected to Gateway (Session ID: fef9e9bd15ac1b570918efed01b99675).
+2025-02-13 16:04:31 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:04:31 - INFO - logging in using static token
+2025-02-13 16:04:32 - INFO - Shard ID None has connected to Gateway (Session ID: b07d3fab69407c754ef10a79556c2381).
+2025-02-13 16:05:10 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:05:10 - INFO - logging in using static token
+2025-02-13 16:05:11 - INFO - Shard ID None has connected to Gateway (Session ID: 4a0ffb840ab97299c1ba5bb995d2d99c).
+2025-02-13 16:05:21 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:05:21 - INFO - logging in using static token
+2025-02-13 16:05:23 - INFO - Shard ID None has connected to Gateway (Session ID: bcc34fb7dba53616f35d62b4c5ae6f2f).
+2025-02-13 16:05:56 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:05:56 - INFO - logging in using static token
+2025-02-13 16:05:58 - INFO - Shard ID None has connected to Gateway (Session ID: 4b8cd9b6f1655ea274f10ca4df920cec).
+2025-02-13 16:07:46 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:07:46 - INFO - logging in using static token
+2025-02-13 16:07:47 - INFO - Shard ID None has connected to Gateway (Session ID: 5d874d146a8ec77d5f20e53ecc3ea91d).
+2025-02-13 16:08:02 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:08:02 - INFO - logging in using static token
+2025-02-13 16:08:03 - INFO - Shard ID None has connected to Gateway (Session ID: 37e1ab569b62eeb94536786e14779dab).
+2025-02-13 16:09:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:09:44 - INFO - logging in using static token
+2025-02-13 16:09:46 - INFO - Shard ID None has connected to Gateway (Session ID: 562a6bde882201ecd649cb0f4e89ae0b).
+2025-02-13 16:12:07 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:12:07 - INFO - logging in using static token
+2025-02-13 16:12:08 - INFO - Shard ID None has connected to Gateway (Session ID: a68b577511eac688697389a93ce39047).
+2025-02-13 16:12:31 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:12:31 - INFO - logging in using static token
+2025-02-13 16:12:33 - INFO - Shard ID None has connected to Gateway (Session ID: 4f4acdd31e2efecfc47bf4664e30de54).
+2025-02-13 16:32:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 16:32:44 - INFO - logging in using static token
+2025-02-13 16:32:46 - INFO - Shard ID None has connected to Gateway (Session ID: 9c8a5757f9dfe04071d6b3d19fabfb09).

@@ -1,0 +1,89 @@
+[
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 2",
+        "date": "10/02/2025",
+        "subject": "Java cơ bản - Nhóm 10",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN1033.010/",
+        "periods": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "room": "- Phòng:E401 - Lab",
+        "teacher": "- Giáo viên:Lê Hữu Bình"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 3",
+        "date": "11/02/2025",
+        "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 6",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.006/",
+        "periods": [
+            1,
+            2,
+            3
+        ],
+        "room": "- Phòng:E303",
+        "teacher": "- Giáo viên:Ngô Nhân Đức"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 4",
+        "date": "12/02/2025",
+        "subject": "Thiết kế cơ sở dữ liệu - Nhóm 3",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN4012.003/",
+        "periods": [
+            1,
+            2,
+            3
+        ],
+        "room": "- Phòng:E301",
+        "teacher": "- Giáo viên:Trần Thị Phương Chi"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 5",
+        "date": "13/02/2025",
+        "subject": "Xác suất thống kê - Nhóm 10",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TOA2023.010/",
+        "periods": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "room": "- Phòng:H210",
+        "teacher": "- Giáo viên:Võ Quang Mẫn"
+    },
+    {
+        "session": "BUỔI SÁNG",
+        "day": "Thứ 6",
+        "date": "14/02/2025",
+        "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 6",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.006/",
+        "periods": [
+            1,
+            2,
+            3
+        ],
+        "room": "- Phòng:E303",
+        "teacher": "- Giáo viên:Ngô Nhân Đức"
+    },
+    {
+        "session": "BUỔI CHIỀU",
+        "day": "Thứ 6",
+        "date": "14/02/2025",
+        "subject": "Ngôn ngữ hình thức và Ôtômat - Nhóm 1",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN4083.001/",
+        "periods": [
+            5,
+            6,
+            7,
+            8
+        ],
+        "room": "- Phòng:F102",
+        "teacher": "- Giáo viên:Hoàng Quang"
+    }
+]
