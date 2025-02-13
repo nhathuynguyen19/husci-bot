@@ -397,13 +397,13 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
         # Đặt dấu "*"
         if current_period == -1:
-            time_table[0][weekday] = "⭘"
+            time_table[0][weekday] += "⭘"
         elif current_period == 12:
-            time_table[11][weekday] = "☾"
+            time_table[11][weekday] += "☾"
         else:
             for row in range(12):
                 if row == current_period:
-                    time_table[row][weekday] = "☀"
+                    time_table[row][weekday] = +"☀"
 
         # Tạo bảng Markdown
         headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]
