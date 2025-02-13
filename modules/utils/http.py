@@ -12,7 +12,6 @@ tasks_phase = []
 
 # Đặt múi giờ Việt Nam
 tz_vn = pytz.timezone("Asia/Ho_Chi_Minh")
-now = datetime.now(tz_vn)  # Lấy thời gian hiện tại theo múi giờ Việt Nam
 
 async def is_login_successful(response):
     content = await response.text()
@@ -184,7 +183,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             format_data_json = []
             for data in data_results:
                 score_dict = {
-                    "LOPHP": await convert_to_acronym(await remove_accents(data[2])),
+                    "LopHP": await convert_to_acronym(await remove_accents(data[2])),
                     "Lan hoc": data[4],
                     "QTHT": data[5],
                     "THI": data[6] if int(data[4]) == 1 else data[8],
@@ -200,8 +199,8 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         
         old_scores = await load_json(scores_file_path)
 
-        temp = max(len(s["LOPHP"]) for s in format_data_json)
-        length_LHP = max(len("LOPHP"), temp)
+        temp = max(len(s["LopHP"]) for s in format_data_json)
+        length_LHP = max(len("LopHP"), temp)
         
         temp = max(len(s["QTHT"]) for s in format_data_json)
         length_QTHT = max(len("QTHT"), temp)
@@ -218,7 +217,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
         for item in format_data_json:
             if item["QTHT"] or item["THI"] or item["TONG"]:
-                markdown_table_full += f"|{item['LOPHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
+                markdown_table_full += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
         markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
         path_creator(markdown_full_file_path)
@@ -237,14 +236,14 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                             diffs.append(obj2)
                             break
 
-                temp = max(len(s["LOPHP"]) for s in format_data_json)
-                max_length_diffs = max(len(s["LOPHP"]) for s in diffs)
+                temp = max(len(s["LopHP"]) for s in format_data_json)
+                max_length_diffs = max(len(s["LopHP"]) for s in diffs)
                 length_LHP = max(temp, max_length_diffs)
 
                 # Tạo bảng Markdown với độ rộng cột phù hợp
                 for item in diffs:
                     if item["QTHT"] or item["THI"] or item["TONG"]:
-                        markdown_table += f"|{item['LOPHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
+                        markdown_table += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
                 markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
                 path_creator(markdown_file_path)
@@ -272,6 +271,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         # Lấy thông tin thời khóa biểu
         days = []
         for th in timetable_list.find_all("th", class_="text-center"):
+            # print(th)
             text = th.get_text(strip=True, separator="\n").split("\n")
             if len(text) == 2:
                 days.append({"day": text[0], "date": text[1]})
@@ -280,9 +280,9 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         schedule = []
         current_session = None
 
-        # if user_id_spec == admin_id:
-        #     print(rows)
-        #     print(len(rows))
+        if user_id_spec == admin_id:
+            print(rows)
+            print(len(rows))
 
         for row in rows:
             # if user_id_spec == admin_id:
@@ -308,8 +308,9 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                         continue  # Bỏ qua nếu không đủ thông tin
 
                     periods_text = periods_dd[0].get_text(strip=True).replace("- Tiết:", "")
-                    # print(repr(periods_dd[0].get_text(strip=True)))
                     print(periods_text)
+                    # print(repr(periods_dd[0].get_text(strip=True)))
+                    # print(periods_text)
                     if " - " in periods_text:
                         try:
                             start, end = map(int, periods_text.split(" - "))
@@ -336,6 +337,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         await save_json(week_file_path, schedule)
         print(f"(fetch data) Đã lưu thông tin thời khóa biểu của {login_id}")
 
+        print(schedule)
         # lưu thành bảng thời khóa biểu
         # Danh sách thời gian bắt đầu mỗi tiết (giữ nguyên)
         # Mapping thứ -> cột trong bảng
@@ -347,6 +349,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             "Thứ 6": 4,
             "Thứ 7": 5
         }
+        # print(days_map)
         period_times = [
             (7, 0), (8, 0), (9, 0), (10, 0),  
             (13, 0), (14, 0), (15, 0), (16, 0),  
@@ -361,10 +364,12 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                 time_table[period - 1][day_idx] = entry["room"]  # Ghi vào ô tương ứng
 
         # Xác định thời gian hiện tại
-        now = datetime.now(tz_vn)
+        now = datetime.now(tz_vn)  # Lấy thời gian hiện tại theo múi giờ Việt Nam
         weekday = now.weekday()  # Thứ 2 là 0, Thứ 7 là 5
         if weekday > 5:
             weekday = 5  # Nếu là Chủ Nhật, đặt mặc định vào thứ 7
+
+        # print(f"Thứ hiện tại: {weekday}")
 
         # Xác định tiết học hiện tại
         current_period = None
@@ -391,12 +396,10 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
         path_creator(week_md_path)
-        old_week = await load_md(week_md_path)
 
-        if old_week != md_time_table:
-            await save_md(week_md_path, md_time_table)
-            await push_to_git(BASE_DIR, "Update schedule")
-            print(f"(fetch data) Đã lưu thời khóa biểu dưới dạng Markdown của {login_id}")
+        await save_md(week_md_path, md_time_table)
+        await push_to_git(BASE_DIR, "Update schedule")
+        print(f"(fetch data) Đã lưu thời khóa biểu dưới dạng Markdown của {login_id}")
                 
         # Kết thúc vòng 
         await asyncio.sleep(600)
