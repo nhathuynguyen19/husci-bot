@@ -59,7 +59,13 @@ async def login_page(session, login_url, login_id, password):
 async def fetch_data(session, login_id, password, user, bot, emails_handler):
     try:
         # Giai đoạn đăng nhập chung cho mỗi phiên
-        page = await session.get(login_url)
+        try:
+            page = await session.get(login_url, timeout=20)
+        except asyncio.TimeoutError:
+            logger.error("Request bị timeout sau 20 giây")
+        except Exception as e:
+            logger.error(f"Lỗi xảy ra: {e}")
+            
         html = BeautifulSoup(await page.text(), 'html.parser')
         token = html.find('input', {'name': '__RequestVerificationToken'})['value']
         login_data = {
@@ -67,40 +73,51 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             "password": password,
             "__RequestVerificationToken": token
         }
-        await session.post(login_url, data=login_data)
+        async with session.post(login_url, data=login_data) as response:
+            html = BeautifulSoup(await response.text(), 'html.parser')
         user_id_spec = user["id"]
     except Exception as e:
         logger.error(f"Đã xảy ra lỗi: {e}")
         await asyncio.sleep(10)
+    print(f"(fetch data) Đã đăng nhập thành công với ID: {login_id}")
         
-        # Vòng lặp lấy dữ liệu chung
-        while True:
-            # Lấy emails đồng thời với bảng điểm
-            # Lấy emails
+    # Vòng lặp lấy dữ liệu chung
+    while True:
+        # Lấy emails đồng thời với bảng điểm
+        # Lấy emails
+        try:
             try:
-                read_page = await session.post(data_url[1], data=login_data)
-                html = BeautifulSoup(await read_page.text(), 'html.parser')
-                emails_list = html.find('form', id='__formMessageList')
-                if not emails_list:
-                    logger.warning("Không tìm thấy danh sách tin nhắn!")
-                    await asyncio.sleep(10)
-                    continue
+                read_page = await session.post(data_url[1], data=login_data, timeout=20)
+            except asyncio.TimeoutError:
+                logger.error("Request bị timeout sau 20 giây")
             except Exception as e:
-                logger.error(f"Đã xảy ra lỗi: {e}")
-                
-            # Lấy bảng điểm
-            try:
-                read_page = await session.post(data_url[2], data=login_data)
-                html = BeautifulSoup(await read_page.text(), 'html.parser')
-                scores_list = html.find('table', class_='table table-bordered table-hover')
-                if not scores_list:
-                    logger.warning("Không tìm thấy bảng điểm!")
-                    await asyncio.sleep(10)
-                    continue
-            except Exception as e:
-                logger.error(f"Đã xảy ra lỗi: {e}")
+                logger.error(f"Lỗi xảy ra: {e}")
 
-            # Cập nhật emails
+            html = BeautifulSoup(await read_page.text(), 'html.parser')
+            emails_list = html.find('form', id='__formMessageList')
+            if not emails_list:
+                logger.warning("Không tìm thấy danh sách tin nhắn!")
+                await asyncio.sleep(10)
+                continue
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
+        print(f"(fetch data) Đã lấy danh sách tin nhắn của {login_id}")
+            
+        # Lấy bảng điểm
+        try:
+            read_page = await session.post(data_url[2], data=login_data)
+            html = BeautifulSoup(await read_page.text(), 'html.parser')
+            scores_list = html.find('table', class_='table table-bordered table-hover')
+            if not scores_list:
+                logger.warning("Không tìm thấy bảng điểm!")
+                await asyncio.sleep(10)
+                continue
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
+        print(f"(fetch data) Đã lấy bảng điểm của {login_id}")
+
+        # Cập nhật emails
+        try:
             links = emails_list.find_all('a', href=True)
             filtered_links = [
                 link for link in links if '/Message/Details' in link['href']
@@ -116,8 +133,11 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                 latest_email = ""
                         
             await emails_handler.process_result(latest_email, user_id_spec, bot)   
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
 
-            # Cập nhật bảng điểm:
+        # Cập nhật bảng điểm:
+        try:
             tbody = scores_list.find('tbody')
             trs = tbody.find_all('tr')
 
@@ -133,8 +153,11 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             data_results = []
             for rs in results:
                 data_results.append(rs)
-            
-            # Định dạng dữ liệu
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
+        
+        # Định dạng dữ liệu
+        try:
             format_data_json = []
             for data in data_results:
                 score_dict = {
@@ -145,80 +168,83 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     "TONG": data[7] if int(data[4]) == 1 else data[9]
                 }
                 format_data_json.append(score_dict)
+        except Exception as e:
+            logger.error(f"Đã xảy ra lỗi: {e}")
 
-            # Kiểm tra dữ liệu, cập nhật, thông báo
-            scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'info', f"{login_id}.json")
-            path_creator(scores_file_path)
-            
-            old_scores = await load_json(scores_file_path)
+        # Kiểm tra dữ liệu, cập nhật, thông báo
+        scores_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'info', f"{login_id}.json")
+        path_creator(scores_file_path)
+        
+        old_scores = await load_json(scores_file_path)
 
-            temp = max(len(s["LopHP"]) for s in format_data_json)
-            length_LHP = max(len("LopHP"), temp)
-            
-            temp = max(len(s["QTHT"]) for s in format_data_json)
-            length_QTHT = max(len("QTHT"), temp)
+        temp = max(len(s["LopHP"]) for s in format_data_json)
+        length_LHP = max(len("LopHP"), temp)
+        
+        temp = max(len(s["QTHT"]) for s in format_data_json)
+        length_QTHT = max(len("QTHT"), temp)
 
-            temp = max(len(s["THI"]) for s in format_data_json)
-            length_DT = max(len("THI"), temp)
+        temp = max(len(s["THI"]) for s in format_data_json)
+        length_DT = max(len("THI"), temp)
 
-            temp = max(len(s["TONG"]) for s in format_data_json)
-            length_TD = max(len("TONG"), temp)
-            
-            markdown_table = f"|{'LopHP': <{length_LHP}}|{'QTHT': <{length_QTHT}}|{'THI': <{length_DT}}|{'TONG': <{length_TD}}|\n"
-            markdown_table += f"|{'-' * length_LHP}|{'-' * length_QTHT}|{'-' * length_DT}|{'-' * length_TD}|\n"
-            markdown_table_full = markdown_table
+        temp = max(len(s["TONG"]) for s in format_data_json)
+        length_TD = max(len("TONG"), temp)
+        
+        markdown_table = f"|{'LopHP': <{length_LHP}}|{'QTHT': <{length_QTHT}}|{'THI': <{length_DT}}|{'TONG': <{length_TD}}|\n"
+        markdown_table += f"|{'-' * length_LHP}|{'-' * length_QTHT}|{'-' * length_DT}|{'-' * length_TD}|\n"
+        markdown_table_full = markdown_table
 
-            for item in format_data_json:
-                if item["QTHT"] or item["THI"] or item["TONG"]:
-                    markdown_table_full += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
+        for item in format_data_json:
+            if item["QTHT"] or item["THI"] or item["TONG"]:
+                markdown_table_full += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
-            markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
-            path_creator(markdown_full_file_path)
+        markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
+        path_creator(markdown_full_file_path)
 
-            old_full_markdown = await load_md(markdown_full_file_path)
-            if old_full_markdown != markdown_table_full:
-                await save_md(markdown_full_file_path, markdown_table_full)
-            
-            if old_scores != format_data_json:
-                if old_scores != []:
-                    diffs = []
-                    for obj1, obj2 in zip(old_scores, format_data_json):
-                        for key in obj1:
-                            if obj1[key] != obj2[key]:
-                                diff = obj2
-                                diffs.append(obj2)
-                                break
+        old_full_markdown = await load_md(markdown_full_file_path)
+        if old_full_markdown != markdown_table_full:
+            await save_md(markdown_full_file_path, markdown_table_full)
+        
+        if old_scores != format_data_json:
+            if old_scores != []:
+                diffs = []
+                for obj1, obj2 in zip(old_scores, format_data_json):
+                    for key in obj1:
+                        if obj1[key] != obj2[key]:
+                            diff = obj2
+                            diffs.append(obj2)
+                            break
 
-                    temp = max(len(s["LopHP"]) for s in format_data_json)
-                    max_length_diffs = max(len(s["LopHP"]) for s in diffs)
-                    length_LHP = max(temp, max_length_diffs)
+                temp = max(len(s["LopHP"]) for s in format_data_json)
+                max_length_diffs = max(len(s["LopHP"]) for s in diffs)
+                length_LHP = max(temp, max_length_diffs)
 
-                    # Tạo bảng Markdown với độ rộng cột phù hợp
-                    for item in diffs:
+                # Tạo bảng Markdown với độ rộng cột phù hợp
+                for item in diffs:
+                    if item["QTHT"] or item["THI"] or item["TONG"]:
                         markdown_table += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
-                    markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
-                    path_creator(markdown_file_path)
-                    
-                    await save_md(markdown_file_path, markdown_table)
-                    
-                    user_id = user['id']
-                    user_obj = await bot.fetch_user(int(user_id))
-                    if user_obj and score_switch:
-                        message = f"**Cập nhật điểm**:\n```\n{markdown_table}\n```"
-                        await user_obj.send(message)
-                        print(f"Đã gửi bảng điểm đến {user_id}")
-                    else:
-                        logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")
-                    
-                    await save_json(scores_file_path, format_data_json)
-                    await push_to_git(BASE_DIR, "Update scores")
-                if old_scores == []:
-                    await save_json(scores_file_path, format_data_json)
-                    await push_to_git(BASE_DIR, "Update scores")
-                    
-            # Kết thúc vòng 
-            await asyncio.sleep(30)
+                markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
+                path_creator(markdown_file_path)
+                
+                await save_md(markdown_file_path, markdown_table)
+                
+                user_id = user['id']
+                user_obj = await bot.fetch_user(int(user_id))
+                if user_obj and score_switch:
+                    message = f"**Cập nhật điểm**:\n```\n{markdown_table}\n```"
+                    await user_obj.send(message)
+                    print(f"Đã gửi bảng điểm đến {user_id}")
+                else:
+                    logger.warning(f"Không tìm thấy người dùng với ID: {user_id}")
+                
+                await save_json(scores_file_path, format_data_json)
+                await push_to_git(BASE_DIR, "Update scores")
+            if old_scores == []:
+                await save_json(scores_file_path, format_data_json)
+                await push_to_git(BASE_DIR, "Update scores")
+                
+        # Kết thúc vòng 
+        await asyncio.sleep(90)
 
 # From Emails
 async def _handle_user_data(login_id, password, user, bot, emails_handler):

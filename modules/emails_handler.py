@@ -30,6 +30,7 @@ class EmailsHandler:
                             else:
                                 await user_obj.send(f"**Tin nhắn mới**:\n{latest_email}")
                                 print(f"Tin nhắn mới đã gửi đến {user_id_spec}: {latest_email}")
+                            logger.info(f"(fetch data) Đã cập nhật emails của {user_id_spec}")
                         else:
                             print(f"Không tìm thấy người dùng với ID: {user_id_spec}")
 
