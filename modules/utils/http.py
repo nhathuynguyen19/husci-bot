@@ -360,8 +360,12 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
         path_creator(week_md_path)
-        await save_md(week_md_path, md_time_table)
-        print(f"(fetch data) Đã lưu thời khóa biểu dưới dạng Markdown của {login_id}")
+        old_week = await load_md(week_md_path)
+
+        if old_week != md_time_table:
+            await save_md(week_md_path, md_time_table)
+            await push_to_git(BASE_DIR, "Update schedule")
+            print(f"(fetch data) Đã lưu thời khóa biểu dưới dạng Markdown của {login_id}")
                 
         # Kết thúc vòng 
         await asyncio.sleep(600)
