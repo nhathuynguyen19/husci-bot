@@ -914,3 +914,4 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-13 23:56:24 - INFO - Shard ID None has connected to Gateway (Session ID: fee30021f2835c815c1e6c7cd82cd068).
 2025-02-13 23:58:44 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-13 23:58:44 - INFO - logging in using static token
+2025-02-13 23:58:45 - INFO - Shard ID None has connected to Gateway (Session ID: 17b77b5ae8a6e802799c98a322937ce5).
