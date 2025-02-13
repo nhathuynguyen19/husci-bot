@@ -48,7 +48,6 @@ class Commands():
                 logger.error("Tài khoản đã tồn tại")
                 await ctx.followup.send(f"**Ủa bạn, bạn đã đăng nhập rồi mà! {ctx.user.name} phải không?**")
         await self.user_manager.remember_request(user_id, ctx.user.name, "/login")
-        await push_to_git(BASE_DIR)
 
     async def handle_logout(self, ctx):
         condition = False
@@ -71,7 +70,6 @@ class Commands():
         if condition:
             await save_json(users_path, users)
         await self.user_manager.remember_request(user_id, ctx.user.name, "/logout")
-        await push_to_git(BASE_DIR)
 
     async def handle_notifications(self, ctx):
         user_id = ctx.user.id
@@ -140,7 +138,6 @@ class Commands():
         except Exception as e:
             logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")
         await self.user_manager.remember_request(ctx.user.id, ctx.user.name, "/remind")
-        await push_to_git(BASE_DIR)
 
     async def handle_message(self, ctx):
         user_id = ctx.user.id

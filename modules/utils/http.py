@@ -69,26 +69,36 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         }
         await session.post(login_url, data=login_data)
         user_id_spec = user["id"]
-
+    except Exception as e:
+        logger.error(f"Đã xảy ra lỗi: {e}")
+        await asyncio.sleep(10)
+        
         # Vòng lặp lấy dữ liệu chung
         while True:
             # Lấy emails đồng thời với bảng điểm
             # Lấy emails
-            read_page = await session.post(data_url[1], data=login_data)
-            html = BeautifulSoup(await read_page.text(), 'html.parser')
-            emails_list = html.find('form', id='__formMessageList')
-            if not emails_list:
-                logger.warning("Không tìm thấy danh sách tin nhắn!")
-                await asyncio.sleep(10)
-                continue
+            try:
+                read_page = await session.post(data_url[1], data=login_data)
+                html = BeautifulSoup(await read_page.text(), 'html.parser')
+                emails_list = html.find('form', id='__formMessageList')
+                if not emails_list:
+                    logger.warning("Không tìm thấy danh sách tin nhắn!")
+                    await asyncio.sleep(10)
+                    continue
+            except Exception as e:
+                logger.error(f"Đã xảy ra lỗi: {e}")
+                
             # Lấy bảng điểm
-            read_page = await session.post(data_url[2], data=login_data)
-            html = BeautifulSoup(await read_page.text(), 'html.parser')
-            scores_list = html.find('table', class_='table table-bordered table-hover')
-            if not scores_list:
-                logger.warning("Không tìm thấy bảng điểm!")
-                await asyncio.sleep(10)
-                continue
+            try:
+                read_page = await session.post(data_url[2], data=login_data)
+                html = BeautifulSoup(await read_page.text(), 'html.parser')
+                scores_list = html.find('table', class_='table table-bordered table-hover')
+                if not scores_list:
+                    logger.warning("Không tìm thấy bảng điểm!")
+                    await asyncio.sleep(10)
+                    continue
+            except Exception as e:
+                logger.error(f"Đã xảy ra lỗi: {e}")
 
             # Cập nhật emails
             links = emails_list.find_all('a', href=True)
@@ -209,9 +219,6 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     
             # Kết thúc vòng 
             await asyncio.sleep(30)
-
-    except Exception as e:
-        print(f"Đã xảy ra lỗi: {e}")
 
 # From Emails
 async def _handle_user_data(login_id, password, user, bot, emails_handler):
