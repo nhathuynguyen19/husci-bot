@@ -201,3 +201,6 @@ client_connection: Connection<ConnectionKey(host='student.husc.edu.vn', port=443
 2025-02-13 12:30:23 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-13 12:30:23 - INFO - logging in using static token
 2025-02-13 12:30:25 - INFO - Shard ID None has connected to Gateway (Session ID: 51175e50d724dd6708ce39b3b84ad3c4).
+2025-02-13 12:41:03 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-13 12:41:03 - INFO - logging in using static token
+2025-02-13 12:41:04 - INFO - Shard ID None has connected to Gateway (Session ID: a605449e75711b9bd87c4b51897a7f30).
