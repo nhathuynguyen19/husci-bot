@@ -87,6 +87,10 @@ async def one_minute():
     finally:
         is_sending_notification = False
 
+@tasks.loop(minutes=10)
+async def ten_minutes():
+    await push_to_git(BASE_DIR)
+
 # Events
 @bot.event
 async def on_ready():
@@ -96,6 +100,7 @@ async def on_ready():
     print("Đã đồng bộ lệnh")
     one_second.start()
     one_minute.start()
+    ten_minutes.start()
     print("Ready")
     
     # init
