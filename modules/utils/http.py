@@ -321,8 +321,8 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                         "subject": dl.dt.a.get_text(strip=True),
                         "link": dl.dt.a["href"],
                         "periods": periods,
-                        "room": periods_dd[1].get_text(strip=True).replace("- Phòng: ", ""),
-                        "teacher": periods_dd[2].get_text(strip=True).replace("- Giáo viên: ", ""),
+                        "room": periods_dd[1].get_text(strip=True).replace("- Phòng:", "").replace(" - Lab", ""),
+                        "teacher": periods_dd[2].get_text(strip=True).replace("- Giáo viên:", ""),
                     }
                     schedule.append(subject_info)
 
@@ -347,7 +347,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         for entry in schedule:
             day_idx = days_map[entry["day"]]  # Xác định cột
             for period in entry["periods"]:
-                time_table[period - 1][day_idx] = await convert_to_acronym(await remove_accents(entry["subject"]))  # Ghi vào ô tương ứng
+                time_table[period - 1][day_idx] = entry["room"]  # Ghi vào ô tương ứng
 
         # Tạo bảng Markdown
         headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]

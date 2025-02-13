@@ -10,8 +10,8 @@
             3,
             4
         ],
-        "room": "- Phòng:B304",
-        "teacher": "- Giáo viên:Nguyễn Thanh Tuấn"
+        "room": "B304",
+        "teacher": "Nguyễn Thanh Tuấn"
     },
     {
         "session": "BUỔI SÁNG",
@@ -25,8 +25,8 @@
             3,
             4
         ],
-        "room": "- Phòng:E401 - Lab",
-        "teacher": "- Giáo viên:Nguyễn Hoàng Hà"
+        "room": "E401",
+        "teacher": "Nguyễn Hoàng Hà"
     },
     {
         "session": "BUỔI SÁNG",
@@ -39,8 +39,8 @@
             2,
             3
         ],
-        "room": "- Phòng:E303",
-        "teacher": "- Giáo viên:Lê Văn Hòa (1984)"
+        "room": "E303",
+        "teacher": "Lê Văn Hòa (1984)"
     },
     {
         "session": "BUỔI CHIỀU",
@@ -53,8 +53,8 @@
             6,
             7
         ],
-        "room": "- Phòng:E303",
-        "teacher": "- Giáo viên:Nguyễn Đức Nhuận"
+        "room": "E303",
+        "teacher": "Nguyễn Đức Nhuận"
     },
     {
         "session": "BUỔI CHIỀU",
@@ -67,8 +67,8 @@
             6,
             7
         ],
-        "room": "- Phòng:E303",
-        "teacher": "- Giáo viên:Nguyễn Đức Nhuận"
+        "room": "E303",
+        "teacher": "Nguyễn Đức Nhuận"
     },
     {
         "session": "BUỔI TỐI",
@@ -82,7 +82,7 @@
             11,
             12
         ],
-        "room": "- Phòng:E301",
-        "teacher": "- Giáo viên:Lê Bình Phương Luân"
+        "room": "E301",
+        "teacher": "Lê Bình Phương Luân"
     }
 ]
