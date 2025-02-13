@@ -280,9 +280,9 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         schedule = []
         current_session = None
 
-        if user_id_spec == admin_id:
-            print(rows)
-            print(len(rows))
+        # if user_id_spec == admin_id:
+        #     print(rows)
+        #     print(len(rows))
 
         for row in rows:
             # if user_id_spec == admin_id:
@@ -308,7 +308,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                         continue  # Bỏ qua nếu không đủ thông tin
 
                     periods_text = periods_dd[0].get_text(strip=True).replace("- Tiết:", "")
-                    print(periods_text)
+                    # print(periods_text)
                     # print(repr(periods_dd[0].get_text(strip=True)))
                     # print(periods_text)
                     if " - " in periods_text:
@@ -337,7 +337,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         await save_json(week_file_path, schedule)
         print(f"(fetch data) Đã lưu thông tin thời khóa biểu của {login_id}")
 
-        print(schedule)
+        # print(schedule)
         # lưu thành bảng thời khóa biểu
         # Danh sách thời gian bắt đầu mỗi tiết (giữ nguyên)
         # Mapping thứ -> cột trong bảng
