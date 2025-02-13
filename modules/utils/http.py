@@ -179,7 +179,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
             format_data_json = []
             for data in data_results:
                 score_dict = {
-                    "LopHP": await convert_to_acronym(await remove_accents(data[2])),
+                    "LOPHP": await convert_to_acronym(await remove_accents(data[2])),
                     "Lan hoc": data[4],
                     "QTHT": data[5],
                     "THI": data[6] if int(data[4]) == 1 else data[8],
@@ -195,8 +195,8 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         
         old_scores = await load_json(scores_file_path)
 
-        temp = max(len(s["LopHP"]) for s in format_data_json)
-        length_LHP = max(len("LopHP"), temp)
+        temp = max(len(s["LOPHP"]) for s in format_data_json)
+        length_LHP = max(len("LOPHP"), temp)
         
         temp = max(len(s["QTHT"]) for s in format_data_json)
         length_QTHT = max(len("QTHT"), temp)
@@ -207,13 +207,13 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         temp = max(len(s["TONG"]) for s in format_data_json)
         length_TD = max(len("TONG"), temp)
         
-        markdown_table = f"|{'LopHP': <{length_LHP}}|{'QTHT': <{length_QTHT}}|{'THI': <{length_DT}}|{'TONG': <{length_TD}}|\n"
+        markdown_table = f"|{'LOPHP': <{length_LHP}}|{'QTHT': <{length_QTHT}}|{'THI': <{length_DT}}|{'TONG': <{length_TD}}|\n"
         markdown_table += f"|{'-' * length_LHP}|{'-' * length_QTHT}|{'-' * length_DT}|{'-' * length_TD}|\n"
         markdown_table_full = markdown_table
 
         for item in format_data_json:
             if item["QTHT"] or item["THI"] or item["TONG"]:
-                markdown_table_full += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
+                markdown_table_full += f"|{item['LOPHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
         markdown_full_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'full', f"{login_id}_full.md")
         path_creator(markdown_full_file_path)
@@ -232,14 +232,14 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                             diffs.append(obj2)
                             break
 
-                temp = max(len(s["LopHP"]) for s in format_data_json)
-                max_length_diffs = max(len(s["LopHP"]) for s in diffs)
+                temp = max(len(s["LOPHP"]) for s in format_data_json)
+                max_length_diffs = max(len(s["LOPHP"]) for s in diffs)
                 length_LHP = max(temp, max_length_diffs)
 
                 # Tạo bảng Markdown với độ rộng cột phù hợp
                 for item in diffs:
                     if item["QTHT"] or item["THI"] or item["TONG"]:
-                        markdown_table += f"|{item['LopHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
+                        markdown_table += f"|{item['LOPHP']:<{length_LHP}}|{item['QTHT']:<{length_QTHT}}|{item['THI']:<{length_DT}}|{item['TONG']:<{length_TD}}|\n"
 
                 markdown_file_path = os.path.join(BASE_DIR, 'data', 'scores', 'markdowns', 'last', f"{login_id}.md")
                 path_creator(markdown_file_path)
