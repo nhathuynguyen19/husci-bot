@@ -416,7 +416,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         for row in time_table:
             md_time_table += f"|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
             if temp_int == 3 or temp_int == 7:
-                md_time_table += "|" + "|".join(" " * col_widths[i] for i in range(6)) + "|\n"
+                md_time_table += "|" + "|".join("X" * col_widths[i] for i in range(6)) + "|\n"
             temp_int += 1
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
