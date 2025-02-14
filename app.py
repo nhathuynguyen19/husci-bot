@@ -9,7 +9,8 @@ from modules.utils.autopush import push_to_git
 
 # Initialize 
 init(autoreset=True)
-previous_notifications = None
+previous_notifications = None 
+
 is_sending_notification = False
 
 # tạo các đường dẫn
