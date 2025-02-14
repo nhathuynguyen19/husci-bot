@@ -406,14 +406,18 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     time_table[row][weekday] += "*"
 
         # Tạo bảng Markdown
-        headers_time_table = ["MO", "TU", "WE", "THU", "FR", "SA"]
+        headers_time_table = ["MO", "TU", "WE", "TH", "FR", "SA"]
         col_widths = [max(len(headers_time_table[i]), max(len(row[i]) for row in time_table)) for i in range(6)]
         # Xuất ra Markdown
         md_time_table = "|" + "|".join(day.ljust(col_widths[i]) for i, day in enumerate(headers_time_table)) + "|\n"
         md_time_table += "|" + "|".join("-" * col_widths[i] for i in range(6)) + "|\n"
 
+        temp_int = 0
         for row in time_table:
             md_time_table += f"|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
+            if temp_int == 3 or temp_int == 7:
+                md_time_table += "|" + "|".join(" " * col_widths[i] for i in range(6)) + "|\n"
+            temp_int += 1
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
         path_creator(week_md_path)
