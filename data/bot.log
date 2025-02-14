@@ -959,3 +959,5 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 >>>>>>> e23f034 (update)
 2025-02-14 14:18:13 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-14 14:18:13 - INFO - logging in using static token
+2025-02-14 14:18:28 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-14 14:18:28 - INFO - logging in using static token
