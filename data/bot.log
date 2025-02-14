@@ -945,3 +945,5 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-14 04:03:04 - INFO - Shard ID None has successfully RESUMED session 29e761e90d4d382ae7906ef610c655c9.
 2025-02-14 04:41:28 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-14 04:41:28 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 04:41:35 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 04:41:35 - WARNING - Không tìm thấy danh sách tin nhắn!
