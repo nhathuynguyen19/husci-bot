@@ -974,3 +974,94 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-14 14:28:15 - WARNING - PyNaCl is not installed, voice will NOT be supported
 2025-02-14 14:28:15 - INFO - logging in using static token
 2025-02-14 14:28:17 - INFO - Shard ID None has connected to Gateway (Session ID: 4a81518cde0c3a2b5a896b387e139dbd).
+2025-02-14 07:29:55 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-14 07:29:55 - INFO - logging in using static token
+2025-02-14 07:29:56 - INFO - Shard ID None has connected to Gateway (Session ID: 779ae21c1e97c19a3797c36da2d90685).
+2025-02-14 07:39:53 - WARNING - **Người dùng ndn.huy đã đăng xuất khỏi server Huscier**
+2025-02-14 07:40:01 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:40:11 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:40:16 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:40:21 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:40:26 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:40:30 - WARNING - Không có thông tin đăng nhập
+2025-02-14 07:50:33 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 07:50:33 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 08:11:34 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 08:41:30 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 09:03:43 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 10:12:19 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 10:12:20 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 10:21:53 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 10:21:53 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 10:44:58 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 12:13:10 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 12:13:11 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 13:04:04 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 13:04:04 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 13:23:59 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 13:23:59 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 14:09:13 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 14:24:30 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 14:24:30 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 15:05:13 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 15:05:13 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 15:14:21 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 15:14:21 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 15:15:32 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 15:15:33 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 15:52:43 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 15:55:11 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 15:55:11 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 16:43:37 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 17:26:32 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 17:26:32 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 17:31:03 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 18:11:57 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 20:18:11 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 20:18:12 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 20:26:23 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 20:40:08 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 20:48:31 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 20:48:31 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 21:47:34 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 21:49:21 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 21:49:21 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-14 22:55:02 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-14 23:09:53 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-14 23:09:53 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 00:54:48 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 02:53:04 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 03:34:00 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 04:42:03 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 04:42:41 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 04:42:41 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 05:43:43 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 05:43:43 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 07:14:26 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 07:14:26 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 08:07:10 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 09:25:33 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 09:25:33 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 10:46:26 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 10:46:26 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 11:47:01 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 12:07:06 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 12:07:06 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 12:17:22 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 12:17:22 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 12:37:53 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 12:37:53 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 14:59:31 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 14:59:31 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 15:36:16 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 15:49:27 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 15:49:27 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 17:10:41 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 19:11:27 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 19:11:28 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 21:05:08 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
+2025-02-15 21:43:04 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 21:43:04 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 22:33:06 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 22:33:06 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 23:25:23 - INFO - Shard ID None has successfully RESUMED session 779ae21c1e97c19a3797c36da2d90685.
