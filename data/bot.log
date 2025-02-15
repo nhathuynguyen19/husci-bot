@@ -1037,3 +1037,5 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-15 04:42:41 - WARNING - Không tìm thấy danh sách tin nhắn!
 2025-02-15 05:43:43 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-15 05:43:43 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-15 07:14:26 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-15 07:14:26 - WARNING - Không tìm thấy danh sách tin nhắn!
