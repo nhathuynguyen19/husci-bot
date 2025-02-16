@@ -3,3 +3,4 @@
 2025-02-16 04:46:30 - INFO - Shard ID None has connected to Gateway (Session ID: ea02b0538cc19c34c843e35819b055e1).
 2025-02-16 05:47:15 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-16 05:47:15 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-16 06:07:41 - WARNING - Can't keep up, shard ID None websocket is 44.6s behind.
