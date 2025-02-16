@@ -5,7 +5,13 @@ admin_id=767394443820662784
 
 class VietnamFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        dt = datetime.datetime.fromtimestamp(record.created, pytz.timezone("Asia/Ho_Chi_Minh"))
+        # Lấy thời gian UTC từ record
+        dt = datetime.datetime.utcfromtimestamp(record.created).replace(tzinfo=pytz.utc)
+        
+        # Chuyển sang múi giờ Việt Nam
+        vietnam_tz = pytz.timezone("Asia/Ho_Chi_Minh")
+        dt = dt.astimezone(vietnam_tz)
+
         return dt.strftime(datefmt if datefmt else "%Y-%m-%d %H:%M:%S")
 
 # Configure logger
