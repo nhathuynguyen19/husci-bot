@@ -1,7 +1,13 @@
-import logging, discord, re, aiohttp, asyncio
+import logging, discord, re, aiohttp, asyncio, datetime
 from paths import bot_log_path
+from tzlocal import get_localzone
 
 admin_id=767394443820662784
+
+class VietnamFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        dt = datetime.datetime.fromtimestamp(record.created, get_localzone())  # Lấy múi giờ hệ thống
+        return dt.strftime(datefmt if datefmt else "%Y-%m-%d %H:%M:%S")
 
 # Configure logger
 logging.basicConfig(
@@ -12,6 +18,9 @@ logging.basicConfig(
     filemode="a"
 )
 logger = logging.getLogger(__name__)
+
+for handler in logger.handlers:
+    handler.setFormatter(VietnamFormatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"))
 
 async def load_md_line_by_line(file_path):
     try:

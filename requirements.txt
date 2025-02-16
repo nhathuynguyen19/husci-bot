@@ -7,3 +7,4 @@ pytz
 lxml
 colorama
 markdown
+tzlocal
