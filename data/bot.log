@@ -28,3 +28,6 @@
 2025-02-16 13:12:22 - WARNING - Không tìm thấy danh sách tin nhắn!
 2025-02-16 13:32:05 - INFO - Shard ID None has successfully RESUMED session ea02b0538cc19c34c843e35819b055e1.
 2025-02-16 13:42:34 - INFO - Shard ID None has successfully RESUMED session ea02b0538cc19c34c843e35819b055e1.
+2025-02-16 14:12:34 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-16 14:12:34 - INFO - logging in using static token
+2025-02-16 14:12:35 - INFO - Shard ID None has connected to Gateway (Session ID: a2327c6318bdb8f9f979ff8420fed433).
