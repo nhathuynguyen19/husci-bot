@@ -4,10 +4,11 @@ from paths import bot_log_path
 admin_id=767394443820662784
 
 class PlusSevenFormatter(logging.Formatter):
-    def formatTime(self, record, datefmt=None):
-        # Lấy thời gian từ record và cộng thêm 7 giờ
+    def format(self, record):
+        # Chỉnh sửa record.asctime để +7 giờ
         dt = datetime.datetime.utcfromtimestamp(record.created) + datetime.timedelta(hours=7)
-        return dt.strftime(datefmt if datefmt else "%Y-%m-%d %H:%M:%S")
+        record.asctime = dt.strftime("%Y-%m-%d %H:%M:%S")
+        return super().format(record)
 
 # Configure logger
 logging.basicConfig(
@@ -19,8 +20,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Cập nhật formatter mới
 for handler in logger.handlers:
-    handler.setFormatter(PlusSevenFormatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"))
+    handler.setFormatter(PlusSevenFormatter("%(asctime)s - %(levelname)s - %(message)s"))
 
 async def load_md_line_by_line(file_path):
     try:
