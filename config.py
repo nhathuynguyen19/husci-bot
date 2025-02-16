@@ -1,12 +1,11 @@
-import logging, discord, re, aiohttp, asyncio, datetime
+import logging, discord, re, aiohttp, asyncio, datetime, pytz
 from paths import bot_log_path
-from tzlocal import get_localzone
 
 admin_id=767394443820662784
 
 class VietnamFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        dt = datetime.datetime.fromtimestamp(record.created, get_localzone())  # Lấy múi giờ hệ thống
+        dt = datetime.datetime.fromtimestamp(record.created, pytz.timezone("Asia/Ho_Chi_Minh"))
         return dt.strftime(datefmt if datefmt else "%Y-%m-%d %H:%M:%S")
 
 # Configure logger
