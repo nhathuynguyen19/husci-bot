@@ -1082,3 +1082,6 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-16 01:34:41 - WARNING - Không tìm thấy danh sách tin nhắn!
 2025-02-16 01:44:25 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-16 01:44:25 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-16 02:38:19 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-16 02:38:19 - INFO - logging in using static token
+2025-02-16 02:38:20 - INFO - Shard ID None has connected to Gateway (Session ID: 7842daaf506fe63e2ee7227176ae4d8f).
