@@ -377,7 +377,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         now = datetime.now(tz_vn)  # Lấy thời gian hiện tại theo múi giờ Việt Nam
         weekday = now.weekday()  # Thứ 2 là 0, Thứ 7 là 5
         if weekday > 5:
-            weekday = 5  # Nếu là Chủ Nhật, đặt mặc định vào thứ 7
+            weekday = -1  # Nếu là Chủ Nhật, đặt mặc định vào thứ 7
 
         # print(f"Thứ hiện tại: {weekday}")
 
@@ -396,11 +396,11 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
                     break
 
         # Đặt dấu "*"
-        if current_period == -1:
+        if current_period == -1 and weekday != -1:
             time_table[0][weekday] += "-"
-        elif current_period == 12:
+        elif current_period == 12 and weekday != -1:
             time_table[11][weekday] += "-"
-        else:
+        elif weekday != -1:
             for row in range(12):
                 if row == current_period:
                     time_table[row][weekday] += "*"
@@ -416,7 +416,7 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
         for row in time_table:
             md_time_table += f"|" + "|".join(cell.ljust(col_widths[i]) for i, cell in enumerate(row)) + "|\n"
             if temp_int == 3 or temp_int == 7:
-                md_time_table += "|" + "|".join("_" * col_widths[i] for i in range(6)) + "|\n"
+                md_time_table += "|" + "|".join("-" * col_widths[i] for i in range(6)) + "|\n"
             temp_int += 1
 
         week_md_path = os.path.join(BASE_DIR, 'data', 'schedule', 'markdown', 'week', f"{login_id}.md")
