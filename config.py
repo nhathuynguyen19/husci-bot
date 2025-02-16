@@ -1,17 +1,12 @@
-import logging, discord, re, aiohttp, asyncio, datetime, pytz
+import logging, re, datetime
 from paths import bot_log_path
 
 admin_id=767394443820662784
 
-class VietnamFormatter(logging.Formatter):
+class PlusSevenFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        # Lấy thời gian UTC từ record
-        dt = datetime.datetime.utcfromtimestamp(record.created).replace(tzinfo=pytz.utc)
-        
-        # Chuyển sang múi giờ Việt Nam
-        vietnam_tz = pytz.timezone("Asia/Ho_Chi_Minh")
-        dt = dt.astimezone(vietnam_tz)
-
+        # Lấy thời gian từ record và cộng thêm 7 giờ
+        dt = datetime.datetime.utcfromtimestamp(record.created) + datetime.timedelta(hours=7)
         return dt.strftime(datefmt if datefmt else "%Y-%m-%d %H:%M:%S")
 
 # Configure logger
@@ -25,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 for handler in logger.handlers:
-    handler.setFormatter(VietnamFormatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"))
+    handler.setFormatter(PlusSevenFormatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"))
 
 async def load_md_line_by_line(file_path):
     try:
