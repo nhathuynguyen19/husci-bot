@@ -1105,3 +1105,4 @@ discord.app_commands.errors.CommandInvokeError: Command 'timetable' raised an ex
 2025-02-16 02:38:48 - ERROR - Đã xảy ra lỗi: cannot access local variable 'data_results' where it is not associated with a value
 2025-02-16 03:09:05 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-16 03:09:05 - WARNING - Không tìm thấy danh sách tin nhắn!
+2025-02-16 03:23:33 - INFO - Shard ID None has successfully RESUMED session 7842daaf506fe63e2ee7227176ae4d8f.
