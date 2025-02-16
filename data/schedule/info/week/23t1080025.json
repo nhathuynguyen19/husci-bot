@@ -1,8 +1,22 @@
 [
     {
         "session": "BUỔI SÁNG",
+        "day": "Thứ 3",
+        "date": "18/02/2025",
+        "subject": "Các hệ quản trị cơ sở dữ liệu - Nhóm 1",
+        "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3072.001/",
+        "periods": [
+            1,
+            2,
+            3
+        ],
+        "room": "B306",
+        "teacher": "Trần Nguyên Phong"
+    },
+    {
+        "session": "BUỔI SÁNG",
         "day": "Thứ 5",
-        "date": "13/02/2025",
+        "date": "20/02/2025",
         "subject": "Ngôn ngữ mô hình hoá UML - Nhóm 1",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN4122.001/",
         "periods": [
@@ -16,7 +30,7 @@
     {
         "session": "BUỔI SÁNG",
         "day": "Thứ 6",
-        "date": "14/02/2025",
+        "date": "21/02/2025",
         "subject": "Java cơ bản - Nhóm 2",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN1033.002/",
         "periods": [
@@ -31,7 +45,7 @@
     {
         "session": "BUỔI SÁNG",
         "day": "Thứ 7",
-        "date": "15/02/2025",
+        "date": "22/02/2025",
         "subject": "Thiết kế cơ sở dữ liệu - Nhóm 11",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN4012.011/",
         "periods": [
@@ -45,7 +59,7 @@
     {
         "session": "BUỔI CHIỀU",
         "day": "Thứ 4",
-        "date": "12/02/2025",
+        "date": "19/02/2025",
         "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 8",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.008/",
         "periods": [
@@ -59,7 +73,7 @@
     {
         "session": "BUỔI CHIỀU",
         "day": "Thứ 7",
-        "date": "15/02/2025",
+        "date": "22/02/2025",
         "subject": "Cấu trúc dữ liệu và thuật toán - Nhóm 8",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.TIN3084.008/",
         "periods": [
@@ -73,7 +87,7 @@
     {
         "session": "BUỔI TỐI",
         "day": "Thứ 2",
-        "date": "10/02/2025",
+        "date": "17/02/2025",
         "subject": "Kinh tế chính trị Mác - Lênin - Nhóm 1",
         "link": "https://student.husc.edu.vn//Course/Details/2024-2025.2.LLCTKT2.001/",
         "periods": [
