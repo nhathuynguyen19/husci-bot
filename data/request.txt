@@ -43,3 +43,4 @@ User ID: 1224445473960493198, User Name: truongpersonal, Command: /timetable, Ti
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /lastscore, Time: 2025-02-13 17:56:13.134720+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /timetable, Time: 2025-02-17 07:07:32.993213+07:00
 User ID: 1224445473960493198, User Name: truongpersonal, Command: /timetable, Time: 2025-02-17 07:11:27.255025+07:00
+User ID: 1021783859416797298, User Name: g.turtle, Command: /lastscore, Time: 2025-02-17 10:22:00.583471+07:00
