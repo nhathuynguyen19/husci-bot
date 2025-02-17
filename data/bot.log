@@ -85,3 +85,5 @@
 2025-02-17 10:46:54 - INFO - Shard ID None has successfully RESUMED session a2327c6318bdb8f9f979ff8420fed433.
 2025-02-17 11:10:30 - INFO - Shard ID None has successfully RESUMED session a2327c6318bdb8f9f979ff8420fed433.
 2025-02-17 12:44:15 - INFO - Shard ID None has successfully RESUMED session a2327c6318bdb8f9f979ff8420fed433.
+2025-02-17 12:57:24 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
+2025-02-17 12:57:24 - WARNING - Không tìm thấy danh sách tin nhắn!
