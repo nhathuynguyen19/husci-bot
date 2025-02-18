@@ -8,7 +8,7 @@ github_token = os.getenv("GITHUB_TOKEN")  # Sử dụng biến môi trường Gi
 
 async def push_to_git(repo_path, commit_message="Tự động cập nhật data"):
     github_username = "nhathuynguyen19"
-    github_repo = "Husci-Bot"
+    github_repo = "Husci-Bot-Data"
     repo_url = f"https://{github_username}:{github_token}@github.com/{github_username}/{github_repo}.git"
 
     try:

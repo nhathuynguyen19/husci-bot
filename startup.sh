@@ -3,6 +3,7 @@ cd Husci-Bot-Data
 mv data ..
 cd ..
 rm -rf Husci-Bot-Data
+mv data Husci-Bot/
 pip install -r Husci-Bot/requirements.txt
 cd Husci-Bot
 git config user.name "nhathuynguyen19"
