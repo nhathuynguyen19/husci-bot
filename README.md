@@ -1,7 +1,7 @@
-# HUSC Discord Bot
-Hue University of Sciences Discord-Bot
+# Husci Bot
+*Hue University of Sciences*
 
-- Link mời: [Husci](https://discord.com/oauth2/authorize?client_id=1316054955748229231&permissions=1126864127515648&integration_type=0&scope=bot)
+- **Link mời**: [Husci](https://discord.com/oauth2/authorize?client_id=1316054955748229231&permissions=1126864127515648&integration_type=0&scope=bot)
 
 ## Commands
 
@@ -13,6 +13,7 @@ Hue University of Sciences Discord-Bot
 - `/message` : Tin nhắn mới nhất.
 - `/lastscore` : Lần cập nhật điểm cuối cùng.
 - `/scoretable` : Lịch sử quá trình học tập.
+- `/timetable` : Lịch sử quá trình học tập.
 - Update...
 
 ## Web Push
