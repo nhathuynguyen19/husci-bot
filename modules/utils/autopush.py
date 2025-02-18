@@ -31,6 +31,14 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
             print("⚠️ Merge chưa hoàn tất, vui lòng hoàn tất merge trước.")
             return
 
+        # Kiểm tra nếu có thay đổi trong bot.log
+        status_result = await run_command(["git", "status", "--porcelain"], capture=True)
+        if "data/bot.log" in status_result:
+            print("⚠️ Tệp bot.log có thay đổi, commit hoặc stash trước khi tiếp tục.")
+            # Commit các thay đổi trong bot.log
+            await run_command(["git", "add", "data/bot.log"])
+            await run_command(["git", "commit", "-m", "Lưu các thay đổi trong bot.log"])
+
         # Bước 3: Cấu hình git để sử dụng merge khi pull
         await run_command(["git", "config", "pull.rebase", "false"])
 
