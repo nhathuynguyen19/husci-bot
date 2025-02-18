@@ -149,3 +149,6 @@
 2025-02-18 09:00:49 - ERROR - Lỗi xảy ra: Cannot connect to host student.husc.edu.vn:443 ssl:default [Temporary failure in name resolution]
 2025-02-18 09:00:50 - WARNING - Không tìm thấy danh sách tin nhắn!
 2025-02-18 09:11:05 - INFO - Shard ID None has successfully RESUMED session a2327c6318bdb8f9f979ff8420fed433.
+2025-02-18 10:33:11 - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-02-18 10:33:11 - INFO - logging in using static token
+2025-02-18 10:33:11 - INFO - Shard ID None has connected to Gateway (Session ID: e2592dda068246682c3d8507a7164231).
