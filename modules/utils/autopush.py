@@ -28,8 +28,8 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
         # Bước 3: Cấu hình git để sử dụng merge khi pull
         await run_command(["git", "config", "pull.rebase", "false"])
 
-        # Kéo các thay đổi từ remote với merge
-        await run_command(["git", "pull", "origin", "master"])
+        # Kéo các thay đổi từ remote với merge và cho phép hợp nhất các lịch sử không liên quan
+        await run_command(["git", "pull", "origin", "master", "--allow-unrelated-histories"])
         
         # Kiểm tra xem có thay đổi nào không
         status_result = await run_command(["git", "status", "--porcelain", "data"], capture=True)
