@@ -25,6 +25,9 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
 
         # Bước 2: Vào thư mục Husci-Bot-Data
         os.chdir(husci_bot_data_dir)
+
+        # Bước 3: Kéo các thay đổi từ remote trước khi push
+        subprocess.run(["git", "pull", "origin", "master"], check=True)  # Cập nhật từ remote
         
         # Kiểm tra xem có thay đổi nào không
         status_result = subprocess.run(["git", "-C", repo_path, "status", "--porcelain", "data"], capture_output=True, text=True)
