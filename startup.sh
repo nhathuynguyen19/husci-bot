@@ -1,5 +1,5 @@
 #!/bin/bash
-mv Husci-Bot/data ..
+mv Husci-Bot-Data/data ..
 rm -rf Husci-Bot-Data
 pip install -r Husci-Bot/requirements.txt
 cd Husci-Bot
