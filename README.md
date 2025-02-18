@@ -13,6 +13,7 @@ Hue University of Sciences Discord-Bot
 - `/message` : Tin nhắn mới nhất.
 - `/lastscore` : Lần cập nhật điểm cuối cùng.
 - `/scoretable` : Lịch sử quá trình học tập.
+- `/timetable` : Lịch sử quá trình học tập.
 - Update...
 
 ## Web Push
