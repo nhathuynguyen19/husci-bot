@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, asyncio
 import os
 from dotenv import load_dotenv
 from paths import BASE_DIR, data_path, dotenv_path
@@ -18,42 +18,56 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
         # Bước 1: Copy thư mục data vào thư mục Husci-Bot-Data
         data_dir = os.path.join(BASE_DIR, "data")
         if os.path.exists(os.path.join(husci_bot_data_dir, "data")):
-            subprocess.run(["rm", "-rf", os.path.join(husci_bot_data_dir, "data")], check=True)
-            
-        subprocess.run(["cp", "-r", data_dir, husci_bot_data_dir], check=True)
+            await run_command(["rm", "-rf", os.path.join(husci_bot_data_dir, "data")])
+
+        await run_command(["cp", "-r", data_dir, husci_bot_data_dir])
 
         # Bước 2: Vào thư mục Husci-Bot-Data
         os.chdir(husci_bot_data_dir)
 
-        # Bước 3: Kéo các thay đổi từ remote trước khi push
-        subprocess.run(["git", "pull", "origin", "master"], check=True)  # Cập nhật từ remote
+        # Bước 3: Cấu hình git để sử dụng merge khi pull
+        await run_command(["git", "config", "pull.rebase", "false"])
+
+        # Kéo các thay đổi từ remote với merge
+        await run_command(["git", "pull", "origin", "master"])
         
         # Kiểm tra xem có thay đổi nào không
-        status_result = subprocess.run(["git", "status", "--porcelain", "data"], capture_output=True, text=True)
-        if not status_result.stdout.strip():
+        status_result = await run_command(["git", "status", "--porcelain", "data"], capture=True)
+        if not status_result.strip():
             print("❌ Không có thay đổi nào để commit.")
             return
 
         # Thêm thay đổi
-        subprocess.run(["git", "add", "data"], check=True)
+        await run_command(["git", "add", "data"])
 
         # Commit thay đổi
-        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+        await run_command(["git", "commit", "-m", commit_message])
 
         # Đặt lại URL remote cho đúng
-        subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
+        await run_command(["git", "remote", "set-url", "origin", repo_url])
 
         # Lấy tên branch hiện tại
-        branch = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout.strip()
+        branch = await run_command(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture=True)
 
         # Push lên branch của repo Husci-Bot-Data
-        subprocess.run(["git", "push", "origin", branch], check=True)
+        await run_command(["git", "push", "origin", branch])
 
         print("✅ Đã push thành công vào Husci-Bot-Data!")
     except subprocess.CalledProcessError as e:
         print(f"❌ Lỗi khi push: {e}")
     except Exception as e:
         print(f"❌ Lỗi không xác định: {e}")
+
+async def run_command(command, capture=False):
+    process = await asyncio.create_subprocess_exec(
+        *command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+    )
+    stdout, stderr = await process.communicate()
+
+    if capture:
+        return stdout.decode().strip()
+    if process.returncode != 0:
+        raise Exception(f"Command {' '.join(command)} failed with error: {stderr.decode()}")
 
 # Gọi hàm push_to_git
 # await push_to_git(BASE_DIR)
