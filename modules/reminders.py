@@ -4,7 +4,6 @@ from datetime import datetime
 from pytz import timezone
 from modules.utils.file import add_sent_reminder, remove_reminder, load_txt
 from paths import reminders_path
-from modules.utils.autopush import push_to_git
 from paths import BASE_DIR
 
 timezone = pytz.timezone('Asia/Ho_Chi_Minh')
@@ -54,6 +53,5 @@ class Reminder:
                     
                     await add_sent_reminder(reminder_line)
                     await remove_reminder(reminder_line)
-                    await push_to_git(BASE_DIR)
             except Exception as e:
                 logger.error(f"Lỗi khi xử lý nhắc nhở: {e}")

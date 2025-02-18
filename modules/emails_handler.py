@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from paths import login_url, data_url, BASE_DIR
 from modules.utils.file import save_txt, load_json, save_json
 from modules.utils.http import fetch_data
-from modules.utils.autopush import push_to_git
 
 class EmailsHandler:
     def __init__(self, auth_manager, bot, users_path):
@@ -38,7 +37,6 @@ class EmailsHandler:
             if updated:
                 await save_json(self.users_path, users_data)
                 print(f"Dữ liệu người dùng {user_id_spec} đã được cập nhật.")
-                await push_to_git(BASE_DIR, "Update SMS")
         except Exception as e:
             print(f"Lỗi khi xử lý kết quả: {str(e)}")
 

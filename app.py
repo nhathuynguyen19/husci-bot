@@ -40,11 +40,9 @@ commands = Commands(husc_notification, user_manager, auth_manager, loops, emails
 @bot.tree.command(name="login",description="Đăng nhập HUSC")
 async def login(ctx, username: str, password: str):
     await commands.handle_login(ctx, username, password)
-    await push_to_git(BASE_DIR)
 @bot.tree.command(name="logout", description="Đăng xuất")
 async def logout(ctx):
     await commands.handle_logout(ctx)
-    await push_to_git(BASE_DIR)
 @bot.tree.command(name="notifications", description="Lấy các thông báo mới từ HUSC")
 async def notifications(ctx: discord.Interaction):
     await commands.handle_notifications(ctx)
@@ -55,7 +53,6 @@ async def first(ctx: discord.Interaction):
 async def remind(ctx: discord.Interaction, reminder: str, day: int, month: int, year: int, hour: int, minute: int):   
     date_time = datetime(int(year), int(month), int(day), int(hour), int(minute))
     await commands.handle_remind(ctx, bot, reminder, reminders, date_time)
-    await push_to_git(BASE_DIR)
 @bot.tree.command(name="message", description="Xem tin nhắn mới nhất")
 async def message(ctx):
     await commands.handle_message(ctx)

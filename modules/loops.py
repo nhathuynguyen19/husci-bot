@@ -5,7 +5,6 @@ from modules.utils.switch import switch
 from modules.utils.file import load_json, save_json, save_txt
 from modules.utils.http import login_page
 from asyncio import sleep
-from modules.utils.autopush import push_to_git
 
 
 class Loops:
@@ -83,8 +82,6 @@ class Loops:
                         with open(notifications_path, "w", encoding="utf-8") as f:
                             f.writelines([f"- {notification}\n" for notification in notifications])
                         previous_notifications = new_notification
-
-                        await push_to_git(BASE_DIR, "Update notifications")
                 else:
                     print("Không có thông báo mới")
             else:
