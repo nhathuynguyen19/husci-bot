@@ -1,4 +1,4 @@
-import subprocess, asyncio
+import asyncio
 import os
 from dotenv import load_dotenv
 from paths import BASE_DIR, data_path, dotenv_path
@@ -25,12 +25,18 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
         # Bước 2: Vào thư mục Husci-Bot-Data
         os.chdir(husci_bot_data_dir)
 
+        # Kiểm tra xem có quá trình merge chưa hoàn tất
+        status_result = await run_command(["git", "status", "--porcelain"], capture=True)
+        if "MERGE_HEAD" in status_result:
+            print("⚠️ Merge chưa hoàn tất, vui lòng hoàn tất merge trước.")
+            return
+
         # Bước 3: Cấu hình git để sử dụng merge khi pull
         await run_command(["git", "config", "pull.rebase", "false"])
 
         # Kéo các thay đổi từ remote với merge và cho phép hợp nhất các lịch sử không liên quan
         await run_command(["git", "pull", "origin", "master", "--allow-unrelated-histories"])
-        
+
         # Kiểm tra xem có thay đổi nào không
         status_result = await run_command(["git", "status", "--porcelain", "data"], capture=True)
         if not status_result.strip():
@@ -53,10 +59,9 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
         await run_command(["git", "push", "origin", branch])
 
         print("✅ Đã push thành công vào Husci-Bot-Data!")
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Lỗi khi push: {e}")
     except Exception as e:
-        print(f"❌ Lỗi không xác định: {e}")
+        print(f"❌ Lỗi khi push: {e}")
+
 
 async def run_command(command, capture=False):
     process = await asyncio.create_subprocess_exec(
@@ -68,6 +73,6 @@ async def run_command(command, capture=False):
         return stdout.decode().strip()
     if process.returncode != 0:
         raise Exception(f"Command {' '.join(command)} failed with error: {stderr.decode()}")
-
+    
 # Gọi hàm push_to_git
 # await push_to_git(BASE_DIR)
