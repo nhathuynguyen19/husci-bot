@@ -5,8 +5,6 @@ cd ..
 mv data Husci-Bot/
 pip install -r Husci-Bot/requirements.txt
 cd Husci-Bot
-git config user.name "nhathuynguyen19"
-git config user.email "huythcsthuyphuong73@gmail.com"
 chmod +x app.py
 cd ..
 cd Husci-Bot-Data
