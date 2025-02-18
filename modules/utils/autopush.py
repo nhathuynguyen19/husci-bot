@@ -12,6 +12,24 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
     repo_url = f"https://{github_username}:{github_token}@github.com/{github_username}/{github_repo}.git"
 
     try:
+        # Bước 1: Di chuyển thư mục data ra khỏi thư mục BASE_DIR
+        data_dir = os.path.join(BASE_DIR, "data")
+        if os.path.exists(data_dir):
+            subprocess.run(["mv", data_dir, os.path.join(os.path.dirname(BASE_DIR), "data")], check=True)  # Di chuyển data ra ngoài BASE_DIR
+
+        # Bước 2: Di chuyển thư mục data vào thư mục Husci-Bot-Data
+        husci_bot_data_dir = os.path.join(os.path.dirname(BASE_DIR), "Husci-Bot-Data")
+        
+        # Nếu thư mục data đã tồn tại trong Husci-Bot-Data, xóa nó trước khi di chuyển vào
+        if os.path.exists(os.path.join(husci_bot_data_dir, "data")):
+            subprocess.run(["rm", "-rf", os.path.join(husci_bot_data_dir, "data")], check=True)
+        
+        # Di chuyển thư mục data vào Husci-Bot-Data
+        subprocess.run(["mv", os.path.join(os.path.dirname(BASE_DIR), "data"), husci_bot_data_dir], check=True)
+
+        # Bước 3: Vào thư mục Husci-Bot-Data
+        os.chdir(husci_bot_data_dir)
+        
         # Kiểm tra xem có thay đổi nào không
         status_result = subprocess.run(["git", "-C", repo_path, "status", "--porcelain", "data"], capture_output=True, text=True)
         if not status_result.stdout.strip():
