@@ -1,4 +1,6 @@
 #!/bin/bash
+mv Husci-Bot/data ..
+rm -rf Husci-Bot-Data
 pip install -r Husci-Bot/requirements.txt
 cd Husci-Bot
 git config user.name "nhathuynguyen19"
