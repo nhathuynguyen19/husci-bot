@@ -60,28 +60,30 @@ async def login_page(session, login_url, login_id, password):
     return None
 
 async def fetch_data(session, login_id, password, user, bot, emails_handler):
-    try:
-        # Giai đoạn đăng nhập chung cho mỗi phiên
+    while True:
         try:
-            page = await session.get(login_url, timeout=20)
-        except asyncio.TimeoutError:
-            logger.error("Request bị timeout sau 20 giây")
+            # Giai đoạn đăng nhập chung cho mỗi phiên
+            try:
+                page = await session.get(login_url, timeout=20)
+            except asyncio.TimeoutError:
+                logger.error("Request bị timeout sau 20 giây")
+            except Exception as e:
+                logger.error(f"Lỗi xảy ra: {e}")
+                
+            html = BeautifulSoup(await page.text(), 'html.parser')
+            token = html.find('input', {'name': '__RequestVerificationToken'})['value']
+            login_data = {
+                "loginID": login_id,
+                "password": password,
+                "__RequestVerificationToken": token
+            }
+            async with session.post(login_url, data=login_data) as response:
+                html = BeautifulSoup(await response.text(), 'html.parser')
+            user_id_spec = user["id"]
+            break
         except Exception as e:
-            logger.error(f"Lỗi xảy ra: {e}")
-            
-        html = BeautifulSoup(await page.text(), 'html.parser')
-        token = html.find('input', {'name': '__RequestVerificationToken'})['value']
-        login_data = {
-            "loginID": login_id,
-            "password": password,
-            "__RequestVerificationToken": token
-        }
-        async with session.post(login_url, data=login_data) as response:
-            html = BeautifulSoup(await response.text(), 'html.parser')
-        user_id_spec = user["id"]
-    except Exception as e:
-        logger.error(f"Đã xảy ra lỗi: {e}")
-        await asyncio.sleep(10)
+            logger.error(f"Đã xảy ra lỗi: {e}")
+            await asyncio.sleep(10)
     print(f"(fetch data) Đã đăng nhập thành công với ID: {login_id}")
         
     # Vòng lặp lấy dữ liệu chung
@@ -427,9 +429,15 @@ async def fetch_data(session, login_id, password, user, bot, emails_handler):
 
 # From Emails
 async def _handle_user_data(login_id, password, user, bot, emails_handler):
-    async with aiohttp.ClientSession() as session:
-        print(f"Session cho {login_id} đã được tạo và sử dụng.")
-        await fetch_data(session, login_id, password, user, bot, emails_handler)
+    while True:
+        try:
+            async with aiohttp.ClientSession() as session:
+                print(f"Session cho {login_id} đã được tạo và sử dụng.")
+                await fetch_data(session, login_id, password, user, bot, emails_handler)
+            break
+        except Exception as e:
+            logger.error(e)
+            
 
 async def handle_users(auth_manager, bot, emails_handler):
     global processed_users
@@ -446,16 +454,17 @@ async def handle_users(auth_manager, bot, emails_handler):
             login_id = user.get("login_id")
             if login_id in processed_users:
                 continue 
+            while True:
+                try:
+                    encrypted_password = user.get("password")
+                    start_time = time.time()
+                    password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
 
-            try:
-                encrypted_password = user.get("password")
-                start_time = time.time()
-                password = await auth_manager.decrypt_password(encrypted_password, user.get("id"), start_time)
-
-                task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
-                tasks_phase.append(task)
-            except Exception as e:
-                print(f"Đã xảy ra lỗi: {e}")
+                    task = asyncio.create_task(_handle_user_data(login_id, password, user, bot, emails_handler))
+                    tasks_phase.append(task)
+                    break
+                except Exception as e:
+                    print(f"Đã xảy ra lỗi: {e}")
                 
             processed_users.add(login_id)
 
