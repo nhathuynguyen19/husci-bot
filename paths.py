@@ -29,3 +29,7 @@ data_url = [
     "https://student.husc.edu.vn/Statistics/HistoryOfStudying",
     "https://student.husc.edu.vn/TimeTable/Week"
 ]
+
+
+def temp_path():
+    return None

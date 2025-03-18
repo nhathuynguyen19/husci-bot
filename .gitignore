@@ -7,5 +7,7 @@
 # *.log
 # !README.md
 # *.md
-
+env-husci-bot/
+data/
+.idea/
 __pycache__/

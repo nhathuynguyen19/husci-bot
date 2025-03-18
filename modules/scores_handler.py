@@ -5,9 +5,6 @@ from paths import login_url, data_url, temp_path
 from modules.utils.file import save_txt, load_json, save_json
 
 class ScoresHandles:
-    def __init__(self):
-        self
-
     async def process_result(self, result):
         users_data = await load_json(self.users_path)
 

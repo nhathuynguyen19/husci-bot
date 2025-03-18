@@ -8,12 +8,12 @@ github_token = os.getenv("GITHUB_TOKEN")  # Sử dụng biến môi trường Gi
 
 async def push_to_git(repo_path, commit_message="Tự động cập nhật data"):
     github_username = "nhathuynguyen19"
-    github_repo = "Husci-Bot-Data"
+    github_repo = "husci-bot-data"
     repo_url = f"https://{github_username}:{github_token}@github.com/{github_username}/{github_repo}.git"
 
     try:
         # Đường dẫn đến thư mục Husci-Bot-Data
-        husci_bot_data_dir = os.path.join(os.path.dirname(BASE_DIR), "Husci-Bot-Data")
+        husci_bot_data_dir = os.path.join(os.path.dirname(BASE_DIR), "husci-bot-data")
         
         # Bước 1: Copy thư mục data vào thư mục Husci-Bot-Data
         data_dir = os.path.join(BASE_DIR, "data")
@@ -66,7 +66,7 @@ async def push_to_git(repo_path, commit_message="Tự động cập nhật data"
         # Push lên branch của repo Husci-Bot-Data
         await run_command(["git", "push", "origin", branch])
 
-        print("✅ Đã push thành công vào Husci-Bot-Data!")
+        print("✅ Đã push thành công vào husci-bot-data!")
     except Exception as e:
         print(f"❌ Lỗi khi push: {e}")
 
