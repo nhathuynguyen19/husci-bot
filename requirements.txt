@@ -2,7 +2,6 @@ aiohappyeyeballs
 aiohttp
 aiosignal
 attrs
-audioop
 colorama
 discord
 discord.py
