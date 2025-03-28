@@ -11,3 +11,4 @@ env-husci-bot/
 data/
 .idea/
 __pycache__/
+venv/
